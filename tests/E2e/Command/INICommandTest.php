@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Fezfez\Ebics\Tests\E2e\Command;
+namespace Cube43\Component\Ebics\Tests\E2e\Command;
 
-use Fezfez\Ebics\BankInfo;
-use Fezfez\Ebics\Command\INICommand;
-use Fezfez\Ebics\EbicsServerCaller;
-use Fezfez\Ebics\KeyRing;
-use Fezfez\Ebics\UserCertificate;
-use Fezfez\Ebics\Version;
-use Fezfez\Ebics\X509\DefaultX509OptionGenerator;
+use Cube43\Component\Ebics\BankInfo;
+use Cube43\Component\Ebics\Command\INICommand;
+use Cube43\Component\Ebics\EbicsServerCaller;
+use Cube43\Component\Ebics\KeyRing;
+use Cube43\Component\Ebics\UserCertificate;
+use Cube43\Component\Ebics\Version;
+use Cube43\Component\Ebics\X509\DefaultX509OptionGenerator;
 use Symfony\Component\HttpClient\MockHttpClient;
 
 class INICommandTest extends E2eTestBase

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Fezfez\Ebics\Tests\Unit;
+namespace Cube43\Component\Ebics\Tests\Unit;
 
-use Fezfez\Ebics\BankInfo;
-use Fezfez\Ebics\Version;
+use Cube43\Component\Ebics\BankInfo;
+use Cube43\Component\Ebics\Version;
 use PHPUnit\Framework\TestCase;
 
 /**

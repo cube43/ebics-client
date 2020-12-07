@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Fezfez\Ebics\Crypt;
+namespace Cube43\Component\Ebics\Crypt;
 
-use Fezfez\Ebics\BankCertificate;
+use Cube43\Component\Ebics\BankCertificate;
 use phpseclib\Crypt\RSA;
 use RuntimeException;
 

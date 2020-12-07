@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Fezfez\Ebics\Tests\Unit;
+namespace Cube43\Component\Ebics\Tests\Unit;
 
-use Fezfez\Ebics\DOMDocument;
+use Cube43\Component\Ebics\DOMDocument;
 use PHPUnit\Framework\TestCase;
 
 /**

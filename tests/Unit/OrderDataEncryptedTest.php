@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Fezfez\Ebics\Tests\Unit;
+namespace Cube43\Component\Ebics\Tests\Unit;
 
-use Fezfez\Ebics\OrderDataEncrypted;
+use Cube43\Component\Ebics\OrderDataEncrypted;
 use PHPUnit\Framework\TestCase;
 
 /**

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Fezfez\Ebics;
+namespace Cube43\Component\Ebics;
 
 use function array_keys;
 use function array_values;

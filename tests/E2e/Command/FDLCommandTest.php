@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Fezfez\Ebics\Tests\E2e\Command;
+namespace Cube43\Component\Ebics\Tests\E2e\Command;
 
 use DateTimeImmutable;
-use Fezfez\Ebics\BankCertificate;
-use Fezfez\Ebics\BankInfo;
-use Fezfez\Ebics\CertificateX509;
-use Fezfez\Ebics\CertificatType;
-use Fezfez\Ebics\Command\FDLCommand;
-use Fezfez\Ebics\EbicsServerCaller;
-use Fezfez\Ebics\FDLParams;
-use Fezfez\Ebics\KeyRing;
-use Fezfez\Ebics\PrivateKey;
-use Fezfez\Ebics\Tests\E2e\FakeCrypt;
-use Fezfez\Ebics\UserCertificate;
-use Fezfez\Ebics\Version;
+use Cube43\Component\Ebics\BankCertificate;
+use Cube43\Component\Ebics\BankInfo;
+use Cube43\Component\Ebics\CertificateX509;
+use Cube43\Component\Ebics\CertificatType;
+use Cube43\Component\Ebics\Command\FDLCommand;
+use Cube43\Component\Ebics\EbicsServerCaller;
+use Cube43\Component\Ebics\FDLParams;
+use Cube43\Component\Ebics\KeyRing;
+use Cube43\Component\Ebics\PrivateKey;
+use Cube43\Component\Ebics\Tests\E2e\FakeCrypt;
+use Cube43\Component\Ebics\UserCertificate;
+use Cube43\Component\Ebics\Version;
 use Symfony\Component\HttpClient\MockHttpClient;
 
 class FDLCommandTest extends E2eTestBase

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Fezfez\Ebics;
+namespace Cube43\Component\Ebics;
 
-use Fezfez\Ebics\Crypt\ExponentAndModulus;
+use Cube43\Component\Ebics\Crypt\ExponentAndModulus;
 use JsonSerializable;
 use phpseclib\Crypt\RSA;
 

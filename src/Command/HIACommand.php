@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Fezfez\Ebics\Command;
+namespace Cube43\Component\Ebics\Command;
 
 use DateTime;
-use Fezfez\Ebics\BankInfo;
-use Fezfez\Ebics\CertificatType;
-use Fezfez\Ebics\Crypt\GenerateCertificat;
-use Fezfez\Ebics\EbicsServerCaller;
-use Fezfez\Ebics\KeyRing;
-use Fezfez\Ebics\RenderXml;
-use Fezfez\Ebics\Version;
-use Fezfez\Ebics\X509\X509CertificatOptionsGenerator;
+use Cube43\Component\Ebics\BankInfo;
+use Cube43\Component\Ebics\CertificatType;
+use Cube43\Component\Ebics\Crypt\GenerateCertificat;
+use Cube43\Component\Ebics\EbicsServerCaller;
+use Cube43\Component\Ebics\KeyRing;
+use Cube43\Component\Ebics\RenderXml;
+use Cube43\Component\Ebics\Version;
+use Cube43\Component\Ebics\X509\X509CertificatOptionsGenerator;
 use RuntimeException;
 
 use function base64_encode;

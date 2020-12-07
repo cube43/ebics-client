@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Fezfez\Ebics\Crypt;
+namespace Cube43\Component\Ebics\Crypt;
 
-use Fezfez\Ebics\CertificateX509;
-use Fezfez\Ebics\CertificatType;
-use Fezfez\Ebics\KeyRing;
-use Fezfez\Ebics\PrivateKey;
-use Fezfez\Ebics\UserCertificate;
-use Fezfez\Ebics\X509\X509CertificatOptionsGenerator;
-use Fezfez\Ebics\X509\X509Generator;
+use Cube43\Component\Ebics\CertificateX509;
+use Cube43\Component\Ebics\CertificatType;
+use Cube43\Component\Ebics\KeyRing;
+use Cube43\Component\Ebics\PrivateKey;
+use Cube43\Component\Ebics\UserCertificate;
+use Cube43\Component\Ebics\X509\X509CertificatOptionsGenerator;
+use Cube43\Component\Ebics\X509\X509Generator;
 use phpseclib\Crypt\RSA;
 use RuntimeException;
 

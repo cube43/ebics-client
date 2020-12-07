@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Fezfez\Ebics\Tests\E2e\Command;
+namespace Cube43\Component\Ebics\Tests\E2e\Command;
 
 use DOMDocument;
 use DOMNode;
-use Fezfez\Ebics\Crypt\AddRsaSha256PrefixAndReturnAsBinary;
-use Fezfez\Ebics\Tests\E2e\FakeCrypt;
-use Fezfez\Ebics\Version;
+use Cube43\Component\Ebics\Crypt\AddRsaSha256PrefixAndReturnAsBinary;
+use Cube43\Component\Ebics\Tests\E2e\FakeCrypt;
+use Cube43\Component\Ebics\Version;
 use phpseclib\Crypt\RSA;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;

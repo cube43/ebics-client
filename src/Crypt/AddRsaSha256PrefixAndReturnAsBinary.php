@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Fezfez\Ebics\Crypt;
+namespace Cube43\Component\Ebics\Crypt;
 
 use function Safe\pack;
 use function Safe\unpack;

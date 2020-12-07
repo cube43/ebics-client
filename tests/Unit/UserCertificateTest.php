@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Fezfez\Ebics\Tests\Unit;
+namespace Cube43\Component\Ebics\Tests\Unit;
 
-use Fezfez\Ebics\CertificateX509;
-use Fezfez\Ebics\CertificatType;
-use Fezfez\Ebics\Crypt\ExponentAndModulus;
-use Fezfez\Ebics\Models\Certificate;
-use Fezfez\Ebics\PrivateKey;
-use Fezfez\Ebics\UserCertificate;
+use Cube43\Component\Ebics\CertificateX509;
+use Cube43\Component\Ebics\CertificatType;
+use Cube43\Component\Ebics\Crypt\ExponentAndModulus;
+use Cube43\Component\Ebics\Models\Certificate;
+use Cube43\Component\Ebics\PrivateKey;
+use Cube43\Component\Ebics\UserCertificate;
 use PHPUnit\Framework\TestCase;
 
 /**

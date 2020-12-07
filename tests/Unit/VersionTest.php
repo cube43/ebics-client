@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Fezfez\Ebics\Tests\Unit;
+namespace Cube43\Component\Ebics\Tests\Unit;
 
-use Fezfez\Ebics\Crypt\BankPublicKeyDigest;
-use Fezfez\Ebics\KeyRing;
-use Fezfez\Ebics\Version;
+use Cube43\Component\Ebics\Crypt\BankPublicKeyDigest;
+use Cube43\Component\Ebics\KeyRing;
+use Cube43\Component\Ebics\Version;
 use PHPUnit\Framework\TestCase;
 
 use function json_decode;

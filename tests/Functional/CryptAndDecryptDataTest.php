@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Fezfez\Ebics\Tests\Functional;
+namespace Cube43\Component\Ebics\Tests\Functional;
 
-use Fezfez\Ebics\CertificatType;
-use Fezfez\Ebics\Crypt\AddRsaSha256PrefixAndReturnAsBinary;
-use Fezfez\Ebics\Crypt\DecryptOrderDataContent;
-use Fezfez\Ebics\Crypt\EncrytSignatureValueWithUserPrivateKey;
-use Fezfez\Ebics\Crypt\GenerateCertificat;
-use Fezfez\Ebics\DOMDocument;
-use Fezfez\Ebics\KeyRing;
-use Fezfez\Ebics\OrderDataEncrypted;
-use Fezfez\Ebics\PrivateKey;
-use Fezfez\Ebics\X509\DefaultX509OptionGenerator;
+use Cube43\Component\Ebics\CertificatType;
+use Cube43\Component\Ebics\Crypt\AddRsaSha256PrefixAndReturnAsBinary;
+use Cube43\Component\Ebics\Crypt\DecryptOrderDataContent;
+use Cube43\Component\Ebics\Crypt\EncrytSignatureValueWithUserPrivateKey;
+use Cube43\Component\Ebics\Crypt\GenerateCertificat;
+use Cube43\Component\Ebics\DOMDocument;
+use Cube43\Component\Ebics\KeyRing;
+use Cube43\Component\Ebics\OrderDataEncrypted;
+use Cube43\Component\Ebics\PrivateKey;
+use Cube43\Component\Ebics\X509\DefaultX509OptionGenerator;
 use phpseclib\Crypt\AES;
 use PHPUnit\Framework\TestCase;
 

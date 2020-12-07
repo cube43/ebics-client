@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Fezfez\Ebics\X509;
+namespace Cube43\Component\Ebics\X509;
 
-use Fezfez\Ebics\CertificatType;
+use Cube43\Component\Ebics\CertificatType;
 use phpseclib\Crypt\RSA;
 use phpseclib\File\X509;
 use RuntimeException;

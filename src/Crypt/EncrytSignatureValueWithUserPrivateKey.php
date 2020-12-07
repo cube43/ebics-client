@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Fezfez\Ebics\Crypt;
+namespace Cube43\Component\Ebics\Crypt;
 
-use Fezfez\Ebics\KeyRing;
-use Fezfez\Ebics\PrivateKey;
+use Cube43\Component\Ebics\KeyRing;
+use Cube43\Component\Ebics\PrivateKey;
 use phpseclib\Crypt\RSA;
 use RuntimeException;
 

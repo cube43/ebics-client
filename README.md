@@ -43,9 +43,9 @@ You will need to have this informations from your Bank :
 ```php
 <?php
 
-$bankInfo            = new \Fezfez\Ebics\BankInfo($HOST_ID, $HOST_URL, \Fezfez\Ebics\Version::v24(), $PARTNER_ID, $USER_ID);
-$keyring             = new \Fezfez\Ebics\KeyRing('myPassword');
-$x509OptionGenerator = new \Fezfez\Ebics\X509\DefaultX509OptionGenerator();
+$bankInfo            = new \Cube43\Component\Ebics\BankInfo($HOST_ID, $HOST_URL, \Cube43\Component\Ebics\Version::v24(), $PARTNER_ID, $USER_ID);
+$keyring             = new \Cube43\Component\Ebics\KeyRing('myPassword');
+$x509OptionGenerator = new \Cube43\Component\Ebics\X509\DefaultX509OptionGenerator();
 ```
 
 **Note** : $HOST_ID, $HOST_URL, $PARTNER_ID, $USER_ID and version are decided between you and your bank.
@@ -62,7 +62,7 @@ After making this request, you have to save the keyring with the new generate ce
 ```php
 <?php
 
-$keyring = (new \Fezfez\Ebics\Command\INICommand())->__invoke($bankInfo, $keyring, $x509OptionGenerator);
+$keyring = (new \Cube43\Component\Ebics\Command\INICommand())->__invoke($bankInfo, $keyring, $x509OptionGenerator);
 // save kering
 
 ```
@@ -75,7 +75,7 @@ After making this request, you have to save the keyring with the new generate ce
 ```php
 <?php
 
-$keyring = (new \Fezfez\Ebics\Command\HIACommand())->__invoke($bankInfo, $keyring, $x509OptionGenerator);
+$keyring = (new \Cube43\Component\Ebics\Command\HIACommand())->__invoke($bankInfo, $keyring, $x509OptionGenerator);
 // save kering 
 
 ```
@@ -88,7 +88,7 @@ After making this request, you have to save the keyring with the new retrieved c
 ```php
 <?php
 
-$keyring = (new \Fezfez\Ebics\Command\HPBCommand())->__invoke($bankInfo, $keyring);
+$keyring = (new \Cube43\Component\Ebics\Command\HPBCommand())->__invoke($bankInfo, $keyring);
 // save kering
 
 ```
@@ -100,7 +100,7 @@ Once INI, HIA and HPB have been run your good to use ebics protocol.
 ```php
 <?php
 
-$keyring = new \Fezfez\Ebics\KeyRing('myPassword');
+$keyring = new \Cube43\Component\Ebics\KeyRing('myPassword');
 $keyringAsArray = $keyring->jsonSerialize(); 
 $keyringAsJson  = json_encode($keyring); 
 
@@ -113,7 +113,7 @@ $keyringAsJson  = json_encode($keyring);
 ```php
 <?php
 
-$keyring = \Fezfez\Ebics\KeyRing::fromArray($keyringAsArray, 'myPassword');
+$keyring = \Cube43\Component\Ebics\KeyRing::fromArray($keyringAsArray, 'myPassword');
 
 ```
 
@@ -127,13 +127,13 @@ This website provide an ebics server testing environnement : https://software.el
 ```php
 <?php
 
-use Fezfez\Ebics\BankInfo;
-use Fezfez\Ebics\KeyRing;
-use Fezfez\Ebics\Command\INICommand;
-use Fezfez\Ebics\Command\HIACommand;
-use Fezfez\Ebics\Command\HPBCommand;
-use Fezfez\Ebics\X509\DefaultX509OptionGenerator;
-use Fezfez\Ebics\Version;
+use Cube43\Component\Ebics\BankInfo;
+use Cube43\Component\Ebics\KeyRing;
+use Cube43\Component\Ebics\Command\INICommand;
+use Cube43\Component\Ebics\Command\HIACommand;
+use Cube43\Component\Ebics\Command\HPBCommand;
+use Cube43\Component\Ebics\X509\DefaultX509OptionGenerator;
+use Cube43\Component\Ebics\Version;
 
 require 'vendor/autoload';
 

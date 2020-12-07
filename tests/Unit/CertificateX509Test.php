@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Fezfez\Ebics\Tests\Unit;
+namespace Cube43\Component\Ebics\Tests\Unit;
 
-use Fezfez\Ebics\CertificateX509;
-use Fezfez\Ebics\Models\Certificate;
-use Fezfez\Ebics\Tests\E2e\FakeCrypt;
+use Cube43\Component\Ebics\CertificateX509;
+use Cube43\Component\Ebics\Models\Certificate;
+use Cube43\Component\Ebics\Tests\E2e\FakeCrypt;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 

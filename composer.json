@@ -1,19 +1,18 @@
 {
-  "name": "fezfez/ebics",
+  "name": "cube43/ebics-client",
   "type": "library",
   "description": "PHP library to communicate with bank through EBICS protocol.",
   "keywords": [
-    "ebics",
-    "PHP",
-    "client",
-    "symfony",
-    "openssl",
-    "rsa",
-    "x509"
+    "ebics"
   ],
   "authors": [
     {
-      "name": "Stéphane Demonchaux"
+      "name": "Stéphane Demonchaux",
+      "email": "demonchaux.stephane@gmail.com"
+    },
+    {
+      "name": "Sébastien Barré",
+      "email": "contact@cube43.fr"
     }
   ],
   "license": "MIT",
@@ -40,12 +39,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Fezfez\\Ebics\\": "src"
+      "Cube43\\Component\\Ebics\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Fezfez\\Ebics\\Tests\\": "tests"
+      "Cube43\\Component\\Ebics\\Tests\\": "tests"
     }
   },
   "suggest": {

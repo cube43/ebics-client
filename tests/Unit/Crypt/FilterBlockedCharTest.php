@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Fezfez\Ebics\Tests\Unit\Crypt;
+namespace Cube43\Component\Ebics\Tests\Unit\Crypt;
 
-use Fezfez\Ebics\Crypt\AddRsaSha256PrefixAndReturnAsBinary;
+use Cube43\Component\Ebics\Crypt\AddRsaSha256PrefixAndReturnAsBinary;
 use PHPUnit\Framework\TestCase;
 
 use function bin2hex;
