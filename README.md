@@ -1,9 +1,9 @@
-# ebics
+# cube43/ebics-client
 
 PHP library to communicate with bank through EBICS protocol.
 
 ## License
-fezfez/ebics is licensed under the MIT License, see the LICENSE file for details
+cube43/ebics-client is licensed under the MIT License, see the LICENSE file for details
 
 ## Note
 This library is a refactoring of andrew-svirin/ebics-client-php to allow multiple protocol version + unit test and E2e test
@@ -26,7 +26,7 @@ This library work only with X509 certified communication
 ## Installation
 
 ```bash
-composer require fezfez/ebics
+composer require cube43/ebics-client
 ```
 
 
@@ -41,8 +41,6 @@ You will need to have this informations from your Bank :
 - protocol version
 
 ```php
-<?php
-
 $bankInfo            = new \Cube43\Component\Ebics\BankInfo($HOST_ID, $HOST_URL, \Cube43\Component\Ebics\Version::v24(), $PARTNER_ID, $USER_ID);
 $keyring             = new \Cube43\Component\Ebics\KeyRing('myPassword');
 $x509OptionGenerator = new \Cube43\Component\Ebics\X509\DefaultX509OptionGenerator();
@@ -60,11 +58,8 @@ INI command will generate a certificat of type A and send it to ebics server.
 After making this request, you have to save the keyring with the new generate certificat because it will be used in call after.
 
 ```php
-<?php
-
 $keyring = (new \Cube43\Component\Ebics\Command\INICommand())->__invoke($bankInfo, $keyring, $x509OptionGenerator);
-// save kering
-
+// save keyring
 ```
 
 ## HIA command
@@ -73,11 +68,8 @@ HIA command will generate a certificat of type e and x and then send it to ebics
 After making this request, you have to save the keyring with the new generate certificat because it will be used in call after.
 
 ```php
-<?php
-
 $keyring = (new \Cube43\Component\Ebics\Command\HIACommand())->__invoke($bankInfo, $keyring, $x509OptionGenerator);
-// save kering 
-
+// save keyring
 ```
 
 ## HPB command
@@ -86,14 +78,26 @@ HPB command will retrieve certificat of type e and x from the ebics server.
 After making this request, you have to save the keyring with the new retrieved certificat because it will be used in call after.
 
 ```php
-<?php
-
 $keyring = (new \Cube43\Component\Ebics\Command\HPBCommand())->__invoke($bankInfo, $keyring);
-// save kering
-
+// save keyring
 ```
 
 Once INI, HIA and HPB have been run your good to use ebics protocol.
+
+## FDL command
+
+```php
+<?php
+
+$keyring = (new \Cube43\Component\Ebics\Command\FDLCommand())->__invoke($bankInfo, $keyring, new FDLParams($fdlFromBank, 'FR', new DateTimeImmutable(), new DateTimeImmutable()), function (string $data = null): void {
+    if ($data === null) {
+        var_dump('no file');
+    } else {
+        var_dump('file : ', $file);
+    }
+});
+
+```
 
 ## Saving keyring
 
@@ -111,8 +115,6 @@ $keyringAsJson  = json_encode($keyring);
 ## Wakeup keyring
 
 ```php
-<?php
-
 $keyring = \Cube43\Component\Ebics\KeyRing::fromArray($keyringAsArray, 'myPassword');
 
 ```
@@ -122,7 +124,7 @@ $keyring = \Cube43\Component\Ebics\KeyRing::fromArray($keyringAsArray, 'myPasswo
 This website provide an ebics server testing environnement : https://software.elcimai.com/efs/accueil-qualif.jsp 
 
 
-# Full sample to generate certificat and get letter
+# Full sample to generate certificate and get letter
 
 ```php
 <?php
