@@ -1,4 +1,4 @@
-name: PHP Composer
+name: Psalm
 
 on:
   push:
@@ -31,7 +31,6 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           extensions: intl openssl zlib json dom
-          coverage: pcov
 
       - name: Validate composer.json
         run: composer validate
@@ -43,18 +42,6 @@ jobs:
       - name: "Install highest dependencies"
         if: ${{ matrix.dependencies == 'highest' }}
         run: "composer update --no-interaction --no-progress --no-suggest"
-
-      - name: Run test suite
-        run: ./vendor/bin/phpunit --coverage-clover coverage.clover
-
-      - name: Run static analyse
-        run: ./vendor/bin/phpstan analyse
-
-      - name: Run phpcs
-        run: ./vendor/bin/phpcs
-
-      - name: Run infection
-        run: ./vendor/bin/infection
 
       - name: Run psalm
         run: ./vendor/bin/psalm

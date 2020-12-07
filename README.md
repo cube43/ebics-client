@@ -2,7 +2,11 @@
 
 PHP library to communicate with bank through EBICS protocol.
 
-![Tests](https://github.com/cube43/ebics-client/workflows/PHP%20Composer/badge.svg)
+![Infection](https://github.com/cube43/ebics-client/workflows/Infection/badge.svg)
+![Phpcs](https://github.com/cube43/ebics-client/workflows/PHPcs/badge.svg)
+![Phpstan](https://github.com/cube43/ebics-client/workflows/PHPStan/badge.svg)
+![Phpunit](https://github.com/cube43/ebics-client/workflows/PHPUnit/badge.svg)
+![Psalm](https://github.com/cube43/ebics-client/workflows/Psalm/badge.svg)
 [![Latest Stable Version](https://poser.pugx.org/cube43/ebics-client/v/stable)](https://packagist.org/packages/cube43/ebics-client)
 [![Total Downloads](https://poser.pugx.org/cube43/ebics-client/downloads)](https://packagist.org/packages/cube43/ebics-client)
 [![License](https://poser.pugx.org/cube43/ebics-client/license)](https://packagist.org/packages/cube43/ebics-client)
