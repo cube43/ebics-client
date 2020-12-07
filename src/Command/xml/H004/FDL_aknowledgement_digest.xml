@@ -1,0 +1,1 @@
+<header xmlns="urn:org:ebics:H004" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" authenticate="true"><static><HostID>{{HostID}}</HostID><TransactionID>{{TransactionID}}</TransactionID></static><mutable><TransactionPhase>Receipt</TransactionPhase></mutable></header>

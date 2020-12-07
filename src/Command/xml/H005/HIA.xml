@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<ebicsUnsecuredRequest xmlns="urn:org:ebics:H005" Revision="1" Version="H005">
+    <header authenticate="true">
+        <static>
+            <HostID>{{HostID}}</HostID>
+            <PartnerID>{{PartnerID}}</PartnerID>
+            <UserID>{{UserID}}</UserID>
+            <Product Language="fr">Cube43 Ebics client PHP</Product>
+            <OrderDetails>
+                <AdminOrderType>HIA</AdminOrderType>
+            </OrderDetails>
+            <SecurityMedium>0000</SecurityMedium>
+        </static>
+        <mutable/>
+    </header>
+    <body>
+        <DataTransfer>
+            <OrderData>{{OrderData}}</OrderData>
+        </DataTransfer>
+    </body>
+</ebicsUnsecuredRequest>

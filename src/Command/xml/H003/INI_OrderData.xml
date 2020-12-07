@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<SignaturePubKeyOrderData
+        xmlns="http://www.ebics.org/S001"
+        xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+    <SignaturePubKeyInfo>
+        <ds:X509Data>
+            <ds:X509IssuerSerial>
+                <ds:X509IssuerName>{{X509IssuerName}}</ds:X509IssuerName>
+                <ds:X509SerialNumber>{{X509SerialNumber}}</ds:X509SerialNumber>
+            </ds:X509IssuerSerial>
+            <ds:X509Certificate>{{X509Certificate}}</ds:X509Certificate>
+        </ds:X509Data>
+        <PubKeyValue>
+            <ds:RSAKeyValue>
+                <ds:Modulus>{{Modulus}}</ds:Modulus>
+                <ds:Exponent>{{Exponent}}</ds:Exponent>
+            </ds:RSAKeyValue>
+            <TimeStamp>{{TimeStamp}}</TimeStamp>
+        </PubKeyValue>
+        <SignatureVersion>A006</SignatureVersion>
+    </SignaturePubKeyInfo>
+    <PartnerID>{{PartnerID}}</PartnerID>
+    <UserID>{{UserID}}</UserID>
+</SignaturePubKeyOrderData>

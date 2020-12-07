@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<HIARequestOrderData xmlns="http://www.ebics.org/H003" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+    <AuthenticationPubKeyInfo>
+        <ds:X509Data>
+            <ds:X509IssuerSerial>
+                <ds:X509IssuerName>{{CertUserX_X509IssuerName}}</ds:X509IssuerName>
+                <ds:X509SerialNumber>{{CertUserX_X509SerialNumber}}</ds:X509SerialNumber>
+            </ds:X509IssuerSerial>
+            <ds:X509Certificate>{{CertUserX_X509Certificate}}</ds:X509Certificate>
+        </ds:X509Data>
+        <PubKeyValue>
+            <ds:RSAKeyValue>
+                <ds:Modulus>{{CertUserX_Modulus}}</ds:Modulus>
+                <ds:Exponent>{{CertUserX_Exponent}}</ds:Exponent>
+            </ds:RSAKeyValue>
+            <TimeStamp>{{TimeStamp}}</TimeStamp>
+        </PubKeyValue>
+        <AuthenticationVersion>X002</AuthenticationVersion>
+    </AuthenticationPubKeyInfo>
+    <EncryptionPubKeyInfo>
+        <ds:X509Data>
+            <ds:X509IssuerSerial>
+                <ds:X509IssuerName>{{CertUserE_X509IssuerName}}</ds:X509IssuerName>
+                <ds:X509SerialNumber>{{CertUserE_X509SerialNumber}}</ds:X509SerialNumber>
+            </ds:X509IssuerSerial>
+            <ds:X509Certificate>{{CertUserE_X509Certificate}}</ds:X509Certificate>
+        </ds:X509Data>
+        <PubKeyValue>
+            <ds:RSAKeyValue>
+                <ds:Modulus>{{CertUserE_Modulus}}</ds:Modulus>
+                <ds:Exponent>{{CertUserE_Exponent}}</ds:Exponent>
+            </ds:RSAKeyValue>
+            <TimeStamp>{{TimeStamp}}</TimeStamp>
+        </PubKeyValue>
+        <EncryptionVersion>E002</EncryptionVersion>
+    </EncryptionPubKeyInfo>
+    <PartnerID>{{PartnerID}}</PartnerID>
+    <UserID>{{UserID}}</UserID>
+</HIARequestOrderData>
