@@ -2,6 +2,11 @@
 
 PHP library to communicate with bank through EBICS protocol.
 
+![Tests](https://github.com/cube43/ebics-client/workflows/PHP%20Composer/badge.svg)
+[![Latest Stable Version](https://poser.pugx.org/cube43/ebics-client/v/stable)](https://packagist.org/packages/cube43/ebics-client)
+[![Total Downloads](https://poser.pugx.org/cube43/ebics-client/downloads)](https://packagist.org/packages/cube43/ebics-client)
+[![License](https://poser.pugx.org/cube43/ebics-client/license)](https://packagist.org/packages/cube43/ebics-client)
+
 ## License
 cube43/ebics-client is licensed under the MIT License, see the LICENSE file for details
 
