@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics\Tests\E2e\Command;
 
-use DateTimeImmutable;
 use Cube43\Component\Ebics\BankCertificate;
 use Cube43\Component\Ebics\BankInfo;
 use Cube43\Component\Ebics\CertificateX509;
@@ -17,6 +16,7 @@ use Cube43\Component\Ebics\PrivateKey;
 use Cube43\Component\Ebics\Tests\E2e\FakeCrypt;
 use Cube43\Component\Ebics\UserCertificate;
 use Cube43\Component\Ebics\Version;
+use DateTimeImmutable;
 use Symfony\Component\HttpClient\MockHttpClient;
 
 class FDLCommandTest extends E2eTestBase

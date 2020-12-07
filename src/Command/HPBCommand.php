@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics\Command;
 
-use DateTime;
 use Cube43\Component\Ebics\BankCertificate;
 use Cube43\Component\Ebics\BankInfo;
 use Cube43\Component\Ebics\CertificateX509;
@@ -16,6 +15,7 @@ use Cube43\Component\Ebics\EbicsServerCaller;
 use Cube43\Component\Ebics\KeyRing;
 use Cube43\Component\Ebics\OrderDataEncrypted;
 use Cube43\Component\Ebics\RenderXml;
+use DateTime;
 use phpseclib\Crypt\Random;
 use phpseclib\Crypt\RSA;
 use phpseclib\Math\BigInteger;

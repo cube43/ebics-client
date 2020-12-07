@@ -1,12 +1,12 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Method Fezfez\\\\Ebics\\\\X509\\\\DefaultX509OptionGenerator\\:\\:getStart\\(\\) should return DateTimeImmutable but returns DateTimeImmutable\\|false\\.$#"
+			message: "#^Method Cube43\\\\Component\\\\Ebics\\\\X509\\\\DefaultX509OptionGenerator\\:\\:getStart\\(\\) should return DateTimeImmutable but returns DateTimeImmutable\\|false\\.$#"
 			count: 1
 			path: src/X509/DefaultX509OptionGenerator.php
 
 		-
-			message: "#^Method Fezfez\\\\Ebics\\\\X509\\\\DefaultX509OptionGenerator\\:\\:getEnd\\(\\) should return DateTimeImmutable but returns DateTimeImmutable\\|false\\.$#"
+			message: "#^Method Cube43\\\\Component\\\\Ebics\\\\X509\\\\DefaultX509OptionGenerator\\:\\:getEnd\\(\\) should return DateTimeImmutable but returns DateTimeImmutable\\|false\\.$#"
 			count: 1
 			path: src/X509/DefaultX509OptionGenerator.php
 

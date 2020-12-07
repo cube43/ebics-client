@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics\Tests\E2e\Command;
 
-use DOMDocument;
-use DOMNode;
 use Cube43\Component\Ebics\Crypt\AddRsaSha256PrefixAndReturnAsBinary;
 use Cube43\Component\Ebics\Tests\E2e\FakeCrypt;
 use Cube43\Component\Ebics\Version;
+use DOMDocument;
+use DOMNode;
 use phpseclib\Crypt\RSA;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;

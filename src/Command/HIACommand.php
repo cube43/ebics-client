@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics\Command;
 
-use DateTime;
 use Cube43\Component\Ebics\BankInfo;
 use Cube43\Component\Ebics\CertificatType;
 use Cube43\Component\Ebics\Crypt\GenerateCertificat;
@@ -13,6 +12,7 @@ use Cube43\Component\Ebics\KeyRing;
 use Cube43\Component\Ebics\RenderXml;
 use Cube43\Component\Ebics\Version;
 use Cube43\Component\Ebics\X509\X509CertificatOptionsGenerator;
+use DateTime;
 use RuntimeException;
 
 use function base64_encode;

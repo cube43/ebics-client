@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics\Tests\Unit;
 
-use DateTimeImmutable;
 use Cube43\Component\Ebics\FDLParams;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
