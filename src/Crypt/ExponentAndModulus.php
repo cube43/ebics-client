@@ -8,15 +8,17 @@ use RuntimeException;
 
 use function bin2hex;
 use function is_array;
+use function is_string;
 use function openssl_pkey_get_details;
 use function Safe\openssl_pkey_get_public;
+use function Safe\sprintf;
 
 /**
  * @internal
  */
 class ExponentAndModulus
 {
-    /** @var array<string, string>|null */
+    /** @var array<array-key, mixed>|null */
     private ?array $key;
     private string $value;
 
@@ -28,17 +30,19 @@ class ExponentAndModulus
 
     private function loadKey(string $value): string
     {
-        if ($this->key !== null) {
-            return $this->key[$value];
+        if ($this->key === null) {
+            $loadKey = openssl_pkey_get_details(openssl_pkey_get_public($this->value));
+
+            if (! is_array($loadKey) || ! is_array($loadKey['rsa'])) {
+                throw new RuntimeException('cant load key');
+            }
+
+            $this->key = $loadKey['rsa'];
         }
 
-        $loadKey = openssl_pkey_get_details(openssl_pkey_get_public($this->value));
-
-        if (! is_array($loadKey)) {
-            throw new RuntimeException('cant load key');
+        if (! is_string($this->key[$value])) {
+            throw new RuntimeException(sprintf('unable to get key "%s"', $value));
         }
-
-        $this->key = $loadKey['rsa'];
 
         return $this->key[$value];
     }

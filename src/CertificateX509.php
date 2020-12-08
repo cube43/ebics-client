@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Cube43\Component\Ebics;
 
 use phpseclib\File\X509;
+use phpseclib\Math\BigInteger;
 use RuntimeException;
 
 use function array_map;
 use function array_shift;
+use function assert;
 use function hash;
 use function implode;
 use function is_array;
@@ -72,7 +74,9 @@ class CertificateX509
     {
         $certificateSerialNumber = $this->getX509()->currentCert['tbsCertificate']['serialNumber'];
 
-        return $certificateSerialNumber->toString();
+        assert($certificateSerialNumber instanceof BigInteger);
+
+        return (string) $certificateSerialNumber;
     }
 
     /**
@@ -86,6 +90,6 @@ class CertificateX509
             throw new RuntimeException('unable to get id-at-commonName from certificate');
         }
 
-        return array_shift($certificateInsurerName);
+        return (string) array_shift($certificateInsurerName);
     }
 }

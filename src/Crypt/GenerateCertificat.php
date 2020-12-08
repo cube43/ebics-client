@@ -16,6 +16,7 @@ use phpseclib\Crypt\RSA;
 use RuntimeException;
 
 use function array_key_exists;
+use function is_array;
 use function sprintf;
 
 /**
@@ -43,7 +44,7 @@ final class GenerateCertificat
 
         $keys = $rsa->createKey(2048);
 
-        if (empty($keys)) {
+        if (! is_array($keys)) {
             throw new RuntimeException(sprintf('key "publickey" does not exist for certificat type "%s"', $type->value()));
         }
 
