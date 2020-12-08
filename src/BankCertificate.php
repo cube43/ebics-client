@@ -61,6 +61,12 @@ class BankCertificate implements JsonSerializable
 
     /**
      * @return array<string, string>
+     *
+     * @psalm-return array{
+     *  type: string,
+     *  public: string,
+     *  content: string
+     * }
      */
     public function jsonSerialize(): array
     {

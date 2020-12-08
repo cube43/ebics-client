@@ -8,6 +8,8 @@ use RuntimeException;
 
 /**
  * @internal
+ *
+ * @psalm-immutable
  */
 class PrivateKey
 {

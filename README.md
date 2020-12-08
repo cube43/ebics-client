@@ -142,33 +142,32 @@ use Cube43\Component\Ebics\BankInfo;
 use Cube43\Component\Ebics\KeyRing;
 use Cube43\Component\Ebics\Command\INICommand;
 use Cube43\Component\Ebics\Command\HIACommand;
-use Cube43\Component\Ebics\Command\HPBCommand;
 use Cube43\Component\Ebics\X509\DefaultX509OptionGenerator;
 use Cube43\Component\Ebics\Version;
 
-require 'vendor/autoload';
+require 'vendor/autoload.php';
 
-$bank                = new BankInfo('EBIXQUAL', 'https://server-ebics.webank.fr:28103/WbkPortalFileTransfert/EbicsProtocol', Version::v24(), $partnerId, $userId);
-$keyRing             = KeyRing::fromFile('keyring.json', 'myPassword');
+$rsaPassword = '';
+$bank        = new BankInfo('EBIXQUAL', 'https://server-ebics.webank.fr:28103/WbkPortalFileTransfert/EbicsProtocol', Version::v24(), 'MYPARTID', 'MYUSERID');
+$keyRing     = KeyRing::fromFile('keyring.json', $rsaPassword);
+
 $x509OptionGenerator = new DefaultX509OptionGenerator();
 
 
 if (!$keyRing->hasUserCertificatA()) {
-    $keyring = (new INICommand())->__invoke($bank, $keyRing, $x509OptionGenerator);
-    file_put_contents('keyring.json', json_encode($keyring));
+    $keyRing = (new INICommand())->__invoke($bank, $keyRing, $x509OptionGenerator);
+    file_put_contents('keyring.json', json_encode($keyRing));
 }
 
 if (!$keyRing->hasUserCertificateEAndX()) {
-    $keyring = (new HIACommand())->__invoke($bank, KeyRing::fromFile('keyring.json', 'myPassword'), $x509OptionGenerator);
-    file_put_contents('keyring.json', json_encode($keyring));
+    $keyRing = (new HIACommand())->__invoke($bank, KeyRing::fromFile('keyring.json', $rsaPassword), $x509OptionGenerator);
+    file_put_contents('keyring.json', json_encode($keyRing));
 }
 
-if (!$keyRing->hasBankCertificate()) {
-    $keyring = (new HPBCommand())->__invoke($bank, KeyRing::fromFile('keyring.json', 'myPassword'));
-    file_put_contents('keyring.json', json_encode($keyring));
+if (!$keyRing->hasUserCertificatA() || !$keyRing->hasUserCertificateEAndX()) {
+    echo 'Cant generate letter';
+    return;
 }
-
-
 echo '
 <table class="table table-borderless">
     <tbody>
@@ -181,26 +180,45 @@ echo '
             <td>'.$bank->getPartnerId().'</td>
         </tr>
         <tr>
-            <td>Hash '.$keyring->getUserCertificateA()->getCertificatType()->toString().' ('.$keyring->getUserCertificateA()->getCertificatType()->getHash().')</td>
+            <td>Hash '.$keyRing->getUserCertificateA()->getCertificatType()->toString().' (SHA-256)</td>
             <td>
-                <div class="digest">'.nl2br($keyring->getUserCertificateA()->getCertificatX509()->digest()).'</div>
+                <div class="digest">'.nl2br($keyRing->getUserCertificateA()->getCertificatX509()->hash()).'</div>
             </td>
         </tr>
         <tr>
-            <td>Hash '.$keyring->getUserCertificateE()->getCertificatType()->toString().' ('.$keyring->getUserCertificateE()->getCertificatType()->getHash().')</td>
+            <td>Fingerprint '.$keyRing->getUserCertificateA()->getCertificatType()->toString().'  (SHA-256)</td>
             <td>
-                <div class="digest">'.nl2br($keyring->getUserCertificateE()->getCertificatX509()->digest()).'</div>
+                <div class="digest">'.nl2br($keyRing->getUserCertificateA()->getCertificatX509()->fingerprint()).'</div>
             </td>
         </tr>
         <tr>
-            <td>Hash '.$keyring->getUserCertificateX()->getCertificatType()->toString().' ('.$keyring->getUserCertificateX()->getCertificatType()->getHash().')</td>
+            <td>Hash '.$keyRing->getUserCertificateE()->getCertificatType()->toString().' (SHA-256)</td>
             <td>
-                <div class="digest">'.nl2br($keyring->getUserCertificateX()->getCertificatX509()->digest()).'</div>
+                <div class="digest">'.nl2br($keyRing->getUserCertificateE()->getCertificatX509()->hash()).'</div>
+            </td>
+        </tr>
+        <tr>
+            <td>Fingerprint '.$keyRing->getUserCertificateE()->getCertificatType()->toString().'  (SHA-256)</td>
+            <td>
+                <div class="digest">'.nl2br($keyRing->getUserCertificateE()->getCertificatX509()->fingerprint()).'</div>
+            </td>
+        </tr>
+        <tr>
+            <td>Hash '.$keyRing->getUserCertificateX()->getCertificatType()->toString().' (SHA-256)</td>
+            <td>
+                <div class="digest">'.nl2br($keyRing->getUserCertificateX()->getCertificatX509()->hash()).'</div>
+            </td>
+        </tr>
+        <tr>
+            <td>Fingerprint '.$keyRing->getUserCertificateX()->getCertificatType()->toString().'  (SHA-256)</td>
+            <td>
+                <div class="digest">'.nl2br($keyRing->getUserCertificateX()->getCertificatX509()->fingerprint()).'</div>
             </td>
         </tr>
     </tbody>
 </table>
 ';
+
 ```
 
 # Working with Doctrine2 instead of file

@@ -7,6 +7,7 @@ namespace Cube43\Component\Ebics;
 use DateTimeImmutable;
 use RuntimeException;
 
+/** @psalm-immutable */
 class FDLParams
 {
     private string $fileFormat;

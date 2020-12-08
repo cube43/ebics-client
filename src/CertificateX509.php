@@ -39,24 +39,20 @@ class CertificateX509
         return $this->value;
     }
 
-    public function fingerprint(): string
+    public function fingerprint(string $hashAlgorithm = 'sha256'): string
     {
-        $digest  = strtoupper(openssl_x509_fingerprint($this->value, 'sha256'));
-        $digests = str_split($digest, 16);
-        $digests = array_map(static function ($digest) {
-            return wordwrap($digest, 2, ' ', true);
-        }, $digests);
-
-        return implode("\n", $digests);
+        return $this->cleanDigest(openssl_x509_fingerprint($this->value, $hashAlgorithm));
     }
 
-    public function digest(): string
+    public function hash(string $hashAlgorithm = 'sha256'): string
     {
-        $digest  = strtoupper(hash('sha256', $this->value, false));
-        $digests = str_split($digest, 16);
-        $digests = array_map(static function ($digest) {
-            return wordwrap($digest, 2, ' ', true);
-        }, $digests);
+        return $this->cleanDigest(hash($hashAlgorithm, $this->value, false));
+    }
+
+    private function cleanDigest(string $digest): string
+    {
+        $digests = str_split(strtoupper($digest), 16);
+        $digests = array_map(static fn ($digest) => wordwrap($digest, 2, ' ', true), $digests);
 
         return implode("\n", $digests);
     }

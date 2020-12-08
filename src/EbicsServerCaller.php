@@ -8,6 +8,9 @@ use Exception;
 use Symfony\Component\HttpClient\HttpClient as SymfonyClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+/**
+ * @internal
+ */
 class EbicsServerCaller
 {
     private HttpClientInterface $httpClient;

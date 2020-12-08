@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics;
 
+/** @psalm-immutable */
 class Version
 {
     private const V24 = 'H003';

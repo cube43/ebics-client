@@ -6,6 +6,7 @@ namespace Cube43\Component\Ebics\X509;
 
 use DateTimeImmutable;
 
+/** @psalm-immutable */
 class DefaultX509OptionGenerator implements X509CertificatOptionsGenerator
 {
     /** @psalm-pure */

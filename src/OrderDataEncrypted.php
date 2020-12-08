@@ -6,6 +6,8 @@ namespace Cube43\Component\Ebics;
 
 /**
  * @internal
+ *
+ * @psalm-immutable
  */
 class OrderDataEncrypted
 {

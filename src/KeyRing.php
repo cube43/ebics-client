@@ -12,6 +12,7 @@ use function is_file;
 use function Safe\file_get_contents;
 use function Safe\json_decode;
 
+/** @psalm-immutable */
 class KeyRing implements JsonSerializable
 {
     private ?UserCertificate $userCertificateA;
@@ -199,16 +200,24 @@ class KeyRing implements JsonSerializable
     }
 
     /**
-     * @return array<string, (array<string, string>|null)>
+     * @return (BankCertificate|UserCertificate|null)[]
+     *
+     * @psalm-return array{
+     *  bankCertificateE: BankCertificate|null,
+     *  bankCertificateX: BankCertificate|null,
+     *  userCertificateA: UserCertificate|null,
+     *  userCertificateE: UserCertificate|null,
+     *  userCertificateX: UserCertificate|null
+     * }
      */
     public function jsonSerialize(): array
     {
         return [
-            'bankCertificateE' => $this->bankCertificateE ? $this->bankCertificateE->jsonSerialize() : null,
-            'bankCertificateX' => $this->bankCertificateX ? $this->bankCertificateX->jsonSerialize() : null,
-            'userCertificateA' => $this->userCertificateA ? $this->userCertificateA->jsonSerialize() : null,
-            'userCertificateE' => $this->userCertificateE ? $this->userCertificateE->jsonSerialize() : null,
-            'userCertificateX' => $this->userCertificateX ? $this->userCertificateX->jsonSerialize() : null,
+            'bankCertificateE' => $this->bankCertificateE,
+            'bankCertificateX' => $this->bankCertificateX,
+            'userCertificateA' => $this->userCertificateA,
+            'userCertificateE' => $this->userCertificateE,
+            'userCertificateX' => $this->userCertificateX,
         ];
     }
 }

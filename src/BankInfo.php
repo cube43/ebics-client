@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics;
 
+/** @psalm-immutable */
 class BankInfo
 {
     private string $hostId;
