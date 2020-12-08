@@ -6,13 +6,14 @@ namespace Cube43\Component\Ebics\Tests\E2e\Command;
 
 use Cube43\Component\Ebics\BankCertificate;
 use Cube43\Component\Ebics\BankInfo;
+use Cube43\Component\Ebics\CertificateType;
 use Cube43\Component\Ebics\CertificateX509;
-use Cube43\Component\Ebics\CertificatType;
 use Cube43\Component\Ebics\Command\FDLCommand;
 use Cube43\Component\Ebics\EbicsServerCaller;
 use Cube43\Component\Ebics\FDLParams;
 use Cube43\Component\Ebics\KeyRing;
 use Cube43\Component\Ebics\PrivateKey;
+use Cube43\Component\Ebics\PublicKey;
 use Cube43\Component\Ebics\Tests\E2e\FakeCrypt;
 use Cube43\Component\Ebics\UserCertificate;
 use Cube43\Component\Ebics\Version;
@@ -106,27 +107,27 @@ class FDLCommandTest extends E2eTestBase
 
         $keyRing = $keyRing->setUserCertificateEAndX(
             new UserCertificate(
-                CertificatType::e(),
-                FakeCrypt::RSA_PUBLIC_KEY,
-                new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY),
+                CertificateType::e(),
+                new PublicKey(FakeCrypt::RSA_PUBLIC_KEY, $keyRing->getRsaPassword()),
+                new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY, $keyRing->getRsaPassword()),
                 new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
             ),
             new UserCertificate(
-                CertificatType::x(),
-                FakeCrypt::RSA_PUBLIC_KEY,
-                new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY),
+                CertificateType::x(),
+                new PublicKey(FakeCrypt::RSA_PUBLIC_KEY, $keyRing->getRsaPassword()),
+                new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY, $keyRing->getRsaPassword()),
                 new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
             )
         );
         $keyRing = $keyRing->setBankCertificate(
             new BankCertificate(
-                CertificatType::x(),
-                FakeCrypt::RSA_PUBLIC_KEY,
+                CertificateType::x(),
+                new PublicKey(FakeCrypt::RSA_PUBLIC_KEY, $keyRing->getRsaPassword()),
                 new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
             ),
             new BankCertificate(
-                CertificatType::e(),
-                FakeCrypt::RSA_PUBLIC_KEY,
+                CertificateType::e(),
+                new PublicKey(FakeCrypt::RSA_PUBLIC_KEY, $keyRing->getRsaPassword()),
                 new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
             ),
         );
@@ -212,27 +213,27 @@ class FDLCommandTest extends E2eTestBase
 
         $keyRing = $keyRing->setUserCertificateEAndX(
             new UserCertificate(
-                CertificatType::e(),
-                FakeCrypt::RSA_PUBLIC_KEY,
-                new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY),
+                CertificateType::e(),
+                new PublicKey(FakeCrypt::RSA_PUBLIC_KEY, $keyRing->getRsaPassword()),
+                new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY, $keyRing->getRsaPassword()),
                 new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
             ),
             new UserCertificate(
-                CertificatType::x(),
-                FakeCrypt::RSA_PUBLIC_KEY,
-                new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY),
+                CertificateType::x(),
+                new PublicKey(FakeCrypt::RSA_PUBLIC_KEY, $keyRing->getRsaPassword()),
+                new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY, $keyRing->getRsaPassword()),
                 new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
             )
         );
         $keyRing = $keyRing->setBankCertificate(
             new BankCertificate(
-                CertificatType::x(),
-                FakeCrypt::RSA_PUBLIC_KEY,
+                CertificateType::x(),
+                new PublicKey(FakeCrypt::RSA_PUBLIC_KEY, $keyRing->getRsaPassword()),
                 new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
             ),
             new BankCertificate(
-                CertificatType::e(),
-                FakeCrypt::RSA_PUBLIC_KEY,
+                CertificateType::e(),
+                new PublicKey(FakeCrypt::RSA_PUBLIC_KEY, $keyRing->getRsaPassword()),
                 new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
             ),
         );

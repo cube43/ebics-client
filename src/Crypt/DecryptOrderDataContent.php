@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics\Crypt;
 
-use Cube43\Component\Ebics\KeyRing;
+use Cube43\Component\Ebics\Key;
 use Cube43\Component\Ebics\OrderDataEncrypted;
 use phpseclib\Crypt\AES;
 use phpseclib\Crypt\RSA;
@@ -16,14 +16,16 @@ use const OPENSSL_ZERO_PADDING;
 
 /**
  * @internal
+ *
+ * @psalm-pure
  */
-class DecryptOrderDataContent
+final class DecryptOrderDataContent
 {
-    public function __invoke(KeyRing $keyRing, OrderDataEncrypted $orderData): string
+    public function __invoke(Key $key, OrderDataEncrypted $orderData): string
     {
         $rsa = new RSA();
-        $rsa->setPassword($keyRing->getRsaPassword());
-        $rsa->loadKey($keyRing->getUserCertificateE()->getPrivateKey()->value());
+        $rsa->setPassword($key->password());
+        $rsa->loadKey($key->value());
         $rsa->setEncryptionMode(RSA::ENCRYPTION_PKCS1);
 
         $transactionKeyDecrypted = $rsa->decrypt($orderData->getTransactionKey());

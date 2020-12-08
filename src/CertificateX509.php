@@ -19,7 +19,7 @@ use function wordwrap;
 
 class CertificateX509
 {
-    private X509 $x509;
+    private ?X509 $x509;
     private string $value;
 
     public function __construct(string $value)
@@ -28,9 +28,7 @@ class CertificateX509
             throw new RuntimeException('x509 key is empty');
         }
 
-        $this->x509 = new X509();
-        $this->x509->loadX509($value);
-
+        $this->x509  = null;
         $this->value = $value;
     }
 
@@ -57,12 +55,22 @@ class CertificateX509
         return implode("\n", $digests);
     }
 
+    private function getX509(): X509
+    {
+        if ($this->x509 === null) {
+            $this->x509 = new X509();
+            $this->x509->loadX509($this->value);
+        }
+
+        return $this->x509;
+    }
+
     /**
      * @internal
      */
     public function getSerialNumber(): string
     {
-        $certificateSerialNumber = $this->x509->currentCert['tbsCertificate']['serialNumber'];
+        $certificateSerialNumber = $this->getX509()->currentCert['tbsCertificate']['serialNumber'];
 
         return $certificateSerialNumber->toString();
     }
@@ -72,7 +80,7 @@ class CertificateX509
      */
     public function getInsurerName(): string
     {
-        $certificateInsurerName = $this->x509->getIssuerDNProp('id-at-commonName');
+        $certificateInsurerName = $this->getX509()->getIssuerDNProp('id-at-commonName');
 
         if (! is_array($certificateInsurerName) || empty($certificateInsurerName)) {
             throw new RuntimeException('unable to get id-at-commonName from certificate');

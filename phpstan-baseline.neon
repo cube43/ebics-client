@@ -1,6 +1,11 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Parameter \\#1 \\$key of function openssl_pkey_get_details expects OpenSSLAsymmetricKey, resource given\\.$#"
+			count: 1
+			path: src/Crypt/ExponentAndModulus.php
+
+		-
 			message: "#^Method Cube43\\\\Component\\\\Ebics\\\\X509\\\\DefaultX509OptionGenerator\\:\\:getStart\\(\\) should return DateTimeImmutable but returns DateTimeImmutable\\|false\\.$#"
 			count: 1
 			path: src/X509/DefaultX509OptionGenerator.php

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics\X509;
 
-use Cube43\Component\Ebics\CertificatType;
+use Cube43\Component\Ebics\CertificateType;
 use phpseclib\Crypt\RSA;
 use phpseclib\File\X509;
 use RuntimeException;
@@ -17,7 +17,7 @@ use function var_export;
 
 class X509Generator
 {
-    public function __invoke(RSA $privateKey, RSA $publicKey, CertificatType $type, X509CertificatOptionsGenerator $certificatOptionsGenerator): string
+    public function __invoke(RSA $privateKey, RSA $publicKey, CertificateType $type, X509CertificatOptionsGenerator $certificatOptionsGenerator): string
     {
         $options = array_merge([
             'type' => $type->value(),
@@ -98,12 +98,12 @@ class X509Generator
     private function generateSerialNumber(): string
     {
         // prevent the first number from being 0
-        $result = rand(1, 9);
+        $result = (string) rand(1, 9);
         for ($i = 0; $i < 74; ++$i) {
-            $result .= rand(0, 9);
+            $result .= (string) rand(0, 9);
         }
 
-        return (string) $result;
+        return $result;
     }
 
     /**

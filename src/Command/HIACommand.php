@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Cube43\Component\Ebics\Command;
 
 use Cube43\Component\Ebics\BankInfo;
-use Cube43\Component\Ebics\CertificatType;
+use Cube43\Component\Ebics\CertificateType;
 use Cube43\Component\Ebics\Crypt\GenerateCertificat;
 use Cube43\Component\Ebics\EbicsServerCaller;
 use Cube43\Component\Ebics\KeyRing;
@@ -45,19 +45,19 @@ class HIACommand
         }
 
         $keyRing = $keyRing->setUserCertificateEAndX(
-            $this->generateCertificat->__invoke($x509CertificatOptionsGenerator, $keyRing, CertificatType::e()),
-            $this->generateCertificat->__invoke($x509CertificatOptionsGenerator, $keyRing, CertificatType::x())
+            $this->generateCertificat->__invoke($x509CertificatOptionsGenerator, $keyRing, CertificateType::e()),
+            $this->generateCertificat->__invoke($x509CertificatOptionsGenerator, $keyRing, CertificateType::x())
         );
 
         $search = [
             '{{TimeStamp}}' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
-            '{{CertUserE_Modulus}}' => base64_encode($keyRing->getUserCertificateE()->getPublicKeyDetails()->getModulus()),
-            '{{CertUserE_Exponent}}' => base64_encode($keyRing->getUserCertificateE()->getPublicKeyDetails()->getExponent()),
+            '{{CertUserE_Modulus}}' => base64_encode($keyRing->getUserCertificateE()->getPublicKey()->getExponentAndModulus()->getModulus()),
+            '{{CertUserE_Exponent}}' => base64_encode($keyRing->getUserCertificateE()->getPublicKey()->getExponentAndModulus()->getExponent()),
             '{{CertUserE_X509IssuerName}}' => $keyRing->getUserCertificateE()->getCertificatX509()->getInsurerName(),
             '{{CertUserE_X509SerialNumber}}' => $keyRing->getUserCertificateE()->getCertificatX509()->getSerialNumber(),
             '{{CertUserE_X509Certificate}}' => base64_encode($keyRing->getUserCertificateE()->getCertificatX509()->value()),
-            '{{CertUserX_Modulus}}' => base64_encode($keyRing->getUserCertificateX()->getPublicKeyDetails()->getModulus()),
-            '{{CertUserX_Exponent}}' => base64_encode($keyRing->getUserCertificateX()->getPublicKeyDetails()->getExponent()),
+            '{{CertUserX_Modulus}}' => base64_encode($keyRing->getUserCertificateX()->getPublicKey()->getExponentAndModulus()->getModulus()),
+            '{{CertUserX_Exponent}}' => base64_encode($keyRing->getUserCertificateX()->getPublicKey()->getExponentAndModulus()->getExponent()),
             '{{CertUserX_X509IssuerName}}' => $keyRing->getUserCertificateX()->getCertificatX509()->getInsurerName(),
             '{{CertUserX_X509SerialNumber}}' => $keyRing->getUserCertificateX()->getCertificatX509()->getSerialNumber(),
             '{{CertUserX_X509Certificate}}' => base64_encode($keyRing->getUserCertificateX()->getCertificatX509()->value()),

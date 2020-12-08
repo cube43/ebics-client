@@ -13,7 +13,7 @@ use function in_array;
  *
  * @psalm-immutable
  */
-class CertificatType
+class CertificateType
 {
     private string $type;
 

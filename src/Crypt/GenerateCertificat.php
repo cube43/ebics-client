@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics\Crypt;
 
+use Cube43\Component\Ebics\CertificateType;
 use Cube43\Component\Ebics\CertificateX509;
-use Cube43\Component\Ebics\CertificatType;
 use Cube43\Component\Ebics\KeyRing;
 use Cube43\Component\Ebics\PrivateKey;
+use Cube43\Component\Ebics\PublicKey;
 use Cube43\Component\Ebics\UserCertificate;
 use Cube43\Component\Ebics\X509\X509CertificatOptionsGenerator;
 use Cube43\Component\Ebics\X509\X509Generator;
@@ -19,8 +20,10 @@ use function sprintf;
 
 /**
  * @internal
+ *
+ * @psalm-pure
  */
-class GenerateCertificat
+final class GenerateCertificat
 {
     private X509Generator $x509Generator;
 
@@ -29,7 +32,7 @@ class GenerateCertificat
         $this->x509Generator = $x509Generator ?? new X509Generator();
     }
 
-    public function __invoke(X509CertificatOptionsGenerator $x509CertificatOptionsGenerator, KeyRing $keyring, CertificatType $type): UserCertificate
+    public function __invoke(X509CertificatOptionsGenerator $x509CertificatOptionsGenerator, KeyRing $keyring, CertificateType $type): UserCertificate
     {
         $rsa = new RSA();
         $rsa->setPublicKeyFormat(RSA::PRIVATE_FORMAT_PKCS1);
@@ -61,8 +64,8 @@ class GenerateCertificat
 
         return new UserCertificate(
             $type,
-            $keys['publickey'],
-            new PrivateKey($keys['privatekey']),
+            new PublicKey($keys['publickey'], $keyring->getRsaPassword()),
+            new PrivateKey($keys['privatekey'], $keyring->getRsaPassword()),
             new CertificateX509($this->x509Generator->__invoke($privateKey, $publicKey, $type, $x509CertificatOptionsGenerator))
         );
     }

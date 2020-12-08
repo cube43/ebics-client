@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics\Crypt;
 
+use Cube43\Component\Ebics\Key;
 use Cube43\Component\Ebics\KeyRing;
-use Cube43\Component\Ebics\PrivateKey;
 use phpseclib\Crypt\RSA;
 use RuntimeException;
 
@@ -14,8 +14,10 @@ use function defined;
 
 /**
  * @internal
+ *
+ * @psalm-pure
  */
-class EncrytSignatureValueWithUserPrivateKey
+final class EncrytSignatureValueWithUserPrivateKey
 {
     private AddRsaSha256PrefixAndReturnAsBinary $addRsaSha256PrefixAndReturnAsBinary;
 
@@ -27,7 +29,7 @@ class EncrytSignatureValueWithUserPrivateKey
     /**
      * @throws RuntimeException
      */
-    public function __invoke(KeyRing $keyRing, PrivateKey $key, string $hash): string
+    public function __invoke(KeyRing $keyRing, Key $key, string $hash): string
     {
         $rsa = new RSA();
         $rsa->setPassword($keyRing->getRsaPassword());

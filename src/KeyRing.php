@@ -14,8 +14,9 @@ use function Safe\json_decode;
 
 /**
  * @psalm-immutable
+ * @psalm-pure
  */
-class KeyRing implements JsonSerializable
+final class KeyRing implements JsonSerializable
 {
     private ?UserCertificate $userCertificateA;
     private ?UserCertificate $userCertificateX;
@@ -175,17 +176,17 @@ class KeyRing implements JsonSerializable
      */
     public static function fromArray(array $data, string $password): self
     {
-        $buildBankCertificate = static function (string $key) use ($data): ?BankCertificate {
+        $buildBankCertificate = static function (string $key) use ($data, $password): ?BankCertificate {
             if (array_key_exists($key, $data) && ! empty($data[$key])) {
-                return BankCertificate::fromArray($data[$key]);
+                return BankCertificate::fromArray($data[$key], $password);
             }
 
             return null;
         };
 
-        $buildUserCertificate = static function (string $key) use ($data): ?UserCertificate {
+        $buildUserCertificate = static function (string $key) use ($data, $password): ?UserCertificate {
             if (array_key_exists($key, $data) && ! empty($data[$key])) {
-                return UserCertificate::fromArray($data[$key]);
+                return UserCertificate::fromArray($data[$key], $password);
             }
 
             return null;

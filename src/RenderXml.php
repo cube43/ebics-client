@@ -11,8 +11,10 @@ use function str_replace;
 
 /**
  * @internal
+ *
+ * @psalm-pure
  */
-class RenderXml
+final class RenderXml
 {
     private string $filePath;
 

@@ -32,11 +32,6 @@ class BankInfo
         return $this->url;
     }
 
-    public function isCertified(): bool
-    {
-        return true;
-    }
-
     public function getVersion(): Version
     {
         return $this->version;

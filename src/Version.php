@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics;
 
-/** @psalm-immutable */
-class Version
+/**
+ * @psalm-immutable
+ * @psalm-pure
+ */
+final class Version
 {
     private const V24 = 'H003';
     private const V25 = 'H004';

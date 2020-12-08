@@ -8,8 +8,9 @@ namespace Cube43\Component\Ebics;
  * @internal
  *
  * @psalm-immutable
+ * @psalm-pure
  */
-class OrderDataEncrypted
+final class OrderDataEncrypted
 {
     private string $orderData;
     private string $transactionKey;
