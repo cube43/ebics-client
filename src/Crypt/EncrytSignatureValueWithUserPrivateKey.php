@@ -30,7 +30,7 @@ class EncrytSignatureValueWithUserPrivateKey
     public function __invoke(KeyRing $keyRing, PrivateKey $key, string $hash): string
     {
         $rsa = new RSA();
-        $rsa->setPassword($keyRing->getPassword());
+        $rsa->setPassword($keyRing->getRsaPassword());
         $rsa->loadKey($key->value(), RSA::PRIVATE_FORMAT_PKCS1);
 
         if (! defined('CRYPT_RSA_PKCS15_COMPAT')) {

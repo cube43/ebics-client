@@ -12,7 +12,9 @@ use function is_file;
 use function Safe\file_get_contents;
 use function Safe\json_decode;
 
-/** @psalm-immutable */
+/**
+ * @psalm-immutable
+ */
 class KeyRing implements JsonSerializable
 {
     private ?UserCertificate $userCertificateA;
@@ -20,17 +22,17 @@ class KeyRing implements JsonSerializable
     private ?UserCertificate $userCertificateE;
     private ?BankCertificate $bankCertificateX;
     private ?BankCertificate $bankCertificateE;
-    private string $password;
+    private string $rsaPassword;
 
     public function __construct(
-        string $password,
+        string $rsaPassword,
         ?UserCertificate $userCertificateA = null,
         ?UserCertificate $userCertificateX = null,
         ?UserCertificate $userCertificateE = null,
         ?BankCertificate $bankCertificateX = null,
         ?BankCertificate $bankCertificateE = null
     ) {
-        $this->password         = $password;
+        $this->rsaPassword      = $rsaPassword;
         $this->userCertificateA = $userCertificateA;
         $this->userCertificateX = $userCertificateX;
         $this->userCertificateE = $userCertificateE;
@@ -45,7 +47,7 @@ class KeyRing implements JsonSerializable
         }
 
         return new self(
-            $this->password,
+            $this->rsaPassword,
             $certificate,
             $this->userCertificateX,
             $this->userCertificateE,
@@ -80,7 +82,7 @@ class KeyRing implements JsonSerializable
         }
 
         return new self(
-            $this->password,
+            $this->rsaPassword,
             $this->userCertificateA,
             $userCertificateX,
             $userCertificateE,
@@ -100,7 +102,7 @@ class KeyRing implements JsonSerializable
         }
 
         return new self(
-            $this->password,
+            $this->rsaPassword,
             $this->userCertificateA,
             $this->userCertificateX,
             $this->userCertificateE,
@@ -136,9 +138,9 @@ class KeyRing implements JsonSerializable
         return $this->userCertificateE;
     }
 
-    public function getPassword(): string
+    public function getRsaPassword(): string
     {
-        return $this->password;
+        return $this->rsaPassword;
     }
 
     public function getBankCertificateX(): BankCertificate

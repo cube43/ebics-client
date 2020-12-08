@@ -22,7 +22,7 @@ class DecryptOrderDataContent
     public function __invoke(KeyRing $keyRing, OrderDataEncrypted $orderData): string
     {
         $rsa = new RSA();
-        $rsa->setPassword($keyRing->getPassword());
+        $rsa->setPassword($keyRing->getRsaPassword());
         $rsa->loadKey($keyRing->getUserCertificateE()->getPrivateKey()->value());
         $rsa->setEncryptionMode(RSA::ENCRYPTION_PKCS1);
 

@@ -36,7 +36,7 @@ class GenerateCertificat
         $rsa->setPrivateKeyFormat(RSA::PUBLIC_FORMAT_PKCS1);
         $rsa->setHash('sha256');
         $rsa->setMGFHash('sha256');
-        $rsa->setPassword($keyring->getPassword());
+        $rsa->setPassword($keyring->getRsaPassword());
 
         $keys = $rsa->createKey(2048);
 
