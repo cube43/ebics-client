@@ -7,6 +7,9 @@ namespace Cube43\Component\Ebics;
 use DateTimeImmutable;
 use RuntimeException;
 
+use function strlen;
+use function strtoupper;
+
 /** @psalm-immutable */
 class FDLParams
 {
@@ -21,12 +24,12 @@ class FDLParams
             throw new RuntimeException('fileFormat is empty');
         }
 
-        if (empty($countryCode)) {
-            throw new RuntimeException('countryCode is empty');
+        if (strlen($countryCode) !== 2) {
+            throw new RuntimeException('countryCode must be [A-Z]{2,2}');
         }
 
         $this->fileFormat  = $fileFormat;
-        $this->countryCode = $countryCode;
+        $this->countryCode = strtoupper($countryCode);
         $this->startDate   = $startDate;
         $this->endDate     = $endDate;
     }

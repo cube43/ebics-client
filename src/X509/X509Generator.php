@@ -17,8 +17,15 @@ use function var_export;
 
 class X509Generator
 {
-    public function __invoke(RSA $privateKey, RSA $publicKey, CertificateType $type, X509CertificatOptionsGenerator $certificatOptionsGenerator): string
+    public function __invoke(string $privateKey, string $publicKey, CertificateType $type, X509CertificatOptionsGenerator $certificatOptionsGenerator): string
     {
+        $privateKey = new RSA();
+        $privateKey->loadKey($privateKey);
+
+        $publicKey = new RSA();
+        $publicKey->loadKey($publicKey);
+        $publicKey->setPublicKey();
+
         $options = array_merge([
             'type' => $type->value(),
             'subject' => [

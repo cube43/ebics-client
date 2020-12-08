@@ -19,15 +19,15 @@ class FDLParamsTest extends TestCase
         self::expectException(RuntimeException::class);
         self::expectExceptionMessage('fileFormat is empty');
 
-        $sUT = new FDLParams('', 'test', new DateTimeImmutable(), new DateTimeImmutable());
+        new FDLParams('', 'test', new DateTimeImmutable(), new DateTimeImmutable());
     }
 
     public function testFailOnEmptyCountryCode(): void
     {
         self::expectException(RuntimeException::class);
-        self::expectExceptionMessage('countryCode is empty');
+        self::expectExceptionMessage('countryCode must be [A-Z]{2,2}');
 
-        $sUT = new FDLParams('test', '', new DateTimeImmutable(), new DateTimeImmutable());
+        new FDLParams('test', '', new DateTimeImmutable(), new DateTimeImmutable());
     }
 
     public function testOk(): void

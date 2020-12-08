@@ -32,7 +32,7 @@ class EbicsServerCaller
         $resultXml = new DOMDocument($result);
 
         if ($resultXml->getNodeValue('ReturnCode') !== '000000') {
-            throw new Exception('Error' . $resultXml->getNodeValue('ReportText'));
+            throw new Exception('Error ' . $resultXml->getNodeValue('ReportText'));
         }
 
         return $result;

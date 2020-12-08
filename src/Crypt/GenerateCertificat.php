@@ -56,18 +56,11 @@ final class GenerateCertificat
             throw new RuntimeException(sprintf('key "privatekey" does not exist for certificat type "%s"', $type->value()));
         }
 
-        $privateKey = new RSA();
-        $privateKey->loadKey($keys['privatekey']);
-
-        $publicKey = new RSA();
-        $publicKey->loadKey($keys['publickey']);
-        $publicKey->setPublicKey();
-
         return new UserCertificate(
             $type,
             new PublicKey($keys['publickey'], $keyring->getRsaPassword()),
             new PrivateKey($keys['privatekey'], $keyring->getRsaPassword()),
-            new CertificateX509($this->x509Generator->__invoke($privateKey, $publicKey, $type, $x509CertificatOptionsGenerator))
+            new CertificateX509($this->x509Generator->__invoke($keys['privatekey'], $keys['publickey'], $type, $x509CertificatOptionsGenerator))
         );
     }
 }

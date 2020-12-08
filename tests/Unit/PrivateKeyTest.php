@@ -8,6 +8,9 @@ use Cube43\Component\Ebics\PrivateKey;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
+/**
+ * @coversDefaultClass PrivateKey
+ */
 class PrivateKeyTest extends TestCase
 {
     public function testEmptyFail(): void

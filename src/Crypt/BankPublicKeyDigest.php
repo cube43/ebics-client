@@ -21,7 +21,7 @@ final class BankPublicKeyDigest
 {
     public function __invoke(BankCertificate $certificate): string
     {
-        return base64_encode(hash('sha256', $this->generateDigest(new ExponentAndModulus($certificate->getPublicKey()->value())), true));
+        return base64_encode(hash('sha256', $this->generateDigest($certificate->getPublicKey()->getExponentAndModulus()), true));
     }
 
     private function generateDigest(ExponentAndModulus $exponentAndModulus): string

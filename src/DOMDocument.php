@@ -84,12 +84,12 @@ class DOMDocument
         return null;
     }
 
-    public function getNodeValue(string $node): string
+    public function getNodeValue(string $nodeName): string
     {
-        $node = $this->document->getElementsByTagName($node)->item(0);
+        $node = $this->document->getElementsByTagName($nodeName)->item(0);
 
         if ($node === null) {
-            throw new RuntimeException(sprintf('node "%s" not found', $node));
+            throw new RuntimeException(sprintf('node "%s" not found', $nodeName));
         }
 
         return $node->nodeValue;

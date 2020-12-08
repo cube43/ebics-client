@@ -7,6 +7,9 @@ namespace Cube43\Component\Ebics\Tests\Unit;
 use Cube43\Component\Ebics\Version;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @coversDefaultClass Version
+ */
 class VersionTest extends TestCase
 {
     public function testVersionConstruct(): void

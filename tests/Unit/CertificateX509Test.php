@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Cube43\Component\Ebics\Tests\Unit;
 
 use Cube43\Component\Ebics\CertificateX509;
-use Cube43\Component\Ebics\Models\Certificate;
 use Cube43\Component\Ebics\Tests\E2e\FakeCrypt;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 /**
- * @coversDefaultClass Certificate
+ * @coversDefaultClass CertificateX509
  */
 class CertificateX509Test extends TestCase
 {

@@ -74,12 +74,8 @@ final class KeyRing implements JsonSerializable
 
     public function setUserCertificateEAndX(UserCertificate $userCertificateE, UserCertificate $userCertificateX): self
     {
-        if ($this->userCertificateE !== null) {
-            throw new RuntimeException('userCertificateE already exist');
-        }
-
-        if ($this->userCertificateX !== null) {
-            throw new RuntimeException('userCertificateX already exist');
+        if ($this->userCertificateE !== null || $this->userCertificateX !== null) {
+            throw new RuntimeException('userCertificateE and userCertificateX already exist');
         }
 
         return new self(
@@ -94,12 +90,8 @@ final class KeyRing implements JsonSerializable
 
     public function setBankCertificate(BankCertificate $bankCertificateX, BankCertificate $bankCertificateE): self
     {
-        if ($this->bankCertificateX !== null) {
-            throw new RuntimeException('bankCertificateX already exist');
-        }
-
-        if ($this->bankCertificateE !== null) {
-            throw new RuntimeException('bankCertificateE already exist');
+        if ($this->bankCertificateE !== null || $this->bankCertificateX !== null) {
+            throw new RuntimeException('bankCertificateX and bankCertificateE already exist');
         }
 
         return new self(

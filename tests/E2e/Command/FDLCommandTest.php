@@ -23,16 +23,18 @@ use Symfony\Component\HttpClient\MockHttpClient;
 class FDLCommandTest extends E2eTestBase
 {
     /**
-     * @return iterable<int, array<int, Version>>
+     * @return iterable<int, array<int, Version|bool>>
      */
     public function provideVersion(): iterable
     {
-        yield [Version::v24()];
-        yield [Version::v25()];
+        yield [Version::v24(), true];
+        yield [Version::v24(), false];
+        yield [Version::v25(), true];
+        yield [Version::v25(), false];
     }
 
     /** @dataProvider provideVersion */
-    public function testOk(Version $version): void
+    public function testOk(Version $version, bool $sendReceip): void
     {
         $tkey  = 'uBrH173GUziiFUQLBQ7MmlCVCoUqOSxj08hEfiSAxkv9RW2uFJes4jXvn1CVD9Kfa0ot8nG7QIb8aWKaix3XdPFbG5gSbZIk2bGowj5FsijwkCDiBFzSsJhpHskIq2crLDk5c4LzVXrEQBJvUIoQ70OdXzJc8/nhThhkG8hJgGMJH35we0JCqzTcQP8DsdjtApX+HN1UnCdPsmhU2vXR2BpvIDgIluJT/dnzWfp5mhfaGKIMA3+Ow+EEuzrwY8JRAP/P9RYyfptjdsNVwUgb9X6xgAkV805JhIf7g9L3GvJjA1/jhYL2Xj97YC+4dWdswe4WTlrJ+3MPA44Dk3zxrwzv+Iu/66PsAboeW8HB7QEXK6AXxEZq0h6Ng2wSfwJSkZE9UU5xUcFG2S/e41M23ZSBMD/mMy5yadPLhQQ3QBP3bwfgee4bnPky1hwN60yUZdaHvF3z92pStV7GCmxcF9Gt420LGciJ2A9yWDpsxtalmLHzozsIeC687WsOzxN/';
         $odata = '8jGZE4A8/CEsmzl4kBNVcbDm+QmBpAMtZhCspu8sSL4GxDBmEEj06Yr+8L30bf6TjtSOJiDeeqnnakVCUvTy2YJMTY8aaSF+OwE/iEclqyRtayCjXxkt/073WwPWlE7P0rRrLzGW/n7BCRJW3ffuMw==';
@@ -134,7 +136,7 @@ class FDLCommandTest extends E2eTestBase
 
         $sUT->__invoke($bank, $keyRing, new FDLParams('test', 'FR', new DateTimeImmutable(), new DateTimeImmutable()), static function (string $data): void {
             self::assertSame($data, '<test><AuthenticationPubKeyInfo><X509Certificate>test</X509Certificate><Modulus>test</Modulus><Exponent>test</Exponent></AuthenticationPubKeyInfo><EncryptionPubKeyInfo><X509Certificate>test</X509Certificate><Modulus>test</Modulus><Exponent>test</Exponent></EncryptionPubKeyInfo></test>');
-        });
+        }, $sendReceip);
     }
 
     /** @dataProvider provideVersion */
