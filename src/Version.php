@@ -8,7 +8,7 @@ namespace Cube43\Component\Ebics;
  * @psalm-immutable
  * @psalm-pure
  */
-final class Version
+class Version
 {
     private const V24 = 'H003';
     private const V25 = 'H004';

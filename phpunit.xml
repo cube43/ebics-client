@@ -20,8 +20,5 @@
     <testsuite name="Functional">
       <directory>tests/Functional</directory>
     </testsuite>
-    <testsuite name="E2e">
-      <directory>tests/E2e</directory>
-    </testsuite>
   </testsuites>
 </phpunit>

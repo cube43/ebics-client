@@ -8,15 +8,12 @@ use JsonSerializable;
 use RuntimeException;
 
 use function array_key_exists;
-use function is_file;
-use function Safe\file_get_contents;
-use function Safe\json_decode;
 
 /**
  * @psalm-immutable
  * @psalm-pure
  */
-final class KeyRing implements JsonSerializable
+class KeyRing implements JsonSerializable
 {
     private ?UserCertificate $userCertificateA;
     private ?UserCertificate $userCertificateX;
@@ -152,15 +149,6 @@ final class KeyRing implements JsonSerializable
         }
 
         return $this->bankCertificateE;
-    }
-
-    public static function fromFile(string $file, string $password): self
-    {
-        if (! is_file($file)) {
-            return new self($password);
-        }
-
-        return self::fromArray(json_decode(file_get_contents($file), true), $password);
     }
 
     /**

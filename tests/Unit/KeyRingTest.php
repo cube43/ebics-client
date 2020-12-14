@@ -5,7 +5,12 @@ declare(strict_types=1);
 namespace Cube43\Component\Ebics\Tests\Unit;
 
 use Cube43\Component\Ebics\BankCertificate;
+use Cube43\Component\Ebics\CertificateType;
+use Cube43\Component\Ebics\CertificateX509;
 use Cube43\Component\Ebics\KeyRing;
+use Cube43\Component\Ebics\PrivateKey;
+use Cube43\Component\Ebics\PublicKey;
+use Cube43\Component\Ebics\Tests\E2e\FakeCrypt;
 use Cube43\Component\Ebics\UserCertificate;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -38,6 +43,45 @@ class KeyRingTest extends TestCase
         self::expectExceptionMessage($exceptionMessage);
 
         $sUT->$getter();
+    }
+
+    public function testGetterOk(): void
+    {
+        $userCertificateA = new UserCertificate(
+            CertificateType::a(),
+            new PublicKey(FakeCrypt::RSA_PUBLIC_KEY),
+            new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY, ''),
+            self::createMock(CertificateX509::class)
+        );
+        $userCertificateX = new UserCertificate(
+            CertificateType::x(),
+            new PublicKey(FakeCrypt::RSA_PUBLIC_KEY),
+            new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY, ''),
+            self::createMock(CertificateX509::class)
+        );
+        $userCertificateE = new UserCertificate(
+            CertificateType::e(),
+            new PublicKey(FakeCrypt::RSA_PUBLIC_KEY),
+            new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY, ''),
+            self::createMock(CertificateX509::class)
+        );
+        $bankCertificateX = new BankCertificate(
+            CertificateType::x(),
+            new PublicKey(FakeCrypt::RSA_PUBLIC_KEY),
+            self::createMock(CertificateX509::class)
+        );
+        $bankCertificateE = new BankCertificate(
+            CertificateType::e(),
+            new PublicKey(FakeCrypt::RSA_PUBLIC_KEY),
+            self::createMock(CertificateX509::class)
+        );
+        $sUT              = new KeyRing('test', $userCertificateA, $userCertificateX, $userCertificateE, $bankCertificateX, $bankCertificateE);
+
+        self::assertSame($userCertificateA, $sUT->getUserCertificateA());
+        self::assertSame($userCertificateX, $sUT->getUserCertificateX());
+        self::assertSame($userCertificateE, $sUT->getUserCertificateE());
+        self::assertSame($bankCertificateE, $sUT->getBankCertificateE());
+        self::assertSame($bankCertificateX, $sUT->getBankCertificateX());
     }
 
     public function testFailOnMultipleSetUserCertificateA(): void

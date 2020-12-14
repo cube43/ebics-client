@@ -24,7 +24,7 @@ use function sprintf;
  *
  * @psalm-pure
  */
-final class GenerateCertificat
+class GenerateCertificat
 {
     private X509Generator $x509Generator;
 

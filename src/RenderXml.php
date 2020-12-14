@@ -14,7 +14,7 @@ use function str_replace;
  *
  * @psalm-pure
  */
-final class RenderXml
+class RenderXml
 {
     private string $filePath;
 
