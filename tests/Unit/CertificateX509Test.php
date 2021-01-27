@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Cube43\Component\Ebics\Tests\Unit;
 
 use Cube43\Component\Ebics\CertificateX509;
-use Cube43\Component\Ebics\Models\Certificate;
 use Cube43\Component\Ebics\Tests\E2e\FakeCrypt;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 /**
- * @coversDefaultClass Certificate
+ * @coversDefaultClass CertificateX509
  */
 class CertificateX509Test extends TestCase
 {
@@ -29,7 +28,7 @@ class CertificateX509Test extends TestCase
         self::assertSame('84 E0 3C 1C 54 D7 54 F8
 90 B7 57 3B 69 5F C9 C0
 0F 4D 44 3A D6 9D 4C 34
-B5 3D A1 36 EB AC 64 93', $sUT->digest());
+B5 3D A1 36 EB AC 64 93', $sUT->hash());
     }
 
     public function testEmptyFail(): void

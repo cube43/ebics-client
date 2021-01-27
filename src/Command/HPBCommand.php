@@ -6,14 +6,15 @@ namespace Cube43\Component\Ebics\Command;
 
 use Cube43\Component\Ebics\BankCertificate;
 use Cube43\Component\Ebics\BankInfo;
+use Cube43\Component\Ebics\CertificateType;
 use Cube43\Component\Ebics\CertificateX509;
-use Cube43\Component\Ebics\CertificatType;
 use Cube43\Component\Ebics\Crypt\DecryptOrderDataContent;
 use Cube43\Component\Ebics\Crypt\EncrytSignatureValueWithUserPrivateKey;
 use Cube43\Component\Ebics\DOMDocument;
 use Cube43\Component\Ebics\EbicsServerCaller;
 use Cube43\Component\Ebics\KeyRing;
 use Cube43\Component\Ebics\OrderDataEncrypted;
+use Cube43\Component\Ebics\PublicKey;
 use Cube43\Component\Ebics\RenderXml;
 use DateTime;
 use phpseclib\Crypt\Random;
@@ -70,7 +71,7 @@ class HPBCommand
         );
 
         $decryptedResponse = $this->decryptOrderDataContent->__invoke(
-            $keyRing,
+            $keyRing->getUserCertificateE()->getPrivateKey(),
             new OrderDataEncrypted(
                 $ebicsServerResponse->getNodeValue('OrderData'),
                 base64_decode($ebicsServerResponse->getNodeValue('TransactionKey'))
@@ -80,12 +81,12 @@ class HPBCommand
         $decryptedResponse = new DOMDocument($decryptedResponse);
 
         return $keyRing->setBankCertificate(
-            $this->cert($decryptedResponse, CertificatType::x(), 'AuthenticationPubKeyInfo'),
-            $this->cert($decryptedResponse, CertificatType::e(), 'EncryptionPubKeyInfo'),
+            $this->cert($decryptedResponse, CertificateType::x(), 'AuthenticationPubKeyInfo'),
+            $this->cert($decryptedResponse, CertificateType::e(), 'EncryptionPubKeyInfo'),
         );
     }
 
-    private function cert(DOMDocument $decrypted, CertificatType $certificatType, string $parentNode): BankCertificate
+    private function cert(DOMDocument $decrypted, CertificateType $certificatType, string $parentNode): BankCertificate
     {
         $rsa = new RSA();
         $rsa->loadKey([
@@ -95,7 +96,7 @@ class HPBCommand
 
         return new BankCertificate(
             $certificatType,
-            $rsa->getPublicKey(RSA::PUBLIC_FORMAT_PKCS1),
+            new PublicKey($rsa->getPublicKey(RSA::PUBLIC_FORMAT_PKCS1)),
             new CertificateX509(bin2hex(base64_decode($decrypted->getNodeValueChildOf('X509Certificate', $parentNode))))
         );
     }

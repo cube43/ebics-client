@@ -10,8 +10,10 @@ use function in_array;
 
 /**
  * @internal
+ *
+ * @psalm-immutable
  */
-class CertificatType
+class CertificateType
 {
     private string $type;
 
@@ -65,10 +67,5 @@ class CertificatType
         }
 
         return 'A006';
-    }
-
-    public function getHash(): string
-    {
-        return 'SHA-256';
     }
 }

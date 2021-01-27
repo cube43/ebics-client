@@ -8,6 +8,9 @@ use Cube43\Component\Ebics\RenderXml;
 use Cube43\Component\Ebics\Version;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @coversDefaultClass RenderXml
+ */
 class RenderXmlTest extends TestCase
 {
     public function testInvoke(): void

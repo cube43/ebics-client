@@ -9,6 +9,9 @@ use PHPUnit\Framework\TestCase;
 
 use function bin2hex;
 
+/**
+ * @coversDefaultClass BankPublicKeyDigest
+ */
 class FilterBlockedCharTest extends TestCase
 {
     public function testOk(): void

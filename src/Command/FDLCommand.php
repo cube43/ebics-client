@@ -55,7 +55,7 @@ class FDLCommand
 
         $handler(
             $this->decryptOrderDataContent->__invoke(
-                $keyRing,
+                $keyRing->getUserCertificateE()->getPrivateKey(),
                 new OrderDataEncrypted(
                     $ebicsServerResponse->getNodeValue('OrderData'),
                     base64_decode($ebicsServerResponse->getNodeValue('TransactionKey'))

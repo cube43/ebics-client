@@ -20,7 +20,6 @@ class BankTest extends TestCase
         self::assertSame('test', $sUT->getHostId());
         self::assertSame('test2', $sUT->getUrl());
         self::assertSame(Version::v24()->value(), $sUT->getVersion()->value());
-        self::assertTrue($sUT->isCertified());
         self::assertSame('hello', $sUT->getPartnerId());
         self::assertSame('ehg!', $sUT->getUserId());
     }

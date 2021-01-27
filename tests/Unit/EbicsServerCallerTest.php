@@ -6,14 +6,13 @@ namespace Cube43\Component\Ebics\Tests\Unit;
 
 use Cube43\Component\Ebics\BankInfo;
 use Cube43\Component\Ebics\EbicsServerCaller;
-use Cube43\Component\Ebics\RequestMaker;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Throwable;
 
 /**
- * @coversDefaultClass RequestMaker
+ * @coversDefaultClass EbicsServerCaller
  */
 class EbicsServerCallerTest extends TestCase
 {
@@ -44,7 +43,7 @@ class EbicsServerCallerTest extends TestCase
         $reponse    = self::createMock(ResponseInterface::class);
         $httpClient = self::createMock(HttpClientInterface::class);
 
-        $reponse->expects(self::once())->method('getContent')->willReturn('<?xml version="1.0" encoding="UTF-8"?><test>');
+        $reponse->expects(self::once())->method('getContent')->willReturn('<?xml version="1.0" encoding="UTF-8"?><test><ReturnCode>toto</ReturnCode><ReportText>hello</ReportText></test>');
         $httpClient->expects(self::once())->method('request')->with('POST', 'url', [
             'headers' => ['Content-Type' => 'text/xml; charset=ISO-8859-1'],
             'body' => 'test',
@@ -59,6 +58,7 @@ class EbicsServerCallerTest extends TestCase
         $bank->expects(self::once())->method('getUrl')->willReturn('url');
 
         self::expectException(Throwable::class);
+        self::expectExceptionMessage('Error hello');
         $sUT->__invoke('test', $bank);
     }
 }

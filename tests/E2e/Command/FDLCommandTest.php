@@ -6,13 +6,14 @@ namespace Cube43\Component\Ebics\Tests\E2e\Command;
 
 use Cube43\Component\Ebics\BankCertificate;
 use Cube43\Component\Ebics\BankInfo;
+use Cube43\Component\Ebics\CertificateType;
 use Cube43\Component\Ebics\CertificateX509;
-use Cube43\Component\Ebics\CertificatType;
 use Cube43\Component\Ebics\Command\FDLCommand;
 use Cube43\Component\Ebics\EbicsServerCaller;
 use Cube43\Component\Ebics\FDLParams;
 use Cube43\Component\Ebics\KeyRing;
 use Cube43\Component\Ebics\PrivateKey;
+use Cube43\Component\Ebics\PublicKey;
 use Cube43\Component\Ebics\Tests\E2e\FakeCrypt;
 use Cube43\Component\Ebics\UserCertificate;
 use Cube43\Component\Ebics\Version;
@@ -22,16 +23,18 @@ use Symfony\Component\HttpClient\MockHttpClient;
 class FDLCommandTest extends E2eTestBase
 {
     /**
-     * @return iterable<int, array<int, Version>>
+     * @return iterable<int, array<int, Version|bool>>
      */
     public function provideVersion(): iterable
     {
-        yield [Version::v24()];
-        yield [Version::v25()];
+        yield [Version::v24(), true];
+        yield [Version::v24(), false];
+        yield [Version::v25(), true];
+        yield [Version::v25(), false];
     }
 
     /** @dataProvider provideVersion */
-    public function testOk(Version $version): void
+    public function testOk(Version $version, bool $sendReceip): void
     {
         $tkey  = 'uBrH173GUziiFUQLBQ7MmlCVCoUqOSxj08hEfiSAxkv9RW2uFJes4jXvn1CVD9Kfa0ot8nG7QIb8aWKaix3XdPFbG5gSbZIk2bGowj5FsijwkCDiBFzSsJhpHskIq2crLDk5c4LzVXrEQBJvUIoQ70OdXzJc8/nhThhkG8hJgGMJH35we0JCqzTcQP8DsdjtApX+HN1UnCdPsmhU2vXR2BpvIDgIluJT/dnzWfp5mhfaGKIMA3+Ow+EEuzrwY8JRAP/P9RYyfptjdsNVwUgb9X6xgAkV805JhIf7g9L3GvJjA1/jhYL2Xj97YC+4dWdswe4WTlrJ+3MPA44Dk3zxrwzv+Iu/66PsAboeW8HB7QEXK6AXxEZq0h6Ng2wSfwJSkZE9UU5xUcFG2S/e41M23ZSBMD/mMy5yadPLhQQ3QBP3bwfgee4bnPky1hwN60yUZdaHvF3z92pStV7GCmxcF9Gt420LGciJ2A9yWDpsxtalmLHzozsIeC687WsOzxN/';
         $odata = '8jGZE4A8/CEsmzl4kBNVcbDm+QmBpAMtZhCspu8sSL4GxDBmEEj06Yr+8L30bf6TjtSOJiDeeqnnakVCUvTy2YJMTY8aaSF+OwE/iEclqyRtayCjXxkt/073WwPWlE7P0rRrLzGW/n7BCRJW3ffuMw==';
@@ -106,34 +109,34 @@ class FDLCommandTest extends E2eTestBase
 
         $keyRing = $keyRing->setUserCertificateEAndX(
             new UserCertificate(
-                CertificatType::e(),
-                FakeCrypt::RSA_PUBLIC_KEY,
-                new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY),
+                CertificateType::e(),
+                new PublicKey(FakeCrypt::RSA_PUBLIC_KEY, $keyRing->getRsaPassword()),
+                new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY, $keyRing->getRsaPassword()),
                 new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
             ),
             new UserCertificate(
-                CertificatType::x(),
-                FakeCrypt::RSA_PUBLIC_KEY,
-                new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY),
+                CertificateType::x(),
+                new PublicKey(FakeCrypt::RSA_PUBLIC_KEY, $keyRing->getRsaPassword()),
+                new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY, $keyRing->getRsaPassword()),
                 new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
             )
         );
         $keyRing = $keyRing->setBankCertificate(
             new BankCertificate(
-                CertificatType::x(),
-                FakeCrypt::RSA_PUBLIC_KEY,
+                CertificateType::x(),
+                new PublicKey(FakeCrypt::RSA_PUBLIC_KEY, $keyRing->getRsaPassword()),
                 new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
             ),
             new BankCertificate(
-                CertificatType::e(),
-                FakeCrypt::RSA_PUBLIC_KEY,
+                CertificateType::e(),
+                new PublicKey(FakeCrypt::RSA_PUBLIC_KEY, $keyRing->getRsaPassword()),
                 new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
             ),
         );
 
         $sUT->__invoke($bank, $keyRing, new FDLParams('test', 'FR', new DateTimeImmutable(), new DateTimeImmutable()), static function (string $data): void {
             self::assertSame($data, '<test><AuthenticationPubKeyInfo><X509Certificate>test</X509Certificate><Modulus>test</Modulus><Exponent>test</Exponent></AuthenticationPubKeyInfo><EncryptionPubKeyInfo><X509Certificate>test</X509Certificate><Modulus>test</Modulus><Exponent>test</Exponent></EncryptionPubKeyInfo></test>');
-        });
+        }, $sendReceip);
     }
 
     /** @dataProvider provideVersion */
@@ -212,27 +215,27 @@ class FDLCommandTest extends E2eTestBase
 
         $keyRing = $keyRing->setUserCertificateEAndX(
             new UserCertificate(
-                CertificatType::e(),
-                FakeCrypt::RSA_PUBLIC_KEY,
-                new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY),
+                CertificateType::e(),
+                new PublicKey(FakeCrypt::RSA_PUBLIC_KEY, $keyRing->getRsaPassword()),
+                new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY, $keyRing->getRsaPassword()),
                 new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
             ),
             new UserCertificate(
-                CertificatType::x(),
-                FakeCrypt::RSA_PUBLIC_KEY,
-                new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY),
+                CertificateType::x(),
+                new PublicKey(FakeCrypt::RSA_PUBLIC_KEY, $keyRing->getRsaPassword()),
+                new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY, $keyRing->getRsaPassword()),
                 new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
             )
         );
         $keyRing = $keyRing->setBankCertificate(
             new BankCertificate(
-                CertificatType::x(),
-                FakeCrypt::RSA_PUBLIC_KEY,
+                CertificateType::x(),
+                new PublicKey(FakeCrypt::RSA_PUBLIC_KEY, $keyRing->getRsaPassword()),
                 new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
             ),
             new BankCertificate(
-                CertificatType::e(),
-                FakeCrypt::RSA_PUBLIC_KEY,
+                CertificateType::e(),
+                new PublicKey(FakeCrypt::RSA_PUBLIC_KEY, $keyRing->getRsaPassword()),
                 new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
             ),
         );

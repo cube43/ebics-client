@@ -11,6 +11,8 @@ use function str_replace;
 
 /**
  * @internal
+ *
+ * @psalm-pure
  */
 class RenderXml
 {

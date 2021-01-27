@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics\Tests\Functional;
 
-use Cube43\Component\Ebics\CertificatType;
+use Cube43\Component\Ebics\CertificateType;
 use Cube43\Component\Ebics\Crypt\AddRsaSha256PrefixAndReturnAsBinary;
 use Cube43\Component\Ebics\Crypt\DecryptOrderDataContent;
 use Cube43\Component\Ebics\Crypt\EncrytSignatureValueWithUserPrivateKey;
@@ -12,7 +12,7 @@ use Cube43\Component\Ebics\Crypt\GenerateCertificat;
 use Cube43\Component\Ebics\DOMDocument;
 use Cube43\Component\Ebics\KeyRing;
 use Cube43\Component\Ebics\OrderDataEncrypted;
-use Cube43\Component\Ebics\PrivateKey;
+use Cube43\Component\Ebics\UserCertificate;
 use Cube43\Component\Ebics\X509\DefaultX509OptionGenerator;
 use phpseclib\Crypt\AES;
 use PHPUnit\Framework\TestCase;
@@ -23,35 +23,53 @@ use const OPENSSL_ZERO_PADDING;
 
 class CryptAndDecryptDataTest extends TestCase
 {
-    public function testFail(): void
+    public function testCryptWithPublicAndDecryptWithPrivate(): void
     {
         $generateCert            = new GenerateCertificat();
         $encrypted               = new EncrytSignatureValueWithUserPrivateKey();
         $decryptOrderDataContent = new DecryptOrderDataContent();
-        $password                = new KeyRing('myPass');
+        $keyRing                 = new KeyRing('helllooo!');
 
-        $xmlData = '<test><AuthenticationPubKeyInfo><X509Certificate>test</X509Certificate><Modulus>test</Modulus><Exponent>test</Exponent></AuthenticationPubKeyInfo><EncryptionPubKeyInfo><X509Certificate>test</X509Certificate><Modulus>test</Modulus><Exponent>test</Exponent></EncryptionPubKeyInfo></test>';
+        $certificatE = $generateCert->__invoke(new DefaultX509OptionGenerator(), $keyRing, CertificateType::e());
+        $keyRing     = $keyRing->setUserCertificateEAndX($certificatE, self::createMock(UserCertificate::class));
 
-        $certE          = $generateCert->__invoke(new DefaultX509OptionGenerator(), $password, CertificatType::e());
-        $transactionKey = $encrypted->__invoke($password, new PrivateKey($certE->getPublicKey()), $xmlData);
+        $transactionKey = $encrypted->__invoke($keyRing, $keyRing->getUserCertificateE()->getPublicKey(), '<hello></hello>');
+        $orderData      = $this->encryptOrderData('<hello></hello>');
 
-        $orderData = $this->aesCrypt((new AddRsaSha256PrefixAndReturnAsBinary())->__invoke($xmlData), gzcompress($xmlData));
+        $orderDataEncrypted = new OrderDataEncrypted($orderData, $transactionKey);
+        $xmlDocument        = new DOMDocument($decryptOrderDataContent->__invoke($keyRing->getUserCertificateE()->getPrivateKey(), $orderDataEncrypted));
 
-        $keyRing = new KeyRing('myPass');
-        $keyRing = $keyRing->setUserCertificateEAndX($certE, $certE);
-
-        self::assertXmlStringEqualsXmlString($xmlData, (new DOMDocument($decryptOrderDataContent->__invoke($keyRing, new OrderDataEncrypted($orderData, $transactionKey))))->toString());
+        self::assertXmlStringEqualsXmlString('<hello></hello>', $xmlDocument->toString());
     }
 
-    private function aesCrypt(string $key, string $cypher): string
+    public function testCryptWithPrivateAndDecryptWithPublic(): void
+    {
+        $generateCert            = new GenerateCertificat();
+        $encrypted               = new EncrytSignatureValueWithUserPrivateKey();
+        $decryptOrderDataContent = new DecryptOrderDataContent();
+        $keyRing                 = new KeyRing('helllooo!');
+
+        $certificatE = $generateCert->__invoke(new DefaultX509OptionGenerator(), $keyRing, CertificateType::e());
+        $keyRing     = $keyRing->setUserCertificateEAndX($certificatE, self::createMock(UserCertificate::class));
+
+        $transactionKey = $encrypted->__invoke($keyRing, $keyRing->getUserCertificateE()->getPrivateKey(), '<hello></hello>');
+        $orderData      = $this->encryptOrderData('<hello></hello>');
+
+        $orderDataEncrypted = new OrderDataEncrypted($orderData, $transactionKey);
+        $xmlDocument        = new DOMDocument($decryptOrderDataContent->__invoke($keyRing->getUserCertificateE()->getPublicKey(), $orderDataEncrypted));
+
+        self::assertXmlStringEqualsXmlString('<hello></hello>', $xmlDocument->toString());
+    }
+
+    private function encryptOrderData(string $key): string
     {
         $aes = new AES(AES::MODE_CBC);
         $aes->setKeyLength(128);
-        $aes->setKey($key);
+        $aes->setKey((new AddRsaSha256PrefixAndReturnAsBinary())->__invoke($key));
 
         // phpcs:ignore
         $aes->openssl_options = OPENSSL_ZERO_PADDING;
 
-        return $aes->encrypt($cypher);
+        return $aes->encrypt(gzcompress($key));
     }
 }

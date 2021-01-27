@@ -8,8 +8,8 @@ use DOMNode;
 use RuntimeException;
 use Throwable;
 
-use function assert;
 use function error_get_last;
+use function Safe\sprintf;
 use function str_replace;
 use function strlen;
 use function strpos;
@@ -59,12 +59,11 @@ class DOMDocument
     private function recrusiveChildNode(DOMNode $parentNode, string $node): ?string
     {
         foreach ($parentNode->childNodes as $element) {
-            assert($element instanceof DOMNode);
-
             $nodeName = $element->nodeName;
+            $strpos   = strpos($nodeName, ':');
 
-            if (strpos($nodeName, ':')) {
-                $nodeName = substr($nodeName, strpos($nodeName, ':') + 1, strlen($nodeName));
+            if ($strpos) {
+                $nodeName = substr($nodeName, $strpos + 1, strlen($nodeName));
             }
 
             if ($nodeName === $node) {
@@ -85,12 +84,12 @@ class DOMDocument
         return null;
     }
 
-    public function getNodeValue(string $node): string
+    public function getNodeValue(string $nodeName): string
     {
-        $node = $this->document->getElementsByTagName($node)->item(0);
+        $node = $this->document->getElementsByTagName($nodeName)->item(0);
 
         if ($node === null) {
-            throw new RuntimeException('node "' . $node . '" not found');
+            throw new RuntimeException(sprintf('node "%s" not found', $nodeName));
         }
 
         return $node->nodeValue;

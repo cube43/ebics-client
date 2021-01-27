@@ -4,25 +4,31 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics\Tests\Unit;
 
-use Cube43\Component\Ebics\CertificatType;
+use Cube43\Component\Ebics\CertificateType;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
+/**
+ * @coversDefaultClass CertificateType
+ */
 class CertificatTypeTest extends TestCase
 {
     public function testVersionConstruct(): void
     {
-        self::assertSame('A', CertificatType::a()->value());
-        self::assertSame('X', CertificatType::x()->value());
-        self::assertSame('E', CertificatType::e()->value());
-        self::assertSame('X', CertificatType::fromString('X')->value());
-        self::assertTrue(CertificatType::a()->is(CertificatType::a()));
-        self::assertTrue(CertificatType::e()->is(CertificatType::e()));
-        self::assertTrue(CertificatType::x()->is(CertificatType::x()));
-        self::assertFalse(CertificatType::x()->is(CertificatType::e()));
+        self::assertSame('A', CertificateType::a()->value());
+        self::assertSame('A006', CertificateType::a()->toString());
+        self::assertSame('X', CertificateType::x()->value());
+        self::assertSame('X002', CertificateType::x()->toString());
+        self::assertSame('E', CertificateType::e()->value());
+        self::assertSame('E002', CertificateType::e()->toString());
+        self::assertSame('X', CertificateType::fromString('X')->value());
+        self::assertTrue(CertificateType::a()->is(CertificateType::a()));
+        self::assertTrue(CertificateType::e()->is(CertificateType::e()));
+        self::assertTrue(CertificateType::x()->is(CertificateType::x()));
+        self::assertFalse(CertificateType::x()->is(CertificateType::e()));
         self::expectException(RuntimeException::class);
         self::expectExceptionMessage('unknow certificat type');
 
-        CertificatType::fromString('Z');
+        CertificateType::fromString('Z');
     }
 }

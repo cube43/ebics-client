@@ -5,7 +5,9 @@
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
          verbose="true"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+         convertErrorsToExceptions="false"
+         convertNoticesToExceptions="false"
+         convertWarningsToExceptions="false">
   <coverage>
     <include>
       <directory>src</directory>
@@ -17,9 +19,6 @@
     </testsuite>
     <testsuite name="Functional">
       <directory>tests/Functional</directory>
-    </testsuite>
-    <testsuite name="E2e">
-      <directory>tests/E2e</directory>
     </testsuite>
   </testsuites>
 </phpunit>

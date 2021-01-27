@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics;
 
+/** @psalm-immutable */
 class BankInfo
 {
     private string $hostId;
@@ -29,11 +30,6 @@ class BankInfo
     public function getUrl(): string
     {
         return $this->url;
-    }
-
-    public function isCertified(): bool
-    {
-        return true;
     }
 
     public function getVersion(): Version
