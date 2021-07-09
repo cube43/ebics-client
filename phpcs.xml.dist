@@ -11,6 +11,7 @@
 
     <file>src/</file>
     <file>tests/</file>
+    <file>bin/</file>
 
     <rule ref="Doctrine"/>
 
@@ -23,5 +24,15 @@
     <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification">
         <exclude-pattern>*</exclude-pattern>
     </rule>
+    <rule ref="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix">
+        <exclude-pattern>*</exclude-pattern>
+    </rule>
+    <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
+        <exclude-pattern>bin/*</exclude-pattern>
+    </rule>
+    <rule ref="Squiz.Classes.ClassFileName.NoMatch">
+        <exclude-pattern>bin/*</exclude-pattern>
+    </rule>
+
 
 </ruleset>

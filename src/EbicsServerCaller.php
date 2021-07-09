@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics;
 
-use Exception;
+use Cube43\Component\Ebics\Exceptions\EbicsExceptionFactory;
 use Symfony\Component\HttpClient\HttpClient as SymfonyClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -29,7 +29,7 @@ class EbicsServerCaller
         $resultXml = new DOMDocument($result);
 
         if ($resultXml->getNodeValue('ReturnCode') !== '000000') {
-            throw new Exception('Error' . $resultXml->getNodeValue('ReportText'));
+            EbicsExceptionFactory::buildExceptionFromCode($resultXml->getNodeValue('ReturnCode'), $resultXml->getNodeValue('ReportText'), $request, $result);
         }
 
         return $result;

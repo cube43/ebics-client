@@ -3,6 +3,7 @@ parameters:
     level: 8
     paths:
         - src
+        - bin
         - tests
 includes:
     - phpstan-baseline.neon
