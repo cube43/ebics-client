@@ -34,7 +34,8 @@
     "vrbata/xml-validator": "2.0.0",
     "ocramius/package-versions": "^1.9.0 || ^2.0.0",
     "vimeo/psalm": "4.13.1",
-    "symfony/console": "^5.3"
+    "symfony/console": "^5.3",
+    "roave/infection-static-analysis-plugin": "^1.12"
   },
   "autoload": {
     "psr-4": {
