@@ -197,7 +197,7 @@ class KeyRing implements JsonSerializable
             $buildBankCertificate('bankCertificateE'),
         );
     }
-    
+
     public function purgeBankCertificat(): self
     {
         return new self(
