@@ -6,9 +6,6 @@
          beStrictAboutTodoAnnotatedTests="true"
          verbose="true"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
-  <php>
-    <ini name="error_reporting" value="22527" />
-  </php>
   <coverage>
     <include>
       <directory>src</directory>
