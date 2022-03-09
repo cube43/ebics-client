@@ -49,7 +49,8 @@ class X509Generator
 
         $result = $x509->sign($issuer, $x509, 'sha256WithRSAEncryption');
 
-        return $x509->saveX509($result);
+        //  return $x509->saveX509($result);
+        return $x509->saveX509($result, X509::FORMAT_DER);
     }
 
     /**
