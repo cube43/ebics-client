@@ -93,7 +93,7 @@ class DOMDocument
             throw new RuntimeException('node "' . $node . '" not found');
         }
 
-        return $node->nodeValue;
+        return $node->nodeValue ?? '';
     }
 
     public function toString(): string

@@ -90,7 +90,7 @@ class DefaultCommand extends Command
     }
 
     /** @param string|string[]|null $value */
-    private function mustBeString(string $name, $value): string
+    private function mustBeString(string $name, string|array|null $value): string
     {
         if (is_string($value)) {
             return $value;

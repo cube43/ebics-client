@@ -7,4 +7,6 @@
 /phpstan-baseline.neon  export-ignore
 /phpunit.xml.dist       export-ignore
 /infection.json.dist    export-ignore
+/docker-compose.yml     export-ignore
+/Makefile               export-ignore
 /.*                     export-ignore

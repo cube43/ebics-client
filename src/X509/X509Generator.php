@@ -109,11 +109,9 @@ class X509Generator
     /**
      * @see X509::setExtension()
      *
-     * @param mixed|string|array<string, mixed> $options
-     *
      * @return array<string, mixed>
      */
-    private static function normalize($options): array
+    private static function normalize(mixed $options): array
     {
         $value    = null;
         $critical = false;
