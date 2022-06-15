@@ -165,7 +165,7 @@ class FDLCommandTest extends E2eTestBase
             </DataEncryptionInfo>
             <OrderData>' . $odata . '</OrderData>
         </DataTransfer>
-        <ReturnCode authenticate="true">000000</ReturnCode>
+        <ReturnCode authenticate="true">090005</ReturnCode>
     </body>
 </ebicsResponse>
 ';
@@ -193,7 +193,7 @@ class FDLCommandTest extends E2eTestBase
             </DataEncryptionInfo>
             <OrderData>' . $odata . '</OrderData>
         </DataTransfer>
-        <ReturnCode authenticate="true">000000</ReturnCode>
+        <ReturnCode authenticate="true">090005</ReturnCode>
     </body>
 </ebicsResponse>
 ';

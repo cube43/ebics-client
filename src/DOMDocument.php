@@ -10,6 +10,7 @@ use Throwable;
 
 use function assert;
 use function error_get_last;
+use function sprintf;
 use function str_replace;
 use function strlen;
 use function strpos;
@@ -85,12 +86,12 @@ class DOMDocument
         return null;
     }
 
-    public function getNodeValue(string $node): string
+    public function getNodeValue(string $nodeName, int $index = 0): string
     {
-        $node = $this->document->getElementsByTagName($node)->item(0);
+        $node = $this->document->getElementsByTagName($nodeName)->item($index);
 
         if ($node === null) {
-            throw new RuntimeException('node "' . $node . '" not found');
+            throw new RuntimeException(sprintf('node "%s" not found in %s', $nodeName, $this->toString()));
         }
 
         return $node->nodeValue ?? '';

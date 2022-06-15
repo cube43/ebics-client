@@ -16,15 +16,19 @@ use Cube43\Component\Ebics\OrderDataEncrypted;
 use Cube43\Component\Ebics\RenderXml;
 use DateTime;
 use phpseclib\Crypt\Random;
+use RuntimeException;
 
 use function base64_decode;
 use function base64_encode;
 use function bin2hex;
 use function hash;
+use function in_array;
 use function strtoupper;
 
 class FDLCommand
 {
+    private const NO_DATA = '090005';
+
     private RenderXml $renderXml;
     private EbicsServerCaller $ebicsServerCaller;
     private EncrytSignatureValueWithUserPrivateKey $cryptStringWithPasswordAndCertificat;
@@ -47,7 +51,7 @@ class FDLCommand
     {
         $ebicsServerResponse = $this->callFDL($bank, $keyRing, $FDLParams);
 
-        if ($ebicsServerResponse->getNodeValue('ReportText') === '[EBICS_OK] No download data available') {
+        if (in_array(self::NO_DATA, $this->findAllReturnCode($ebicsServerResponse))) {
             $handler(null);
 
             return;
@@ -131,5 +135,25 @@ class FDLCommand
         return new DOMDocument(
             $this->ebicsServerCaller->__invoke($this->renderXml->renderXmlRaw($search, $bank->getVersion(), 'FDL_acknowledgement.xml'), $bank)
         );
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function findAllReturnCode(DOMDocument $ebicsServerResponse): array
+    {
+        $returnCode = [];
+
+        try {
+            $returnCode[] = $ebicsServerResponse->getNodeValue('ReturnCode');
+        } catch (RuntimeException) {
+        }
+
+        try {
+            $returnCode[] = $ebicsServerResponse->getNodeValue('ReturnCode', 1);
+        } catch (RuntimeException) {
+        }
+
+        return $returnCode;
     }
 }
