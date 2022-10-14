@@ -9,12 +9,12 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class AuthenticationFailedException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '061001',
             $responseMessage,
-            'The bank is unable to verify the identification and authentication signature of an EBICS request.'
+            'The bank is unable to verify the identification and authentication signature of an EBICS request.',
         );
     }
 }

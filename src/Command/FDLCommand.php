@@ -29,16 +29,16 @@ class FDLCommand
 {
     private const NO_DATA = '090005';
 
-    private RenderXml $renderXml;
-    private EbicsServerCaller $ebicsServerCaller;
-    private EncrytSignatureValueWithUserPrivateKey $cryptStringWithPasswordAndCertificat;
-    private DecryptOrderDataContent $decryptOrderDataContent;
-    private BankPublicKeyDigest $bankPublicKeyDigest;
+    private readonly RenderXml $renderXml;
+    private readonly EbicsServerCaller $ebicsServerCaller;
+    private readonly EncrytSignatureValueWithUserPrivateKey $cryptStringWithPasswordAndCertificat;
+    private readonly DecryptOrderDataContent $decryptOrderDataContent;
+    private readonly BankPublicKeyDigest $bankPublicKeyDigest;
 
     public function __construct(
-        ?EbicsServerCaller $ebicsServerCaller = null,
-        ?EncrytSignatureValueWithUserPrivateKey $cryptStringWithPasswordAndCertificat = null,
-        ?RenderXml $renderXml = null
+        EbicsServerCaller|null $ebicsServerCaller = null,
+        EncrytSignatureValueWithUserPrivateKey|null $cryptStringWithPasswordAndCertificat = null,
+        RenderXml|null $renderXml = null,
     ) {
         $this->ebicsServerCaller                    = $ebicsServerCaller ?? new EbicsServerCaller();
         $this->cryptStringWithPasswordAndCertificat = $cryptStringWithPasswordAndCertificat ?? new EncrytSignatureValueWithUserPrivateKey();
@@ -62,9 +62,9 @@ class FDLCommand
                 $keyRing,
                 new OrderDataEncrypted(
                     $ebicsServerResponse->getNodeValue('OrderData'),
-                    base64_decode($ebicsServerResponse->getNodeValue('TransactionKey'))
-                )
-            )
+                    base64_decode($ebicsServerResponse->getNodeValue('TransactionKey')),
+                ),
+            ),
         );
 
         if (! $sendRecip) {
@@ -97,12 +97,12 @@ class FDLCommand
             $this->cryptStringWithPasswordAndCertificat->__invoke(
                 $keyRing,
                 $keyRing->getUserCertificateX()->getPrivateKey(),
-                hash('sha256', $search['{{RawSignatureValue}}'], true)
-            )
+                hash('sha256', $search['{{RawSignatureValue}}'], true),
+            ),
         );
 
         return new DOMDocument(
-            $this->ebicsServerCaller->__invoke($this->renderXml->renderXmlRaw($search, $bank->getVersion(), 'FDL.xml'), $bank)
+            $this->ebicsServerCaller->__invoke($this->renderXml->renderXmlRaw($search, $bank->getVersion(), 'FDL.xml'), $bank),
         );
     }
 
@@ -128,18 +128,16 @@ class FDLCommand
             $this->cryptStringWithPasswordAndCertificat->__invoke(
                 $keyRing,
                 $keyRing->getUserCertificateX()->getPrivateKey(),
-                hash('sha256', $search['{{RawSignatureValue}}'], true)
-            )
+                hash('sha256', $search['{{RawSignatureValue}}'], true),
+            ),
         );
 
         return new DOMDocument(
-            $this->ebicsServerCaller->__invoke($this->renderXml->renderXmlRaw($search, $bank->getVersion(), 'FDL_acknowledgement.xml'), $bank)
+            $this->ebicsServerCaller->__invoke($this->renderXml->renderXmlRaw($search, $bank->getVersion(), 'FDL_acknowledgement.xml'), $bank),
         );
     }
 
-    /**
-     * @return array<int, string>
-     */
+    /** @return array<int, string> */
     private function findAllReturnCode(DOMDocument $ebicsServerResponse): array
     {
         $returnCode = [];

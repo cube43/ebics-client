@@ -6,16 +6,11 @@ namespace Cube43\Component\Ebics\Crypt;
 
 use phpseclib\Crypt\RSA;
 
-/**
- * @internal
- */
+/** @internal */
 class ExponentAndModulus
 {
-    private RSA $rsa;
-
-    public function __construct(RSA $rsa)
+    public function __construct(private readonly RSA $rsa)
     {
-        $this->rsa = $rsa;
     }
 
     public function getExponent(): string

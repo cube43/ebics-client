@@ -9,12 +9,12 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class OrderParamsIgnoredException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '031001',
             $responseMessage,
-            'The supplied order parameters that are not supported by the bank are ignored.'
+            'The supplied order parameters that are not supported by the bank are ignored.',
         );
     }
 }

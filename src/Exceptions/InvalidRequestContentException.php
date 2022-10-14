@@ -9,12 +9,12 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class InvalidRequestContentException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091113',
             $responseMessage,
-            'The EBICS request does not conform to the XML schema definition specified for individual requests.'
+            'The EBICS request does not conform to the XML schema definition specified for individual requests.',
         );
     }
 }

@@ -56,7 +56,7 @@ class DefaultCommand extends Command
             'Please select protocol version',
             // choices can also be PHP objects that implement __toString() method
             array_keys($versionList),
-            0
+            0,
         );
 
         $versionSelected = $versionList[$helper->ask($input, $output, $question)];

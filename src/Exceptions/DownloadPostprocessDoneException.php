@@ -9,13 +9,13 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class DownloadPostprocessDoneException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '011000',
             $responseMessage,
             'The positive acknowledgment of the EBICS response that is ' .
-            'sent to the client from the server.'
+            'sent to the client from the server.',
         );
     }
 }

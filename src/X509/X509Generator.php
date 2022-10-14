@@ -53,9 +53,7 @@ class X509Generator
         return $x509->saveX509($result, X509::FORMAT_DER);
     }
 
-    /**
-     * @param array<string, mixed> $options
-     */
+    /** @param array<string, mixed> $options */
     private function generateSubject(RSA $publicKey, array $options): X509
     {
         $subject = new X509();
@@ -74,9 +72,7 @@ class X509Generator
         return $subject;
     }
 
-    /**
-     * @param array<string, mixed> $options
-     */
+    /** @param array<string, mixed> $options */
     private function generateIssuer(RSA $privateKey, RSA $publicKey, X509 $subject, array $options): X509
     {
         $issuer = new X509();
@@ -99,12 +95,12 @@ class X509Generator
     private function generateSerialNumber(): string
     {
         // prevent the first number from being 0
-        $result = rand(1, 9);
+        $result = (string) rand(1, 9);
         for ($i = 0; $i < 74; ++$i) {
-            $result .= rand(0, 9);
+            $result .= (string) rand(0, 9);
         }
 
-        return (string) $result;
+        return $result;
     }
 
     /**

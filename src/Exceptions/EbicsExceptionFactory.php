@@ -11,14 +11,12 @@ use function assert;
  */
 class EbicsExceptionFactory
 {
-    /**
-     * @throws EbicsResponseException
-     */
+    /** @throws EbicsResponseException */
     public static function buildExceptionFromCode(
         string $errorCode,
-        ?string $errorText = null,
-        ?string $request = null,
-        ?string $response = null
+        string|null $errorText = null,
+        string|null $request = null,
+        string|null $response = null,
     ): void {
         if (! empty(EbicsErrorCodeMapping::$mapping[$errorCode])) {
             $exceptionClass = EbicsErrorCodeMapping::$mapping[$errorCode];

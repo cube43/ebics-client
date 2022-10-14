@@ -15,9 +15,7 @@ use Symfony\Component\HttpClient\MockHttpClient;
 
 class HIACommandTest extends E2eTestBase
 {
-    /**
-     * @return iterable<int, array<int, Version>>
-     */
+    /** @return iterable<int, array<int, Version>> */
     public function provideVersion(): iterable
     {
         yield [Version::v24()];
@@ -34,7 +32,7 @@ class HIACommandTest extends E2eTestBase
         ];
 
         $sUT = new HIACommand(
-            new EbicsServerCaller(new MockHttpClient($this->getCallback($versionToXmlResponse[$version->value()], $version, false)))
+            new EbicsServerCaller(new MockHttpClient($this->getCallback($versionToXmlResponse[$version->value()], $version, false))),
         );
 
         $bank    = new BankInfo('myHostId', 'http://myurl.com', $version, 'myPartId', 'myUserId');

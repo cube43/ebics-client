@@ -9,13 +9,13 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class UserUnknownException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091003',
             $responseMessage,
             'The identification and authentication signature of the technical user is ' .
-            'successfully verified but the non-technical subscriber is not known to the bank.'
+            'successfully verified but the non-technical subscriber is not known to the bank.',
         );
     }
 }

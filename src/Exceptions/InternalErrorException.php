@@ -9,12 +9,12 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class InternalErrorException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '061099',
             $responseMessage,
-            'An internal error occurred when processing an EBICS request.'
+            'An internal error occurred when processing an EBICS request.',
         );
     }
 }

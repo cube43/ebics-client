@@ -12,21 +12,17 @@ use RuntimeException;
 use function define;
 use function defined;
 
-/**
- * @internal
- */
+/** @internal */
 class EncrytSignatureValueWithUserPrivateKey
 {
-    private AddRsaSha256PrefixAndReturnAsBinary $addRsaSha256PrefixAndReturnAsBinary;
+    private readonly AddRsaSha256PrefixAndReturnAsBinary $addRsaSha256PrefixAndReturnAsBinary;
 
     public function __construct()
     {
         $this->addRsaSha256PrefixAndReturnAsBinary = new AddRsaSha256PrefixAndReturnAsBinary();
     }
 
-    /**
-     * @throws RuntimeException
-     */
+    /** @throws RuntimeException */
     public function __invoke(KeyRing $keyRing, PrivateKey $key, string $hash): string
     {
         $rsa = new RSA();

@@ -7,9 +7,7 @@ namespace Cube43\Component\Ebics\Tests\Unit;
 use Cube43\Component\Ebics\OrderDataEncrypted;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass OrderDataEncrypted
- */
+/** @coversDefaultClass OrderDataEncrypted */
 class OrderDataEncryptedTest extends TestCase
 {
     public function testGetter(): void

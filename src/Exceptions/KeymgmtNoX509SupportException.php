@@ -9,13 +9,13 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class KeymgmtNoX509SupportException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091207',
             $responseMessage,
             'A public key of type X509 is sent to the bank but the bank ' .
-            'supports only public key value type.'
+            'supports only public key value type.',
         );
     }
 }

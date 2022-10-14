@@ -9,7 +9,7 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class DownloadSignedOnlyException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091001',
@@ -17,7 +17,7 @@ class DownloadSignedOnlyException extends EbicsResponseException
             'The bank system only supports bank-technically signed download ' .
             'order data for the order request. If the subscriber sets the order attributes ' .
             'to DZHNN and requests the download data without the electronic signature of ' .
-            'the bank, the transaction initialization is terminated.'
+            'the bank, the transaction initialization is terminated.',
         );
     }
 }

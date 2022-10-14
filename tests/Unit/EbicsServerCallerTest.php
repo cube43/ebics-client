@@ -12,9 +12,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Throwable;
 
-/**
- * @coversDefaultClass RequestMaker
- */
+/** @coversDefaultClass RequestMaker */
 class EbicsServerCallerTest extends TestCase
 {
     public function testOk(): void

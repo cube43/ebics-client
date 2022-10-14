@@ -8,9 +8,7 @@ use Cube43\Component\Ebics\BankInfo;
 use Cube43\Component\Ebics\Version;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass BankInfo
- */
+/** @coversDefaultClass BankInfo */
 class BankTest extends TestCase
 {
     public function testGetter(): void

@@ -14,9 +14,7 @@ use function Safe\gzuncompress;
 
 use const OPENSSL_ZERO_PADDING;
 
-/**
- * @internal
- */
+/** @internal */
 class DecryptOrderDataContent
 {
     public function __invoke(KeyRing $keyRing, OrderDataEncrypted $orderData): string

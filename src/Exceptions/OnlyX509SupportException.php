@@ -9,12 +9,12 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class OnlyX509SupportException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091217',
             $responseMessage,
-            'The bank supports evaluation of X.509 data only.'
+            'The bank supports evaluation of X.509 data only.',
         );
     }
 }

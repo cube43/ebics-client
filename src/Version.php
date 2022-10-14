@@ -9,11 +9,9 @@ class Version
     private const V24 = 'H003';
     private const V25 = 'H004';
     private const V30 = 'H005';
-    private string $value;
 
-    private function __construct(string $value)
+    private function __construct(private readonly string $value)
     {
-        $this->value = $value;
     }
 
     public static function v24(): self

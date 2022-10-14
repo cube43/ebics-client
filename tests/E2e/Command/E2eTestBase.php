@@ -26,9 +26,7 @@ use function Safe\sprintf;
 
 class E2eTestBase extends TestCase
 {
-    /**
-     * @return array<callable>
-     */
+    /** @return array<callable> */
     protected function getCallback(string $response, Version $version, bool $assertSigature): array
     {
         $callback = function ($method, $url, $options) use ($response, $version, $assertSigature) {

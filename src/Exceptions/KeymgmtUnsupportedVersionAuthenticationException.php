@@ -9,13 +9,13 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class KeymgmtUnsupportedVersionAuthenticationException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091202',
             $responseMessage,
             'When processing an HIA request, the order data contains an inadmissible ' .
-            'version of the identification and authentication signature process.'
+            'version of the identification and authentication signature process.',
         );
     }
 }

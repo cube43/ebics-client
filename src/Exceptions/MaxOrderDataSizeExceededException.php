@@ -9,12 +9,12 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class MaxOrderDataSizeExceededException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091117',
             $responseMessage,
-            'The bank does not support the requested order size.'
+            'The bank does not support the requested order size.',
         );
     }
 }

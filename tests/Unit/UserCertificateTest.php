@@ -12,9 +12,7 @@ use Cube43\Component\Ebics\PrivateKey;
 use Cube43\Component\Ebics\UserCertificate;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass Certificate
- */
+/** @coversDefaultClass Certificate */
 class UserCertificateTest extends TestCase
 {
     public function testGetter(): void

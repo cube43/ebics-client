@@ -9,9 +9,7 @@ use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
-/**
- * @coversDefaultClass FDLParams
- */
+/** @coversDefaultClass FDLParams */
 class FDLParamsTest extends TestCase
 {
     public function testFailOnEmptyFileFormat(): void

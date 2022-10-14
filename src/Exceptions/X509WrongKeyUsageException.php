@@ -9,13 +9,13 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class X509WrongKeyUsageException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091210',
             $responseMessage,
             'When verifying the certificate key usage, the bank ' .
-            'detects that the certificate is not issued for current use.'
+            'detects that the certificate is not issued for current use.',
         );
     }
 }

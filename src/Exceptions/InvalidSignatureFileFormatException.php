@@ -9,12 +9,12 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class InvalidSignatureFileFormatException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091111',
             $responseMessage,
-            'The submitted electronic signature file does not conform to the defined format.'
+            'The submitted electronic signature file does not conform to the defined format.',
         );
     }
 }

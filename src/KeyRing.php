@@ -14,27 +14,14 @@ use function Safe\json_decode;
 
 class KeyRing implements JsonSerializable
 {
-    private ?UserCertificate $userCertificateA;
-    private ?UserCertificate $userCertificateX;
-    private ?UserCertificate $userCertificateE;
-    private ?BankCertificate $bankCertificateX;
-    private ?BankCertificate $bankCertificateE;
-    private string $password;
-
     public function __construct(
-        string $password,
-        ?UserCertificate $userCertificateA = null,
-        ?UserCertificate $userCertificateX = null,
-        ?UserCertificate $userCertificateE = null,
-        ?BankCertificate $bankCertificateX = null,
-        ?BankCertificate $bankCertificateE = null
+        private readonly string $password,
+        private readonly UserCertificate|null $userCertificateA = null,
+        private readonly UserCertificate|null $userCertificateX = null,
+        private readonly UserCertificate|null $userCertificateE = null,
+        private readonly BankCertificate|null $bankCertificateX = null,
+        private readonly BankCertificate|null $bankCertificateE = null,
     ) {
-        $this->password         = $password;
-        $this->userCertificateA = $userCertificateA;
-        $this->userCertificateX = $userCertificateX;
-        $this->userCertificateE = $userCertificateE;
-        $this->bankCertificateX = $bankCertificateX;
-        $this->bankCertificateE = $bankCertificateE;
     }
 
     public function setUserCertificateA(UserCertificate $certificate): self
@@ -167,12 +154,10 @@ class KeyRing implements JsonSerializable
         return self::fromArray(json_decode(file_get_contents($file), true), $password);
     }
 
-    /**
-     * @param array<string, (array<string, string>|null)> $data
-     */
+    /** @param array<string, (array<string, string>|null)> $data */
     public static function fromArray(array $data, string $password): self
     {
-        $buildBankCertificate = static function (string $key) use ($data): ?BankCertificate {
+        $buildBankCertificate = static function (string $key) use ($data): BankCertificate|null {
             if (array_key_exists($key, $data) && ! empty($data[$key])) {
                 return BankCertificate::fromArray($data[$key]);
             }
@@ -180,7 +165,7 @@ class KeyRing implements JsonSerializable
             return null;
         };
 
-        $buildUserCertificate = static function (string $key) use ($data): ?UserCertificate {
+        $buildUserCertificate = static function (string $key) use ($data): UserCertificate|null {
             if (array_key_exists($key, $data) && ! empty($data[$key])) {
                 return UserCertificate::fromArray($data[$key]);
             }
@@ -208,9 +193,7 @@ class KeyRing implements JsonSerializable
         );
     }
 
-    /**
-     * @return array<string, (array<string, string>|null)>
-     */
+    /** @return array<string, (array<string, string>|null)> */
     public function jsonSerialize(): array
     {
         return [

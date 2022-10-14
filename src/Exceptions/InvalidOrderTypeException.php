@@ -9,12 +9,12 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class InvalidOrderTypeException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091005',
             $responseMessage,
-            'Upon verification, the bank finds that the order type specified in invalid.'
+            'Upon verification, the bank finds that the order type specified in invalid.',
         );
     }
 }

@@ -6,19 +6,13 @@ namespace Cube43\Component\Ebics;
 
 class BankInfo
 {
-    private string $hostId;
-    private string $url;
-    private Version $version;
-    private string $partnerId;
-    private string $userId;
-
-    public function __construct(string $hostId, string $url, Version $version, string $partnerId, string $userId)
-    {
-        $this->hostId    = $hostId;
-        $this->url       = $url;
-        $this->version   = $version;
-        $this->partnerId = $partnerId;
-        $this->userId    = $userId;
+    public function __construct(
+        private readonly string $hostId,
+        private readonly string $url,
+        private readonly Version $version,
+        private readonly string $partnerId,
+        private readonly string $userId,
+    ) {
     }
 
     public function getHostId(): string

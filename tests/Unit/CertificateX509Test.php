@@ -10,9 +10,7 @@ use Cube43\Component\Ebics\Tests\E2e\FakeCrypt;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
-/**
- * @coversDefaultClass Certificate
- */
+/** @coversDefaultClass Certificate */
 class CertificateX509Test extends TestCase
 {
     public function testGetter(): void

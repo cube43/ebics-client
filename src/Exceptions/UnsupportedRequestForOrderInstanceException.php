@@ -9,13 +9,13 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class UnsupportedRequestForOrderInstanceException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '090006',
             $responseMessage,
             'In the case of some business transactions, it is not possible to ' .
-            'retrieve detailed information of the order data.'
+            'retrieve detailed information of the order data.',
         );
     }
 }
