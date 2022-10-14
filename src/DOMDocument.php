@@ -8,7 +8,6 @@ use DOMNode;
 use RuntimeException;
 use Throwable;
 
-use function assert;
 use function error_get_last;
 use function sprintf;
 use function str_replace;
@@ -17,15 +16,17 @@ use function strpos;
 use function substr;
 use function trim;
 
-/**
- * @internal
- */
+/** @internal */
 class DOMDocument
 {
-    private \DOMDocument $document;
+    private readonly \DOMDocument $document;
 
     public function __construct(string $content)
     {
+        if (empty($content)) {
+            throw new RuntimeException('content is empty');
+        }
+
         $document = new \DOMDocument('1.0', 'utf-8');
         try {
             $return = @$document->loadXML($content);
@@ -57,15 +58,13 @@ class DOMDocument
         throw new RuntimeException('node "' . $node . '" not found in parent ' . $parent);
     }
 
-    private function recrusiveChildNode(DOMNode $parentNode, string $node): ?string
+    private function recrusiveChildNode(DOMNode $parentNode, string $node): string|null
     {
         foreach ($parentNode->childNodes as $element) {
-            assert($element instanceof DOMNode);
-
             $nodeName = $element->nodeName;
 
             if (strpos($nodeName, ':')) {
-                $nodeName = substr($nodeName, strpos($nodeName, ':') + 1, strlen($nodeName));
+                $nodeName = substr($nodeName, (int) strpos($nodeName, ':') + 1, strlen($nodeName));
             }
 
             if ($nodeName === $node) {

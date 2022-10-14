@@ -9,13 +9,13 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class CertificatesValidationErrorException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091219',
             $responseMessage,
             'The server is unable to match the certificate with the ' .
-            'previously declared information automatically.'
+            'previously declared information automatically.',
         );
     }
 }

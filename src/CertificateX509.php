@@ -19,10 +19,9 @@ use function wordwrap;
 
 class CertificateX509
 {
-    private X509 $x509;
-    private string $value;
+    private readonly X509 $x509;
 
-    public function __construct(string $value)
+    public function __construct(private string $value)
     {
         if (empty($value)) {
             throw new RuntimeException('x509 key is empty');
@@ -30,8 +29,6 @@ class CertificateX509
 
         $this->x509 = new X509();
         $this->x509->loadX509($value);
-
-        $this->value = $value;
     }
 
     public function value(): string
@@ -61,9 +58,7 @@ class CertificateX509
         return implode("\n", $digests);
     }
 
-    /**
-     * @internal
-     */
+    /** @internal */
     public function getSerialNumber(): string
     {
         $certificateSerialNumber = $this->x509->currentCert['tbsCertificate']['serialNumber'];
@@ -71,9 +66,7 @@ class CertificateX509
         return $certificateSerialNumber->toString();
     }
 
-    /**
-     * @internal
-     */
+    /** @internal */
     public function getInsurerName(): string
     {
         $certificateInsurerName = $this->x509->getIssuerDNProp('id-at-commonName');

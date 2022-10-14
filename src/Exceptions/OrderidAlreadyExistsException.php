@@ -9,12 +9,12 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class OrderidAlreadyExistsException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091115',
             $responseMessage,
-            'The submitted order number already exists.'
+            'The submitted order number already exists.',
         );
     }
 }

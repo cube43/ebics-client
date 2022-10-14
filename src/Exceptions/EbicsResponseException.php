@@ -6,35 +6,28 @@ namespace Cube43\Component\Ebics\Exceptions;
 
 class EbicsResponseException extends EbicsException
 {
-    private string $responseCode;
+    private string|null $request = null;
 
-    private ?string $request = null;
+    private string|null $response = null;
 
-    private ?string $response = null;
-
-    private ?string $meaning = null;
-
-    public function __construct(string $responseCode, ?string $responseMessage, ?string $meaning = null)
+    public function __construct(private string $responseCode, string|null $responseMessage, private string|null $meaning = null)
     {
         $message = $responseMessage ?: $meaning;
 
         parent::__construct((string) $message, (int) $responseCode);
-
-        $this->responseCode = $responseCode;
-        $this->meaning      = $meaning;
     }
 
-    public function getRequest(): ?string
+    public function getRequest(): string|null
     {
         return $this->request;
     }
 
-    public function getResponse(): ?string
+    public function getResponse(): string|null
     {
         return $this->response;
     }
 
-    public function getMeaning(): ?string
+    public function getMeaning(): string|null
     {
         return $this->meaning;
     }

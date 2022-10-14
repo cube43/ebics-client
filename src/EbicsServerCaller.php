@@ -10,9 +10,9 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class EbicsServerCaller
 {
-    private HttpClientInterface $httpClient;
+    private readonly HttpClientInterface $httpClient;
 
-    public function __construct(?HttpClientInterface $httpClient = null)
+    public function __construct(HttpClientInterface|null $httpClient = null)
     {
         $this->httpClient = $httpClient ?? SymfonyClient::create();
     }

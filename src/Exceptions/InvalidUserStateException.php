@@ -9,14 +9,14 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class InvalidUserStateException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091004',
             $responseMessage,
             'The identification and authentication signature of the technical user ' .
             'is successfully verified and the non-technical subscriber is known to the bank, ' .
-            'but the user is not in a ’Ready’ state.'
+            'but the user is not in a ’Ready’ state.',
         );
     }
 }

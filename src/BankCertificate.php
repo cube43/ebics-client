@@ -13,26 +13,20 @@ use function Safe\base64_decode;
 
 class BankCertificate implements JsonSerializable
 {
-    private CertificatType $type;
-    private string $publicKey;
-    private CertificateX509 $x509;
-
-    public function __construct(CertificatType $type, string $publicKey, CertificateX509 $x509)
-    {
-        $this->type      = $type;
-        $this->publicKey = $publicKey;
-        $this->x509      = $x509;
+    public function __construct(
+        private readonly CertificatType $type,
+        private readonly string $publicKey,
+        private readonly CertificateX509 $x509,
+    ) {
     }
 
-    /**
-     * @param array<string, string> $bankCertificateX
-     */
+    /** @param array<string, string> $bankCertificateX */
     public static function fromArray(array $bankCertificateX): self
     {
         return new self(
             CertificatType::fromString($bankCertificateX['type']),
             base64_decode($bankCertificateX['public']),
-            new CertificateX509(base64_decode($bankCertificateX['content']))
+            new CertificateX509(base64_decode($bankCertificateX['content'])),
         );
     }
 
@@ -59,9 +53,7 @@ class BankCertificate implements JsonSerializable
         return new ExponentAndModulus($rsa);
     }
 
-    /**
-     * @return array<string, string>
-     */
+    /** @return array<string, string> */
     public function jsonSerialize(): array
     {
         return [

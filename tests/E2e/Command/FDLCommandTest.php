@@ -21,9 +21,7 @@ use Symfony\Component\HttpClient\MockHttpClient;
 
 class FDLCommandTest extends E2eTestBase
 {
-    /**
-     * @return iterable<int, array<int, Version>>
-     */
+    /** @return iterable<int, array<int, Version>> */
     public function provideVersion(): iterable
     {
         yield [Version::v24()];
@@ -98,7 +96,7 @@ class FDLCommandTest extends E2eTestBase
         ];
 
         $sUT = new FDLCommand(
-            new EbicsServerCaller(new MockHttpClient($this->getCallback($versionToXmlResponse[$version->value()], $version, true)))
+            new EbicsServerCaller(new MockHttpClient($this->getCallback($versionToXmlResponse[$version->value()], $version, true))),
         );
 
         $bank    = new BankInfo('myHostId', 'http://myurl.com', $version, 'myPartId', 'myUserId');
@@ -109,25 +107,25 @@ class FDLCommandTest extends E2eTestBase
                 CertificatType::e(),
                 FakeCrypt::RSA_PUBLIC_KEY,
                 new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY),
-                new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
+                new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY),
             ),
             new UserCertificate(
                 CertificatType::x(),
                 FakeCrypt::RSA_PUBLIC_KEY,
                 new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY),
-                new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
-            )
+                new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY),
+            ),
         );
         $keyRing = $keyRing->setBankCertificate(
             new BankCertificate(
                 CertificatType::x(),
                 FakeCrypt::RSA_PUBLIC_KEY,
-                new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
+                new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY),
             ),
             new BankCertificate(
                 CertificatType::e(),
                 FakeCrypt::RSA_PUBLIC_KEY,
-                new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
+                new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY),
             ),
         );
 
@@ -204,7 +202,7 @@ class FDLCommandTest extends E2eTestBase
         ];
 
         $sUT = new FDLCommand(
-            new EbicsServerCaller(new MockHttpClient($this->getCallback($versionToXmlResponse[$version->value()], $version, true)))
+            new EbicsServerCaller(new MockHttpClient($this->getCallback($versionToXmlResponse[$version->value()], $version, true))),
         );
 
         $bank    = new BankInfo('myHostId', 'http://myurl.com', $version, 'myPartId', 'myUserId');
@@ -215,29 +213,29 @@ class FDLCommandTest extends E2eTestBase
                 CertificatType::e(),
                 FakeCrypt::RSA_PUBLIC_KEY,
                 new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY),
-                new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
+                new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY),
             ),
             new UserCertificate(
                 CertificatType::x(),
                 FakeCrypt::RSA_PUBLIC_KEY,
                 new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY),
-                new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
-            )
+                new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY),
+            ),
         );
         $keyRing = $keyRing->setBankCertificate(
             new BankCertificate(
                 CertificatType::x(),
                 FakeCrypt::RSA_PUBLIC_KEY,
-                new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
+                new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY),
             ),
             new BankCertificate(
                 CertificatType::e(),
                 FakeCrypt::RSA_PUBLIC_KEY,
-                new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY)
+                new CertificateX509(FakeCrypt::RSA_PUBLIC_KEY),
             ),
         );
 
-        $sUT->__invoke($bank, $keyRing, new FDLParams('test', 'FR', new DateTimeImmutable(), new DateTimeImmutable()), static function (?string $data = null): void {
+        $sUT->__invoke($bank, $keyRing, new FDLParams('test', 'FR', new DateTimeImmutable(), new DateTimeImmutable()), static function (string|null $data = null): void {
             self::assertNull($data);
         });
     }

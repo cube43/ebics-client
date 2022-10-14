@@ -9,7 +9,7 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class TxSegmentNumberExceededException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091104',
@@ -17,7 +17,7 @@ class TxSegmentNumberExceededException extends EbicsResponseException
             'The serial number of the transmitted order data segment must be ' .
             'less than or equal to the total number of data segments that are to be transmitted. ' .
             'The transaction is terminated if the number of transmitted order ' .
-            'data segments exceeds the total number of data segments.'
+            'data segments exceeds the total number of data segments.',
         );
     }
 }

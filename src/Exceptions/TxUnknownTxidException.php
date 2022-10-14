@@ -9,12 +9,12 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class TxUnknownTxidException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091101',
             $responseMessage,
-            'The supplied transaction ID is invalid.'
+            'The supplied transaction ID is invalid.',
         );
     }
 }

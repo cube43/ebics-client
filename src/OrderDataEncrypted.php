@@ -4,18 +4,13 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics;
 
-/**
- * @internal
- */
+/** @internal */
 class OrderDataEncrypted
 {
-    private string $orderData;
-    private string $transactionKey;
-
-    public function __construct(string $orderData, string $transactionKey)
-    {
-        $this->orderData      = $orderData;
-        $this->transactionKey = $transactionKey;
+    public function __construct(
+        private readonly string $orderData,
+        private readonly string $transactionKey,
+    ) {
     }
 
     public function getOrderData(): string

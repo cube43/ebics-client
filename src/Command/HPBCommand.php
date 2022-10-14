@@ -28,15 +28,15 @@ use function strtoupper;
 
 class HPBCommand
 {
-    private RenderXml $renderXml;
-    private EbicsServerCaller $ebicsServerCaller;
-    private EncrytSignatureValueWithUserPrivateKey $cryptStringWithPasswordAndCertificat;
-    private DecryptOrderDataContent $decryptOrderDataContent;
+    private readonly RenderXml $renderXml;
+    private readonly EbicsServerCaller $ebicsServerCaller;
+    private readonly EncrytSignatureValueWithUserPrivateKey $cryptStringWithPasswordAndCertificat;
+    private readonly DecryptOrderDataContent $decryptOrderDataContent;
 
     public function __construct(
-        ?EbicsServerCaller $ebicsServerCaller = null,
-        ?EncrytSignatureValueWithUserPrivateKey $cryptStringWithPasswordAndCertificat = null,
-        ?RenderXml $renderXml = null
+        EbicsServerCaller|null $ebicsServerCaller = null,
+        EncrytSignatureValueWithUserPrivateKey|null $cryptStringWithPasswordAndCertificat = null,
+        RenderXml|null $renderXml = null,
     ) {
         $this->ebicsServerCaller                    = $ebicsServerCaller ?? new EbicsServerCaller();
         $this->cryptStringWithPasswordAndCertificat = $cryptStringWithPasswordAndCertificat ?? new EncrytSignatureValueWithUserPrivateKey();
@@ -61,20 +61,20 @@ class HPBCommand
             $this->cryptStringWithPasswordAndCertificat->__invoke(
                 $keyRing,
                 $keyRing->getUserCertificateX()->getPrivateKey(),
-                hash('sha256', $search['{{RawSignatureValue}}'], true)
-            )
+                hash('sha256', $search['{{RawSignatureValue}}'], true),
+            ),
         );
 
         $ebicsServerResponse = new DOMDocument(
-            $this->ebicsServerCaller->__invoke($this->renderXml->renderXmlRaw($search, $bank->getVersion(), 'HPB.xml'), $bank)
+            $this->ebicsServerCaller->__invoke($this->renderXml->renderXmlRaw($search, $bank->getVersion(), 'HPB.xml'), $bank),
         );
 
         $decryptedResponse = $this->decryptOrderDataContent->__invoke(
             $keyRing,
             new OrderDataEncrypted(
                 $ebicsServerResponse->getNodeValue('OrderData'),
-                base64_decode($ebicsServerResponse->getNodeValue('TransactionKey'))
-            )
+                base64_decode($ebicsServerResponse->getNodeValue('TransactionKey')),
+            ),
         );
 
         $decryptedResponse = new DOMDocument($decryptedResponse);
@@ -96,7 +96,7 @@ class HPBCommand
         return new BankCertificate(
             $certificatType,
             $rsa->getPublicKey(RSA::PUBLIC_FORMAT_PKCS1),
-            new CertificateX509(bin2hex(base64_decode($decrypted->getNodeValueChildOf('X509Certificate', $parentNode))))
+            new CertificateX509(bin2hex(base64_decode($decrypted->getNodeValueChildOf('X509Certificate', $parentNode)))),
         );
     }
 }

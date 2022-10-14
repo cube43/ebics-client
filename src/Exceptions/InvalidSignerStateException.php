@@ -9,12 +9,12 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class InvalidSignerStateException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091305',
             $responseMessage,
-            'The state of the signatory is not admissible.'
+            'The state of the signatory is not admissible.',
         );
     }
 }

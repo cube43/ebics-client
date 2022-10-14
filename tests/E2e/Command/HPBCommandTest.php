@@ -19,9 +19,7 @@ use Symfony\Component\HttpClient\MockHttpClient;
 
 class HPBCommandTest extends E2eTestBase
 {
-    /**
-     * @return iterable<int, array<int, Version>>
-     */
+    /** @return iterable<int, array<int, Version>> */
     public function provideVersion(): iterable
     {
         yield [Version::v24()];
@@ -42,7 +40,7 @@ class HPBCommandTest extends E2eTestBase
         ];
 
         $sUT = new HPBCommand(
-            new EbicsServerCaller(new MockHttpClient($this->getCallback($versionToXmlResponse[$version->value()], $version, true)))
+            new EbicsServerCaller(new MockHttpClient($this->getCallback($versionToXmlResponse[$version->value()], $version, true))),
         );
 
         $bank    = new BankInfo('myHostId', 'http://myurl.com', $version, 'myPartId', 'myUserId');
@@ -53,14 +51,14 @@ class HPBCommandTest extends E2eTestBase
                 CertificatType::e(),
                 FakeCrypt::RSA_PUBLIC_KEY,
                 new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY),
-                new CertificateX509(FakeCrypt::X509_PUBLIC)
+                new CertificateX509(FakeCrypt::X509_PUBLIC),
             ),
             new UserCertificate(
                 CertificatType::x(),
                 FakeCrypt::RSA_PUBLIC_KEY,
                 new PrivateKey(FakeCrypt::RSA_PRIVATE_KEY),
-                new CertificateX509(FakeCrypt::X509_PUBLIC)
-            )
+                new CertificateX509(FakeCrypt::X509_PUBLIC),
+            ),
         );
 
         $keyRing = $sUT->__invoke($bank, $keyRing);

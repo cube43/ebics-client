@@ -9,12 +9,12 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class InvalidUserOrUserStateException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091002',
             $responseMessage,
-            'Error that results from an invalid combination of user ID or an invalid subscriber state.'
+            'Error that results from an invalid combination of user ID or an invalid subscriber state.',
         );
     }
 }

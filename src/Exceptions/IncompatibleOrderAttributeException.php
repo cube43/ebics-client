@@ -9,7 +9,7 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class IncompatibleOrderAttributeException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091121',
@@ -19,7 +19,7 @@ class IncompatibleOrderAttributeException extends EbicsResponseException
             '(for example, with the attribute UZHNN) for the same order, then the use of the order ' .
             'attributes DZHNN is not allowed. Also, if the bank already has the same order and the ' .
             'order was transmitted with the order attributes DZHNN, then again the use of the order ' .
-            'attributes DZHNN is not allowed.'
+            'attributes DZHNN is not allowed.',
         );
     }
 }

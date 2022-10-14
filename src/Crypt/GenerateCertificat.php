@@ -17,14 +17,12 @@ use RuntimeException;
 use function array_key_exists;
 use function sprintf;
 
-/**
- * @internal
- */
+/** @internal */
 class GenerateCertificat
 {
-    private X509Generator $x509Generator;
+    private readonly X509Generator $x509Generator;
 
-    public function __construct(?X509Generator $x509Generator = null)
+    public function __construct(X509Generator|null $x509Generator = null)
     {
         $this->x509Generator = $x509Generator ?? new X509Generator();
     }
@@ -63,7 +61,7 @@ class GenerateCertificat
             $type,
             $keys['publickey'],
             new PrivateKey($keys['privatekey']),
-            new CertificateX509($this->x509Generator->__invoke($privateKey, $publicKey, $type, $x509CertificatOptionsGenerator))
+            new CertificateX509($this->x509Generator->__invoke($privateKey, $publicKey, $type, $x509CertificatOptionsGenerator)),
         );
     }
 }

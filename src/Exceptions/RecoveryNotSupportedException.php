@@ -9,13 +9,13 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class RecoveryNotSupportedException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091105',
             $responseMessage,
             'If the bank does not support transaction recovery, ' .
-            'the upload transaction is terminated.'
+            'the upload transaction is terminated.',
         );
     }
 }

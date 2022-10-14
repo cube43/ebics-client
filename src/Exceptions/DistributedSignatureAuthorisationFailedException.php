@@ -9,13 +9,13 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class DistributedSignatureAuthorisationFailedException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091007',
             $responseMessage,
             'Subscriber possesses no authorization of signature for ' .
-            'the referenced order in the VEU administration.'
+            'the referenced order in the VEU administration.',
         );
     }
 }

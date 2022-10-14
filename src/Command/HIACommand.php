@@ -20,21 +20,21 @@ use function Safe\gzcompress;
 
 class HIACommand
 {
-    private EbicsServerCaller $httpClient;
-    private GenerateCertificat $generateCertificat;
-    private RenderXml $renderXml;
+    private readonly EbicsServerCaller $httpClient;
+    private readonly GenerateCertificat $generateCertificat;
+    private readonly RenderXml $renderXml;
 
     public function __construct(
-        ?EbicsServerCaller $httpClient = null,
-        ?GenerateCertificat $generateCertificat = null,
-        ?RenderXml $renderXml = null
+        EbicsServerCaller|null $httpClient = null,
+        GenerateCertificat|null $generateCertificat = null,
+        RenderXml|null $renderXml = null,
     ) {
         $this->httpClient         = $httpClient ?? new EbicsServerCaller();
         $this->generateCertificat = $generateCertificat ?? new GenerateCertificat();
         $this->renderXml          = $renderXml ?? new RenderXml();
     }
 
-    public function __invoke(BankInfo $bank, KeyRing $keyRing, X509CertificatOptionsGenerator $x509CertificatOptionsGenerator, ?string $orderId = null): KeyRing
+    public function __invoke(BankInfo $bank, KeyRing $keyRing, X509CertificatOptionsGenerator $x509CertificatOptionsGenerator, string|null $orderId = null): KeyRing
     {
         if ($orderId !== null && ! $bank->getVersion()->is(Version::v24())) {
             throw new RuntimeException('OrderID only avaiable on ebics 2.4');
@@ -46,7 +46,7 @@ class HIACommand
 
         $keyRing = $keyRing->setUserCertificateEAndX(
             $this->generateCertificat->__invoke($x509CertificatOptionsGenerator, $keyRing, CertificatType::e()),
-            $this->generateCertificat->__invoke($x509CertificatOptionsGenerator, $keyRing, CertificatType::x())
+            $this->generateCertificat->__invoke($x509CertificatOptionsGenerator, $keyRing, CertificatType::x()),
         );
 
         $search = [

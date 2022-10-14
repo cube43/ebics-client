@@ -9,12 +9,12 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class SegmentSizeExceededException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091009',
             $responseMessage,
-            'If the size of the transmitted order data segment exceeds 1 MB, the transaction is terminated.'
+            'If the size of the transmitted order data segment exceeds 1 MB, the transaction is terminated.',
         );
     }
 }

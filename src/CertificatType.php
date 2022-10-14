@@ -10,15 +10,11 @@ use function in_array;
 
 class CertificatType
 {
-    private string $type;
-
-    private function __construct(string $type)
+    private function __construct(private readonly string $type)
     {
         if (! in_array($type, ['A', 'E', 'X'])) {
             throw new RuntimeException('unknow certificat type');
         }
-
-        $this->type = $type;
     }
 
     public static function a(): self

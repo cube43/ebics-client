@@ -9,13 +9,12 @@ use RuntimeException;
 
 class FDLParams
 {
-    private string $fileFormat;
-    private string $countryCode;
-    private DateTimeImmutable $startDate;
-    private DateTimeImmutable $endDate;
-
-    public function __construct(string $fileFormat, string $countryCode, DateTimeImmutable $startDate, DateTimeImmutable $endDate)
-    {
+    public function __construct(
+        private readonly string $fileFormat,
+        private readonly string $countryCode,
+        private readonly DateTimeImmutable $startDate,
+        private readonly DateTimeImmutable $endDate,
+    ) {
         if (empty($fileFormat)) {
             throw new RuntimeException('fileFormat is empty');
         }
@@ -23,11 +22,6 @@ class FDLParams
         if (empty($countryCode)) {
             throw new RuntimeException('countryCode is empty');
         }
-
-        $this->fileFormat  = $fileFormat;
-        $this->countryCode = $countryCode;
-        $this->startDate   = $startDate;
-        $this->endDate     = $endDate;
     }
 
     public function fileFormat(): string

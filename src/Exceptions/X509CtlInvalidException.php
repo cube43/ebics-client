@@ -9,13 +9,13 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class X509CtlInvalidException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091213',
             $responseMessage,
             'When verifying the certificate, the bank detects ' .
-            'that the certificate trust list (CTL) is not valid.'
+            'that the certificate trust list (CTL) is not valid.',
         );
     }
 }

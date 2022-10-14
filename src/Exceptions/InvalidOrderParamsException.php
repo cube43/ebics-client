@@ -9,7 +9,7 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class InvalidOrderParamsException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091112',
@@ -19,7 +19,7 @@ class InvalidOrderParamsException extends EbicsResponseException
             'position in the original order file that marks the starting point of the transaction ' .
             'details to be transmitted. The order details after the specified offset position are returned. ' .
             'If the value specified for offset is higher than the total number of order ' .
-            'details, the error EBICS_INVALID_ORDER_PARAMS is returned.'
+            'details, the error EBICS_INVALID_ORDER_PARAMS is returned.',
         );
     }
 }

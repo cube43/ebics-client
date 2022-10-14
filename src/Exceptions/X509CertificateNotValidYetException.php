@@ -9,12 +9,12 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class X509CertificateNotValidYetException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091209',
             $responseMessage,
-            'The certificate is not valid because it is not yet in effect.'
+            'The certificate is not valid because it is not yet in effect.',
         );
     }
 }

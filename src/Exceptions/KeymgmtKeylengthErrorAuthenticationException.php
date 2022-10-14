@@ -9,13 +9,13 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class KeymgmtKeylengthErrorAuthenticationException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091205',
             $responseMessage,
             'When processing an HIA request, the order data contains an identification ' .
-            'and authentication key of inadmissible length.'
+            'and authentication key of inadmissible length.',
         );
     }
 }

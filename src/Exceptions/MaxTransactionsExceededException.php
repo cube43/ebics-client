@@ -9,12 +9,12 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class MaxTransactionsExceededException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091119',
             $responseMessage,
-            'The maximum number of parallel transactions per customer is exceeded.'
+            'The maximum number of parallel transactions per customer is exceeded.',
         );
     }
 }

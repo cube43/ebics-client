@@ -20,21 +20,21 @@ use function Safe\gzcompress;
 
 class INICommand
 {
-    private EbicsServerCaller $ebicsServerCaller;
-    private GenerateCertificat $generateCertificat;
-    private RenderXml $renderXml;
+    private readonly EbicsServerCaller $ebicsServerCaller;
+    private readonly GenerateCertificat $generateCertificat;
+    private readonly RenderXml $renderXml;
 
     public function __construct(
-        ?EbicsServerCaller $ebicsServerCaller = null,
-        ?GenerateCertificat $generateCertificat = null,
-        ?RenderXml $renderXml = null
+        EbicsServerCaller|null $ebicsServerCaller = null,
+        GenerateCertificat|null $generateCertificat = null,
+        RenderXml|null $renderXml = null,
     ) {
         $this->ebicsServerCaller  = $ebicsServerCaller ?? new EbicsServerCaller();
         $this->generateCertificat = $generateCertificat ?? new GenerateCertificat();
         $this->renderXml          = $renderXml ?? new RenderXml();
     }
 
-    public function __invoke(BankInfo $bank, KeyRing $keyRing, X509CertificatOptionsGenerator $x509CertificatOptionsGenerator, ?string $orderId = null): KeyRing
+    public function __invoke(BankInfo $bank, KeyRing $keyRing, X509CertificatOptionsGenerator $x509CertificatOptionsGenerator, string|null $orderId = null): KeyRing
     {
         if ($orderId !== null && ! $bank->getVersion()->is(Version::v24())) {
             throw new RuntimeException('OrderID only avaiable on ebics 2.4');

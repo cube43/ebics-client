@@ -9,12 +9,12 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class MaxSegmentsExceededException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091118',
             $responseMessage,
-            'The submitted number of segments for upload is very high.'
+            'The submitted number of segments for upload is very high.',
         );
     }
 }

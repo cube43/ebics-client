@@ -9,12 +9,12 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class X509InvalidBasicConstraintsException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091216',
             $responseMessage,
-            'The basic constraints are not valid when determining certificate verification.'
+            'The basic constraints are not valid when determining certificate verification.',
         );
     }
 }

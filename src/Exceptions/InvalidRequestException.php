@@ -9,12 +9,12 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class InvalidRequestException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '061002',
             $responseMessage,
-            'The received EBICS XML message does not conform to the EBICS specifications.'
+            'The received EBICS XML message does not conform to the EBICS specifications.',
         );
     }
 }

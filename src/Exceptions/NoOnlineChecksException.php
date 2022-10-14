@@ -9,13 +9,13 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class NoOnlineChecksException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '011301',
             $responseMessage,
             'The bank does not principally support preliminary verification of orders but ' .
-            'the EBICS request contains data for preliminary verification of the order.'
+            'the EBICS request contains data for preliminary verification of the order.',
         );
     }
 }

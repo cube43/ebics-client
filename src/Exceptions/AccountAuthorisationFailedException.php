@@ -9,12 +9,12 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 class AccountAuthorisationFailedException extends EbicsResponseException
 {
-    public function __construct(?string $responseMessage = null)
+    public function __construct(string|null $responseMessage = null)
     {
         parent::__construct(
             '091302',
             $responseMessage,
-            'Preliminary verification of the account authorization has failed.'
+            'Preliminary verification of the account authorization has failed.',
         );
     }
 }

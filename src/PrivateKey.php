@@ -6,20 +6,14 @@ namespace Cube43\Component\Ebics;
 
 use RuntimeException;
 
-/**
- * @internal
- */
+/** @internal */
 class PrivateKey
 {
-    private string $value;
-
-    public function __construct(string $value)
+    public function __construct(private readonly string $value)
     {
         if (empty($value)) {
             throw new RuntimeException('private key is empty');
         }
-
-        $this->value = $value;
     }
 
     public function value(): string
