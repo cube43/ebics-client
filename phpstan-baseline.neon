@@ -1,7 +1,7 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$str of function base64_encode expects string, string\\|false given\\.$#"
+			message: "#^Parameter \\#2 \\$digestValue of closure expects string, string\\|null given\\.$#"
 			count: 1
-			path: src/Command/INICommand.php
+			path: tests/E2e/Command/E2eTestBase.php
 

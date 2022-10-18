@@ -8,6 +8,7 @@ use Cube43\Component\Ebics\BankCertificate;
 use Cube43\Component\Ebics\BankInfo;
 use Cube43\Component\Ebics\CertificateX509;
 use Cube43\Component\Ebics\CertificatType;
+use Cube43\Component\Ebics\Command\FDLAknowledgementCommand;
 use Cube43\Component\Ebics\Command\FDLCommand;
 use Cube43\Component\Ebics\EbicsServerCaller;
 use Cube43\Component\Ebics\FDLParams;
@@ -132,6 +133,12 @@ class FDLCommandTest extends E2eTestBase
         $response = $sUT->__invoke($bank, $keyRing, new FDLParams('test', 'FR', new DateTimeImmutable(), new DateTimeImmutable()));
 
         self::assertSame($response->data, '<test><AuthenticationPubKeyInfo><X509Certificate>test</X509Certificate><Modulus>test</Modulus><Exponent>test</Exponent></AuthenticationPubKeyInfo><EncryptionPubKeyInfo><X509Certificate>test</X509Certificate><Modulus>test</Modulus><Exponent>test</Exponent></EncryptionPubKeyInfo></test>');
+
+        $sUTA = new FDLAknowledgementCommand(
+            new EbicsServerCaller(new MockHttpClient($this->getCallback($versionToXmlResponse[$version->value()], $version, true))),
+        );
+
+        $sUTA->__invoke($response);
     }
 
     /** @dataProvider provideVersion */
