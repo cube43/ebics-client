@@ -94,13 +94,15 @@ Once INI, HIA and HPB have been run your good to use ebics protocol.
 ```php
 <?php
 
-$keyring = (new \Cube43\Component\Ebics\Command\FDLCommand())->__invoke($bankInfo, $keyring, new FDLParams($fdlFromBank, 'FR', new DateTimeImmutable(), new DateTimeImmutable()), function (string $data = null): void {
-    if ($data === null) {
-        var_dump('no file');
-    } else {
-        var_dump('file : ', $file);
-    }
-});
+$response = (new \Cube43\Component\Ebics\Command\FDLCommand())->__invoke($bankInfo, $keyring, new FDLParams($fdlFromBank, 'FR', new DateTimeImmutable(), new DateTimeImmutable()));
+
+if ($response->data === null) {
+    var_dump('no file');
+} else {
+    var_dump('file : ', $response->data);
+}
+    
+$response = (new \Cube43\Component\Ebics\Command\FDLAknowledgementCommand())->__invoke($response);
 
 ```
 

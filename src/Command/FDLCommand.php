@@ -47,17 +47,19 @@ class FDLCommand
         $this->bankPublicKeyDigest                  = new BankPublicKeyDigest();
     }
 
-    public function __invoke(BankInfo $bank, KeyRing $keyRing, FDLParams $FDLParams, callable $handler, bool $sendRecip = false): void
+    public function __invoke(BankInfo $bank, KeyRing $keyRing, FDLParams $FDLParams): FDLResponse
     {
         $ebicsServerResponse = $this->callFDL($bank, $keyRing, $FDLParams);
 
         if (in_array(self::NO_DATA, $this->findAllReturnCode($ebicsServerResponse))) {
-            $handler(null);
-
-            return;
+            return new FDLResponse($bank, $keyRing, $FDLParams, $ebicsServerResponse, null);
         }
 
-        $handler(
+        return new FDLResponse(
+            $bank,
+            $keyRing,
+            $FDLParams,
+            $ebicsServerResponse,
             $this->decryptOrderDataContent->__invoke(
                 $keyRing,
                 new OrderDataEncrypted(
@@ -66,12 +68,6 @@ class FDLCommand
                 ),
             ),
         );
-
-        if (! $sendRecip) {
-            return;
-        }
-
-        $this->callAknow($bank, $keyRing, $FDLParams, $ebicsServerResponse);
     }
 
     private function callFDL(BankInfo $bank, KeyRing $keyRing, FDLParams $FDLParams): DOMDocument
@@ -103,37 +99,6 @@ class FDLCommand
 
         return new DOMDocument(
             $this->ebicsServerCaller->__invoke($this->renderXml->renderXmlRaw($search, $bank->getVersion(), 'FDL.xml'), $bank),
-        );
-    }
-
-    private function callAknow(BankInfo $bank, KeyRing $keyRing, FDLParams $FDLParams, DOMDocument $response): DOMDocument
-    {
-        $search = [
-            '{{TransactionID}}' => $response->getNodeValue('TransactionID'),
-            '{{HostID}}' => $bank->getHostId(),
-            '{{Nonce}}' => strtoupper(bin2hex(Random::string(16))),
-            '{{Timestamp}}' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
-            '{{PartnerID}}' => $bank->getPartnerId(),
-            '{{UserID}}' => $bank->getUserId(),
-            '{{BankPubKeyDigestsEncryption}}' => $this->bankPublicKeyDigest->__invoke($keyRing->getBankCertificateE()),
-            '{{BankPubKeyDigestsAuthentication}}' => $this->bankPublicKeyDigest->__invoke($keyRing->getBankCertificateX()),
-            '{{FileFormat}}' => $FDLParams->fileFormat(),
-            '{{CountryCode}}' => $FDLParams->countryCode(),
-        ];
-
-        $search['{{rawDigest}}']         = $this->renderXml->renderXmlRaw($search, $bank->getVersion(), 'FDL_aknowledgement_digest.xml');
-        $search['{{DigestValue}}']       = base64_encode(hash('sha256', $search['{{rawDigest}}'], true));
-        $search['{{RawSignatureValue}}'] = $this->renderXml->renderXmlRaw($search, $bank->getVersion(), 'FDL_aknowlgement_SignatureValue.xml');
-        $search['{{SignatureValue}}']    = base64_encode(
-            $this->cryptStringWithPasswordAndCertificat->__invoke(
-                $keyRing,
-                $keyRing->getUserCertificateX()->getPrivateKey(),
-                hash('sha256', $search['{{RawSignatureValue}}'], true),
-            ),
-        );
-
-        return new DOMDocument(
-            $this->ebicsServerCaller->__invoke($this->renderXml->renderXmlRaw($search, $bank->getVersion(), 'FDL_acknowledgement.xml'), $bank),
         );
     }
 
