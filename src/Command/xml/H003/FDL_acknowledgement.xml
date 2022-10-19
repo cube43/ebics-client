@@ -2,5 +2,9 @@
 <ebicsRequest xmlns="http://www.ebics.org/H003" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Version="H003" Revision="1">
     {{rawDigest}}
     <AuthSignature>{{RawSignatureValue}}<ds:SignatureValue>{{SignatureValue}}</ds:SignatureValue></AuthSignature>
-    <body/>
+    <body>
+        <TransferReceipt authenticate="true">
+            <ReceiptCode>0</ReceiptCode>
+        </TransferReceipt>
+    </body>
 </ebicsRequest>

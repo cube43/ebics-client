@@ -24,6 +24,7 @@ class HPBCommandTest extends E2eTestBase
     {
         yield [Version::v24()];
         yield [Version::v25()];
+        //yield [Version::v30()];
     }
 
     /** @dataProvider provideVersion */
