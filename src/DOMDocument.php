@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics;
 
+use DOMElement;
 use DOMNode;
+use DOMXPath;
 use RuntimeException;
 use Throwable;
 
@@ -96,6 +98,18 @@ class DOMDocument
         return $node->nodeValue ?? '';
     }
 
+    public function getLastNodeValue(string $nodeName): string
+    {
+        $nodeList = $this->document->getElementsByTagName($nodeName);
+        $node     = $nodeList->item($nodeList->count() - 1);
+
+        if ($node === null) {
+            throw new RuntimeException(sprintf('node "%s" not found in %s', $nodeName, $this->toString()));
+        }
+
+        return $node->nodeValue ?? '';
+    }
+
     public function toString(): string
     {
         $this->document->preserveWhiteSpace = false;
@@ -115,5 +129,25 @@ class DOMDocument
         $this->document->formatOutput = true;
 
         return (string) $this->document->saveXML();
+    }
+
+    public function prepareXPath(): DOMXPath
+    {
+        return new \DOMXpath($this->document);
+    }
+
+    public function createElement(string $name): DOMElement
+    {
+        return $this->document->createElement($name);
+    }
+
+    public function createElementNS(string $namespace, string $qualifiedName): DOMElement
+    {
+        return $this->document->createElementNS($namespace, $qualifiedName);
+    }
+
+    public function getDocument(): \DOMDocument
+    {
+        return $this->document;
     }
 }
