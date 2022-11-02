@@ -64,7 +64,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-fixfdl": "0.7"
+      "dev-fixfdl": "0.7-dev"
     }
   }
 }
