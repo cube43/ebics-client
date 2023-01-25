@@ -23,7 +23,7 @@
     "ext-zlib": "*",
     "ext-json": "*",
     "phpseclib/phpseclib": "^2.0.41",
-    "symfony/http-client": "^6.2.2",
+    "symfony/http-client": "^6.2.5",
     "thecodingmachine/safe": "^2.1"
   },
   "require-dev": {
