@@ -8,9 +8,11 @@ PHP library to communicate with bank through EBICS protocol.
 [![License](https://poser.pugx.org/cube43/ebics-client/license)](https://packagist.org/packages/cube43/ebics-client)
 
 ## License
+
 cube43/ebics-client is licensed under the MIT License, see the LICENSE file for details
 
 ## Note
+
 This library is a refactoring of andrew-svirin/ebics-client-php to allow multiple protocol version + unit test and E2e test
 
 Ebics protocol version supported :
@@ -34,10 +36,9 @@ This library work only with X509 certified communication
 composer require cube43/ebics-client
 ```
 
-
 ## Initialize client
 
-You will need to have this informations from your Bank : 
+You will need to have this informations from your Bank :
 
 - HostID
 - HostURL
@@ -128,10 +129,9 @@ $keyring = \Cube43\Component\Ebics\KeyRing::fromArray($keyringAsArray, 'myPasswo
 
 ## good to know
 
-This website provide an ebics server testing environnement : https://software.elcimai.com/efs/accueil-qualif.jsp 
+This website provide an ebics server testing environnement : <https://software.elcimai.com/efs/accueil-qualif.jsp>
 
-
-# Full sample to generate certificate and get letter
+## Full sample to generate certificate and get letter
 
 ```php
 <?php
@@ -201,9 +201,9 @@ echo '
 ';
 ```
 
-# Working with Doctrine2 instead of file
+## Working with Doctrine2 instead of file
 
-```php 
+```php
 /**
  * @ORM\Table(name="ebics")
  * @ORM\Entity()
