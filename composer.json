@@ -22,7 +22,7 @@
     "ext-openssl": "*",
     "ext-zlib": "*",
     "ext-json": "*",
-    "phpseclib/phpseclib": "^2.0.44",
+    "phpseclib/phpseclib": "^2.0.45",
     "symfony/http-client": "^6.3.2",
     "thecodingmachine/safe": "^2.5"
   },
