@@ -19,7 +19,7 @@ class FDLAknowledgementCommand
     private readonly RenderXml $renderXml;
     private readonly EbicsServerCaller $ebicsServerCaller;
     private readonly BankPublicKeyDigest $bankPublicKeyDigest;
-    private readonly SignQuery|null $signQuery;
+    private readonly SignQuery $signQuery;
 
     public function __construct(
         EbicsServerCaller|null $ebicsServerCaller = null,
