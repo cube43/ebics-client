@@ -4,6 +4,16 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics\Exceptions;
 
+use Cube43\Component\Ebics\Exceptions\X509\X509CertificateExpiredException;
+use Cube43\Component\Ebics\Exceptions\X509\X509CertificateNotValidYetException;
+use Cube43\Component\Ebics\Exceptions\X509\X509CtlInvalidException;
+use Cube43\Component\Ebics\Exceptions\X509\X509InvalidBasicConstraintsException;
+use Cube43\Component\Ebics\Exceptions\X509\X509InvalidPolicyException;
+use Cube43\Component\Ebics\Exceptions\X509\X509InvalidThumbprintException;
+use Cube43\Component\Ebics\Exceptions\X509\X509UnknownCertificateAuthorityException;
+use Cube43\Component\Ebics\Exceptions\X509\X509WrongAlgorithmException;
+use Cube43\Component\Ebics\Exceptions\X509\X509WrongKeyUsageException;
+
 /**
  * Mapping class between error code and exception classes. @see \Cube43\Component\Ebics\Exceptions\EbicsExceptionFactory
  */

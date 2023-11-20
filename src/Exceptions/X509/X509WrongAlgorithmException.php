@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Cube43\Component\Ebics\Exceptions;
+namespace Cube43\Component\Ebics\Exceptions\X509;
+
+use Cube43\Component\Ebics\Exceptions\EbicsResponseException;
 
 /**
  * X509WrongAlgorithmException used for 091211 EBICS error
