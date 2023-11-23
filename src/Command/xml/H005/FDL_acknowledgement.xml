@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ebicsRequest xmlns="urn:org:ebics:H005" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Version="H005" Revision="1">
+    <header authenticate="true">
+        <static>
+            <HostID>{{HostID}}</HostID>
+            <TransactionID>{{TransactionID}}</TransactionID>
+        </static>
+        <mutable>
+            <TransactionPhase>Receipt</TransactionPhase>
+        </mutable>
+    </header>
+    <body>
+        <TransferReceipt authenticate="true">
+            <ReceiptCode>0</ReceiptCode>
+        </TransferReceipt>
+    </body>
+</ebicsRequest>
