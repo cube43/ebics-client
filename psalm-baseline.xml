@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.29.0@7ec5ffbd5f68ae03782d7fd33fff0c45a69f95b3">
-    <file src="src/X509/DefaultX509OptionGenerator.php">
-        <ImpureMethodCall occurrences="2">
-            <code>new DateTimeImmutable()</code>
-            <code>new DateTimeImmutable()</code>
-        </ImpureMethodCall>
-    </file>
+<files psalm-version="5.17.0@c620f6e80d0abfca532b00bda366062aaedf6e5d">
+  <file src="src/Crypt/SignQuery.php">
+    <InvalidReturnStatement>
+      <code>$domNode</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
+      <code>DOMNode</code>
+    </InvalidReturnType>
+  </file>
+  <file src="src/DOMDocument.php">
+    <InvalidClass>
+      <code>\DOMXpath</code>
+    </InvalidClass>
+  </file>
+  <file src="src/X509/DefaultX509OptionGenerator.php">
+    <ImpureMethodCall>
+      <code>new DateTimeImmutable()</code>
+      <code>new DateTimeImmutable()</code>
+    </ImpureMethodCall>
+  </file>
 </files>
