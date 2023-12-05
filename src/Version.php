@@ -32,21 +32,6 @@ class Version
         return new self(self::V30);
     }
 
-    public static function v24Svirin(): self
-    {
-        return new self(self::V24_SVIRIN);
-    }
-
-    public static function v25Svirin(): self
-    {
-        return new self(self::V25_SVIRIN);
-    }
-
-    public static function v30Svirin(): self
-    {
-        return new self(self::V30_SVIRIN);
-    }
-
     public function is(Version $version): bool
     {
         return $version->value === $this->value;
