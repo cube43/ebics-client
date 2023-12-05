@@ -12,8 +12,8 @@ class FDLParams
     public function __construct(
         private readonly string $fileFormat,
         private readonly string $countryCode,
-        private readonly DateTimeImmutable $startDate,
-        private readonly DateTimeImmutable $endDate,
+        private readonly DateTimeImmutable|null $startDate,
+        private readonly DateTimeImmutable|null $endDate,
     ) {
         if (empty($fileFormat)) {
             throw new RuntimeException('fileFormat is empty');
@@ -34,12 +34,12 @@ class FDLParams
         return $this->countryCode;
     }
 
-    public function getStartDate(): DateTimeImmutable
+    public function getStartDate(): DateTimeImmutable|null
     {
         return $this->startDate;
     }
 
-    public function getEndDate(): DateTimeImmutable
+    public function getEndDate(): DateTimeImmutable|null
     {
         return $this->endDate;
     }

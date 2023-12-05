@@ -12,10 +12,7 @@
                 <OrderType>FDL</OrderType>
                 <OrderAttribute>DZHNN</OrderAttribute>
                 <FDLOrderParams>
-                    <DateRange>
-                        <Start>{{StartDate}}</Start>
-                        <End>{{EndDate}}</End>
-                    </DateRange>
+                    {{DateRange}}
                     <FileFormat CountryCode="{{CountryCode}}">{{FileFormat}}</FileFormat>
                 </FDLOrderParams>
             </OrderDetails>

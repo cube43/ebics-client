@@ -9,7 +9,6 @@ use Cube43\Component\Ebics\BankInfo;
 use Cube43\Component\Ebics\CertificateX509;
 use Cube43\Component\Ebics\CertificatType;
 use Cube43\Component\Ebics\Crypt\DecryptOrderDataContent;
-use Cube43\Component\Ebics\Crypt\EncrytSignatureValueWithUserPrivateKey;
 use Cube43\Component\Ebics\Crypt\SignQuery;
 use Cube43\Component\Ebics\DOMDocument;
 use Cube43\Component\Ebics\EbicsServerCaller;
@@ -29,21 +28,18 @@ class HPBCommand
 {
     private readonly RenderXml $renderXml;
     private readonly EbicsServerCaller $ebicsServerCaller;
-    private readonly EncrytSignatureValueWithUserPrivateKey $cryptStringWithPasswordAndCertificat;
     private readonly DecryptOrderDataContent $decryptOrderDataContent;
-    private readonly SignQuery|null $signQuery;
+    private readonly SignQuery $signQuery;
 
     public function __construct(
         EbicsServerCaller|null $ebicsServerCaller = null,
-        EncrytSignatureValueWithUserPrivateKey|null $cryptStringWithPasswordAndCertificat = null,
         RenderXml|null $renderXml = null,
         SignQuery|null $signQuery = null,
     ) {
-        $this->ebicsServerCaller                    = $ebicsServerCaller ?? new EbicsServerCaller();
-        $this->cryptStringWithPasswordAndCertificat = $cryptStringWithPasswordAndCertificat ?? new EncrytSignatureValueWithUserPrivateKey();
-        $this->renderXml                            = $renderXml ?? new RenderXml();
-        $this->decryptOrderDataContent              = new DecryptOrderDataContent();
-        $this->signQuery                            = $signQuery ?? new SignQuery();
+        $this->ebicsServerCaller       = $ebicsServerCaller ?? new EbicsServerCaller();
+        $this->renderXml               = $renderXml ?? new RenderXml();
+        $this->decryptOrderDataContent = new DecryptOrderDataContent();
+        $this->signQuery               = $signQuery ?? new SignQuery();
     }
 
     public function __invoke(BankInfo $bank, KeyRing $keyRing): KeyRing

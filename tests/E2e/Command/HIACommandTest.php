@@ -15,7 +15,7 @@ use Symfony\Component\HttpClient\MockHttpClient;
 
 class HIACommandTest extends E2eTestBase
 {
-    /** @return iterable<int, array<int, Version>> */
+    /** @return iterable<string, array<int, Version>> */
     public static function provideVersion(): iterable
     {
         yield 'v24' => [Version::v24()];

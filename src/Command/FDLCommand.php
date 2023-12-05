@@ -7,7 +7,6 @@ namespace Cube43\Component\Ebics\Command;
 use Cube43\Component\Ebics\BankInfo;
 use Cube43\Component\Ebics\Crypt\BankPublicKeyDigest;
 use Cube43\Component\Ebics\Crypt\DecryptOrderDataContent;
-use Cube43\Component\Ebics\Crypt\EncrytSignatureValueWithUserPrivateKey;
 use Cube43\Component\Ebics\Crypt\SignQuery;
 use Cube43\Component\Ebics\DOMDocument;
 use Cube43\Component\Ebics\EbicsServerCaller;
@@ -30,23 +29,20 @@ class FDLCommand
 
     private readonly RenderXml $renderXml;
     private readonly EbicsServerCaller $ebicsServerCaller;
-    private readonly EncrytSignatureValueWithUserPrivateKey $cryptStringWithPasswordAndCertificat;
     private readonly DecryptOrderDataContent $decryptOrderDataContent;
     private readonly BankPublicKeyDigest $bankPublicKeyDigest;
-    private readonly SignQuery|null $signQuery;
+    private readonly SignQuery $signQuery;
 
     public function __construct(
         EbicsServerCaller|null $ebicsServerCaller = null,
-        EncrytSignatureValueWithUserPrivateKey|null $cryptStringWithPasswordAndCertificat = null,
         RenderXml|null $renderXml = null,
         SignQuery|null $signQuery = null,
     ) {
-        $this->ebicsServerCaller                    = $ebicsServerCaller ?? new EbicsServerCaller();
-        $this->cryptStringWithPasswordAndCertificat = $cryptStringWithPasswordAndCertificat ?? new EncrytSignatureValueWithUserPrivateKey();
-        $this->renderXml                            = $renderXml ?? new RenderXml();
-        $this->decryptOrderDataContent              = new DecryptOrderDataContent();
-        $this->bankPublicKeyDigest                  = new BankPublicKeyDigest();
-        $this->signQuery                            = $signQuery ?? new SignQuery();
+        $this->ebicsServerCaller       = $ebicsServerCaller ?? new EbicsServerCaller();
+        $this->renderXml               = $renderXml ?? new RenderXml();
+        $this->decryptOrderDataContent = new DecryptOrderDataContent();
+        $this->bankPublicKeyDigest     = new BankPublicKeyDigest();
+        $this->signQuery               = $signQuery ?? new SignQuery();
     }
 
     public function __invoke(BankInfo $bank, KeyRing $keyRing, FDLParams $FDLParams): FDLResponse
@@ -74,9 +70,20 @@ class FDLCommand
 
     private function callFDL(BankInfo $bank, KeyRing $keyRing, FDLParams $FDLParams): DOMDocument
     {
+        $dateRange = '';
+        $startDate = $FDLParams->getStartDate();
+        $endDate   = $FDLParams->getEndDate();
+
+        if ($startDate) {
+            $dateRange .= '<Start>' . $startDate->format('Y-m-d') . '</Start>';
+        }
+
+        if ($endDate) {
+            $dateRange .= '<End>' . $endDate->format('Y-m-d') . '</End>';
+        }
+
         $search = [
-            '{{StartDate}}' => $FDLParams->getStartDate()->format('Y-m-d'),
-            '{{EndDate}}' => $FDLParams->getEndDate()->format('Y-m-d'),
+            '{{DateRange}}' => $dateRange === '' ? '' : '<DateRange>' . $dateRange . '</DateRange>',
             '{{HostID}}' => $bank->getHostId(),
             '{{Nonce}}' => strtoupper(bin2hex(Random::string(16))),
             '{{Timestamp}}' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
