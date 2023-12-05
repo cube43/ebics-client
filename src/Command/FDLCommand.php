@@ -8,6 +8,7 @@ use Cube43\Component\Ebics\BankInfo;
 use Cube43\Component\Ebics\Crypt\BankPublicKeyDigest;
 use Cube43\Component\Ebics\Crypt\DecryptOrderDataContent;
 use Cube43\Component\Ebics\Crypt\EncrytSignatureValueWithUserPrivateKey;
+use Cube43\Component\Ebics\Crypt\SignQuery;
 use Cube43\Component\Ebics\DOMDocument;
 use Cube43\Component\Ebics\EbicsServerCaller;
 use Cube43\Component\Ebics\FDLParams;
@@ -34,17 +35,20 @@ class FDLCommand
     private readonly EncrytSignatureValueWithUserPrivateKey $cryptStringWithPasswordAndCertificat;
     private readonly DecryptOrderDataContent $decryptOrderDataContent;
     private readonly BankPublicKeyDigest $bankPublicKeyDigest;
+    private readonly SignQuery|null $signQuery;
 
     public function __construct(
         EbicsServerCaller|null $ebicsServerCaller = null,
         EncrytSignatureValueWithUserPrivateKey|null $cryptStringWithPasswordAndCertificat = null,
         RenderXml|null $renderXml = null,
+        SignQuery|null $signQuery = null,
     ) {
         $this->ebicsServerCaller                    = $ebicsServerCaller ?? new EbicsServerCaller();
         $this->cryptStringWithPasswordAndCertificat = $cryptStringWithPasswordAndCertificat ?? new EncrytSignatureValueWithUserPrivateKey();
         $this->renderXml                            = $renderXml ?? new RenderXml();
         $this->decryptOrderDataContent              = new DecryptOrderDataContent();
         $this->bankPublicKeyDigest                  = new BankPublicKeyDigest();
+        $this->signQuery           = $signQuery ?? new SignQuery();
     }
 
     public function __invoke(BankInfo $bank, KeyRing $keyRing, FDLParams $FDLParams): FDLResponse
@@ -86,19 +90,13 @@ class FDLCommand
             '{{CountryCode}}' => $FDLParams->countryCode(),
         ];
 
-        $search['{{rawDigest}}']         = $this->renderXml->renderXmlRaw($search, $bank->getVersion(), 'FDL_digest.xml');
-        $search['{{DigestValue}}']       = base64_encode(hash('sha256', $search['{{rawDigest}}'], true));
-        $search['{{RawSignatureValue}}'] = $this->renderXml->renderXmlRaw($search, $bank->getVersion(), 'FDL_SignatureValue.xml');
-        $search['{{SignatureValue}}']    = base64_encode(
-            $this->cryptStringWithPasswordAndCertificat->__invoke(
-                $keyRing,
-                $keyRing->getUserCertificateX()->getPrivateKey(),
-                hash('sha256', $search['{{RawSignatureValue}}'], true),
-            ),
-        );
+        $xml = $this->signQuery->__invoke(
+            $this->renderXml->__invoke($search, $bank->getVersion(), 'FDL.xml'),
+            $keyRing,
+        )->getFormattedContent();
 
         return new DOMDocument(
-            $this->ebicsServerCaller->__invoke($this->renderXml->renderXmlRaw($search, $bank->getVersion(), 'FDL.xml'), $bank),
+            $this->ebicsServerCaller->__invoke($xml, $bank),
         );
     }
 

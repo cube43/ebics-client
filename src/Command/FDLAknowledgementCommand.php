@@ -47,9 +47,12 @@ class FDLAknowledgementCommand
             '{{CountryCode}}' => $FDLResponse->FDLParams->countryCode(),
         ];
 
-        $this->ebicsServerCaller->__invoke($this->signQuery->__invoke(
-            $this->renderXml->__invoke($search, $FDLResponse->bank->getVersion(), 'FDL_acknowledgement.xml'),
-            $FDLResponse->keyRing,
-        )->getFormattedContent(), $FDLResponse->bank);
+        $this->ebicsServerCaller->__invoke(
+            $this->signQuery->__invoke(
+                $this->renderXml->__invoke($search, $FDLResponse->bank->getVersion(), 'FDL_acknowledgement.xml'),
+                $FDLResponse->keyRing,
+            )->getFormattedContent(),
+            $FDLResponse->bank
+        );
     }
 }

@@ -37,6 +37,7 @@ class SignQuery
 
     public function __invoke(DOMDocument $request, KeyRing $keyRing): DOMDocument
     {
+        $request = new DOMDocument($request->toString());
         // Add AuthSignature to request.
         $xmlAuthSignature = $request->createElement('AuthSignature');
 
@@ -93,6 +94,7 @@ class SignQuery
             self::$signaturePath,
             self::$canonicalizationMethodAlgorithm,
         );
+
         $canonicalizedHeaderHash = hash(self::$digestMethodAlgorithm, $canonicalizedHeader, true);
         $digestValueNodeValue    = base64_encode($canonicalizedHeaderHash);
 
@@ -117,6 +119,8 @@ class SignQuery
 
         $xmlSignatureValue->nodeValue = $signatureValueNodeValue;
         $xmlAuthSignature->appendChild($xmlSignatureValue);
+
+        var_dump($request->getFormattedContent());
 
         return $request;
     }
