@@ -56,4 +56,13 @@ class Version
     {
         return $this->value;
     }
+
+    public function valueSvirin(): string
+    {
+        return match($this->value) {
+            self::V24 => self::V24_SVIRIN,
+            self::V25 => self::V25_SVIRIN,
+            self::V30 => self::V30_SVIRIN,
+        };
+    }
 }
