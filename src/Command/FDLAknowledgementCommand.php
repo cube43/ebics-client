@@ -51,8 +51,9 @@ class FDLAknowledgementCommand
             $this->signQuery->__invoke(
                 $this->renderXml->__invoke($search, $FDLResponse->bank->getVersion(), 'FDL_acknowledgement.xml'),
                 $FDLResponse->keyRing,
+                $FDLResponse->bank->getVersion(),
             )->getFormattedContent(),
-            $FDLResponse->bank
+            $FDLResponse->bank,
         );
     }
 }

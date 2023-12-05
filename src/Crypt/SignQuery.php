@@ -6,6 +6,7 @@ namespace Cube43\Component\Ebics\Crypt;
 
 use Cube43\Component\Ebics\DOMDocument;
 use Cube43\Component\Ebics\KeyRing;
+use Cube43\Component\Ebics\Version;
 use DOMNode;
 use DOMNodeList;
 use DOMXPath;
@@ -35,13 +36,15 @@ class SignQuery
         $this->cryptStringWithPasswordAndCertificat = $cryptStringWithPasswordAndCertificat ?? new EncrytSignatureValueWithUserPrivateKey();
     }
 
-    public function __invoke(DOMDocument $request, KeyRing $keyRing): DOMDocument
+    public function __invoke(DOMDocument $request, KeyRing $keyRing, Version $version): DOMDocument
     {
         $request = new DOMDocument($request->toString());
         // Add AuthSignature to request.
         $xmlAuthSignature = $request->createElement('AuthSignature');
 
-        $xmlRequestHeader = self::safeItem($request->prepareXPath()->query("//*[local-name()='header']"));
+        $xmlRequestHeader = self::safeItem($request, "//*[local-name()='header']");
+
+        //$xmlRequestHeader = self::safeItem($request->prepareXPath()->query('//header', null, false));
 
         $this->insertAfter($xmlAuthSignature, $xmlRequestHeader);
 
@@ -88,9 +91,9 @@ class SignQuery
         $xmlReference->appendChild($xmlDigestMethod);
 
         // Add ds:DigestValue to ds:Reference.
-        $xmlDigestValue          = $request->createElement('ds:DigestValue');
-        $canonicalizedHeader     = $this->calculateC14N(
-            $this->prepareH00XXPath($request),
+        $xmlDigestValue      = $request->createElement('ds:DigestValue');
+        $canonicalizedHeader = $this->calculateC14N(
+            $this->prepareH00XXPath($request, $version),
             self::$signaturePath,
             self::$canonicalizationMethodAlgorithm,
         );
@@ -104,7 +107,7 @@ class SignQuery
         // Add ds:SignatureValue to AuthSignature.
         $xmlSignatureValue       = $request->createElement('ds:SignatureValue');
         $canonicalizedSignedInfo = $this->calculateC14N(
-            $this->prepareH00XXPath($request),
+            $this->prepareH00XXPath($request, $version),
             self::$canonicalizationPath,
             self::$canonicalizationMethodAlgorithm,
         );
@@ -120,8 +123,6 @@ class SignQuery
         $xmlSignatureValue->nodeValue = $signatureValueNodeValue;
         $xmlAuthSignature->appendChild($xmlSignatureValue);
 
-        var_dump($request->getFormattedContent());
-
         return $request;
     }
 
@@ -135,15 +136,17 @@ class SignQuery
         }
     }
 
-    public static function safeItem(DOMNodeList|false $domNodeList): DOMNode
+    public static function safeItem(DOMDocument $document, string $query): DOMNode
     {
+        $domNodeList = $document->prepareXPath()->query($query);
+
         if ($domNodeList === false) {
-            throw new RuntimeException('DOM Node List should not be empty.');
+            throw new RuntimeException(sprintf('Unable to find "%s" in "%s"', $query, $document->toString()));
         }
 
         $domNode = $domNodeList->item(0);
         if ($domNode === null) {
-            throw new RuntimeException('DOM Node List should have an item.');
+            throw new RuntimeException(sprintf('Unable to find "%s" in "%s"', $query, $document->toString()));
         }
 
         return $domNode;
@@ -178,16 +181,28 @@ class SignQuery
         return trim($result);
     }
 
-    protected function prepareH00XXPath(DOMDocument $xml): DOMXPath
+    protected function prepareH00XXPath(DOMDocument $xml, Version $version): DOMXPath
     {
-        return $this->prepareH004XPathV2($xml);
+        return $this->prepareH004XPathV2($xml, $version);
     }
 
-    protected function prepareH004XPathV2(DOMDocument $xml): DOMXPath
+    protected function prepareH004XPathV2(DOMDocument $xml, Version $version): DOMXPath
     {
         $xpath = $xml->prepareXPath();
-        $xpath->registerNamespace('H004', 'urn:org:ebics:H004');
-        $xpath->registerNamespace('ds', 'http://www.w3.org/2000/09/xmldsig#');
+        if ($version->is(Version::v24())) {
+            $xpath->registerNamespace('H003', 'http://www.ebics.org/H003');
+            $xpath->registerNamespace('ds', 'http://www.w3.org/2000/09/xmldsig#');
+        }
+
+        if ($version->is(Version::v25())) {
+            $xpath->registerNamespace('H004', 'urn:org:ebics:H004');
+            $xpath->registerNamespace('ds', 'http://www.w3.org/2000/09/xmldsig#');
+        }
+
+        if ($version->is(Version::v30())) {
+            $xpath->registerNamespace('H005', 'urn:org:ebics:H005');
+            $xpath->registerNamespace('ds', 'http://www.w3.org/2000/09/xmldsig#');
+        }
 
         return $xpath;
     }

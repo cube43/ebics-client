@@ -22,9 +22,7 @@ use phpseclib\Crypt\RSA;
 use phpseclib\Math\BigInteger;
 
 use function base64_decode;
-use function base64_encode;
 use function bin2hex;
-use function hash;
 use function strtoupper;
 
 class HPBCommand
@@ -45,7 +43,7 @@ class HPBCommand
         $this->cryptStringWithPasswordAndCertificat = $cryptStringWithPasswordAndCertificat ?? new EncrytSignatureValueWithUserPrivateKey();
         $this->renderXml                            = $renderXml ?? new RenderXml();
         $this->decryptOrderDataContent              = new DecryptOrderDataContent();
-        $this->signQuery           = $signQuery ?? new SignQuery();
+        $this->signQuery                            = $signQuery ?? new SignQuery();
     }
 
     public function __invoke(BankInfo $bank, KeyRing $keyRing): KeyRing
@@ -61,6 +59,7 @@ class HPBCommand
         $xml = $this->signQuery->__invoke(
             $this->renderXml->__invoke($search, $bank->getVersion(), 'HPB.xml'),
             $keyRing,
+            $bank->getVersion(),
         )->getFormattedContent();
 
         $ebicsServerResponse = new DOMDocument(

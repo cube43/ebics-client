@@ -20,9 +20,7 @@ use phpseclib\Crypt\Random;
 use RuntimeException;
 
 use function base64_decode;
-use function base64_encode;
 use function bin2hex;
-use function hash;
 use function in_array;
 use function strtoupper;
 
@@ -48,7 +46,7 @@ class FDLCommand
         $this->renderXml                            = $renderXml ?? new RenderXml();
         $this->decryptOrderDataContent              = new DecryptOrderDataContent();
         $this->bankPublicKeyDigest                  = new BankPublicKeyDigest();
-        $this->signQuery           = $signQuery ?? new SignQuery();
+        $this->signQuery                            = $signQuery ?? new SignQuery();
     }
 
     public function __invoke(BankInfo $bank, KeyRing $keyRing, FDLParams $FDLParams): FDLResponse
@@ -93,6 +91,7 @@ class FDLCommand
         $xml = $this->signQuery->__invoke(
             $this->renderXml->__invoke($search, $bank->getVersion(), 'FDL.xml'),
             $keyRing,
+            $bank->getVersion(),
         )->getFormattedContent();
 
         return new DOMDocument(

@@ -9,12 +9,15 @@ use Cube43\Component\Ebics\Tests\E2e\FakeCrypt;
 use Cube43\Component\Ebics\Version;
 use DOMDocument;
 use DOMNode;
+use DOMNodeList;
+use DOMXpath;
 use phpseclib\Crypt\RSA;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use XmlValidator\XmlValidator;
 
+use function assert;
 use function base64_decode;
 use function base64_encode;
 use function bin2hex;
@@ -23,6 +26,7 @@ use function defined;
 use function hash;
 use function print_r;
 use function Safe\sprintf;
+use function trim;
 
 class E2eTestBase extends TestCase
 {
@@ -63,11 +67,11 @@ class E2eTestBase extends TestCase
             $xml = new DOMDocument();
             $xml->loadXML($response);
 
-            $digestOk = static function (string $rawdigest, string $digestValue) {
+            $digestOk   = static function (string $rawdigest, string $digestValue) {
                 return bin2hex(base64_decode($digestValue)) === hash('sha256', $rawdigest);
             };
             $digestDump = static function (string $rawdigest, string $digestValue) {
-                return $digestValue . ' not equals '.  $rawdigest;
+                return bin2hex(base64_decode($digestValue)) . ' not equals ' . hash('sha256', $rawdigest);
             };
 
             $crpyt = static function ($ciphertext) {
@@ -98,9 +102,27 @@ class E2eTestBase extends TestCase
                 return $node;
             };
 
+            $xpathElement = static function (DOMDocument $xml, string $xpathExpression): string {
+                $xpath = new DOMXpath($xml);
+
+                $nodes  = $xpath->query($xpathExpression);
+                $result = '';
+
+                if (! ($nodes instanceof DOMNodeList)) {
+                    return $result;
+                }
+
+                foreach ($nodes as $node) {
+                    assert($node instanceof DOMNode);
+                    $result .= $node->C14N();
+                }
+
+                return trim($result);
+            };
+
             self::assertTrue(
-                $digestOk($findElement($xml, 'header')->C14N(), $findElement($xml, 'DigestValue')->nodeValue),
-                $digestDump($findElement($xml, 'header')->C14N(), $findElement($xml, 'DigestValue')->nodeValue)
+                $digestOk($xpathElement($xml, "//*[@authenticate='true']"), $findElement($xml, 'DigestValue')->nodeValue),
+                $digestDump($xpathElement($xml, "//*[@authenticate='true']"), $findElement($xml, 'DigestValue')->nodeValue),
             );
             self::assertTrue($signatureOk($findElement($xml, 'SignedInfo')->C14N(), $findElement($xml, 'SignatureValue')->nodeValue));
         };
