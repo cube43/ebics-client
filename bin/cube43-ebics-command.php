@@ -11,7 +11,6 @@ use Cube43\Component\Ebics\Version;
 use Cube43\Component\Ebics\X509\DefaultX509OptionGenerator;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -53,8 +52,7 @@ class DefaultCommand extends Command
             'H005' => Version::v30(),
         ];
         $helper      = $this->getHelper('question');
-        assert($helper instanceof QuestionHelper);
-        $question = new ChoiceQuestion(
+        $question    = new ChoiceQuestion(
             'Please select protocol version',
             // choices can also be PHP objects that implement __toString() method
             array_keys($versionList),

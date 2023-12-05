@@ -23,7 +23,7 @@ use Symfony\Component\HttpClient\MockHttpClient;
 class FDLCommandTest extends E2eTestBase
 {
     /** @return iterable<int, array<int, Version>> */
-    public static function provideVersion(): iterable
+    public function provideVersion(): iterable
     {
         yield [Version::v24()];
         yield [Version::v25()];
