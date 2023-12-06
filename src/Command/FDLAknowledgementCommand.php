@@ -7,6 +7,7 @@ namespace Cube43\Component\Ebics\Command;
 use Cube43\Component\Ebics\Crypt\SignQuery;
 use Cube43\Component\Ebics\EbicsServerCaller;
 use Cube43\Component\Ebics\RenderXml;
+use Cube43\Component\Ebics\SymfonyEbicsServerCaller;
 
 class FDLAknowledgementCommand
 {
@@ -19,7 +20,7 @@ class FDLAknowledgementCommand
         RenderXml|null $renderXml = null,
         SignQuery|null $signQuery = null,
     ) {
-        $this->ebicsServerCaller = $ebicsServerCaller ?? new EbicsServerCaller();
+        $this->ebicsServerCaller = $ebicsServerCaller ?? new SymfonyEbicsServerCaller();
         $this->renderXml         = $renderXml ?? new RenderXml();
         $this->signQuery         = $signQuery ?? new SignQuery();
     }

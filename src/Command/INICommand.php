@@ -10,6 +10,7 @@ use Cube43\Component\Ebics\Crypt\GenerateCertificat;
 use Cube43\Component\Ebics\EbicsServerCaller;
 use Cube43\Component\Ebics\KeyRing;
 use Cube43\Component\Ebics\RenderXml;
+use Cube43\Component\Ebics\SymfonyEbicsServerCaller;
 use Cube43\Component\Ebics\Version;
 use Cube43\Component\Ebics\X509\X509CertificatOptionsGenerator;
 use DateTime;
@@ -29,7 +30,7 @@ class INICommand
         GenerateCertificat|null $generateCertificat = null,
         RenderXml|null $renderXml = null,
     ) {
-        $this->ebicsServerCaller  = $ebicsServerCaller ?? new EbicsServerCaller();
+        $this->ebicsServerCaller  = $ebicsServerCaller ?? new SymfonyEbicsServerCaller();
         $this->generateCertificat = $generateCertificat ?? new GenerateCertificat();
         $this->renderXml          = $renderXml ?? new RenderXml();
     }

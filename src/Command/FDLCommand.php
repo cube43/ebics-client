@@ -14,6 +14,7 @@ use Cube43\Component\Ebics\FDLParams;
 use Cube43\Component\Ebics\KeyRing;
 use Cube43\Component\Ebics\OrderDataEncrypted;
 use Cube43\Component\Ebics\RenderXml;
+use Cube43\Component\Ebics\SymfonyEbicsServerCaller;
 use DateTime;
 use phpseclib\Crypt\Random;
 use RuntimeException;
@@ -38,7 +39,7 @@ class FDLCommand
         RenderXml|null $renderXml = null,
         SignQuery|null $signQuery = null,
     ) {
-        $this->ebicsServerCaller       = $ebicsServerCaller ?? new EbicsServerCaller();
+        $this->ebicsServerCaller       = $ebicsServerCaller ?? new SymfonyEbicsServerCaller();
         $this->renderXml               = $renderXml ?? new RenderXml();
         $this->decryptOrderDataContent = new DecryptOrderDataContent();
         $this->bankPublicKeyDigest     = new BankPublicKeyDigest();

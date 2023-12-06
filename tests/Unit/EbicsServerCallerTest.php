@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Cube43\Component\Ebics\Tests\Unit;
 
 use Cube43\Component\Ebics\BankInfo;
-use Cube43\Component\Ebics\EbicsServerCaller;
 use Cube43\Component\Ebics\RequestMaker;
+use Cube43\Component\Ebics\SymfonyEbicsServerCaller;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -28,7 +28,7 @@ class EbicsServerCallerTest extends TestCase
             'verify_host' => false,
         ])->willReturn($reponse);
 
-        $sUT = new EbicsServerCaller($httpClient);
+        $sUT = new SymfonyEbicsServerCaller($httpClient);
 
         $bank = self::createMock(BankInfo::class);
 
@@ -50,7 +50,7 @@ class EbicsServerCallerTest extends TestCase
             'verify_host' => false,
         ])->willReturn($reponse);
 
-        $sUT = new EbicsServerCaller($httpClient);
+        $sUT = new SymfonyEbicsServerCaller($httpClient);
 
         $bank = self::createMock(BankInfo::class);
 

@@ -10,10 +10,10 @@ use Cube43\Component\Ebics\CertificateX509;
 use Cube43\Component\Ebics\CertificatType;
 use Cube43\Component\Ebics\Command\FDLAknowledgementCommand;
 use Cube43\Component\Ebics\Command\FDLCommand;
-use Cube43\Component\Ebics\EbicsServerCaller;
 use Cube43\Component\Ebics\FDLParams;
 use Cube43\Component\Ebics\KeyRing;
 use Cube43\Component\Ebics\PrivateKey;
+use Cube43\Component\Ebics\SymfonyEbicsServerCaller;
 use Cube43\Component\Ebics\Tests\E2e\FakeCrypt;
 use Cube43\Component\Ebics\UserCertificate;
 use Cube43\Component\Ebics\Version;
@@ -168,7 +168,7 @@ class FDLCommandTest extends E2eTestBase
         ];
 
         $sUT = new FDLCommand(
-            new EbicsServerCaller(new MockHttpClient($this->getCallback($versionToXmlResponse[$version->value()], $version, true))),
+            new SymfonyEbicsServerCaller(new MockHttpClient($this->getCallback($versionToXmlResponse[$version->value()], $version, true))),
         );
 
         $bank    = new BankInfo('myHostId', 'http://myurl.com', $version, 'myPartId', 'myUserId');
@@ -206,7 +206,7 @@ class FDLCommandTest extends E2eTestBase
         self::assertSame($response->data, '<test><AuthenticationPubKeyInfo><X509Certificate>test</X509Certificate><Modulus>test</Modulus><Exponent>test</Exponent></AuthenticationPubKeyInfo><EncryptionPubKeyInfo><X509Certificate>test</X509Certificate><Modulus>test</Modulus><Exponent>test</Exponent></EncryptionPubKeyInfo></test>');
 
         $sUTA = new FDLAknowledgementCommand(
-            new EbicsServerCaller(new MockHttpClient($this->getCallback($versionToXmlResponseAck[$version->value()], $version, true))),
+            new SymfonyEbicsServerCaller(new MockHttpClient($this->getCallback($versionToXmlResponseAck[$version->value()], $version, true))),
         );
 
         $sUTA->__invoke($response);
@@ -280,7 +280,7 @@ class FDLCommandTest extends E2eTestBase
         ];
 
         $sUT = new FDLCommand(
-            new EbicsServerCaller(new MockHttpClient($this->getCallback($versionToXmlResponse[$version->value()], $version, true))),
+            new SymfonyEbicsServerCaller(new MockHttpClient($this->getCallback($versionToXmlResponse[$version->value()], $version, true))),
         );
 
         $bank    = new BankInfo('myHostId', 'http://myurl.com', $version, 'myPartId', 'myUserId');

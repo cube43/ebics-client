@@ -6,8 +6,8 @@ namespace Cube43\Component\Ebics\Tests\E2e\Command;
 
 use Cube43\Component\Ebics\BankInfo;
 use Cube43\Component\Ebics\Command\HIACommand;
-use Cube43\Component\Ebics\EbicsServerCaller;
 use Cube43\Component\Ebics\KeyRing;
+use Cube43\Component\Ebics\SymfonyEbicsServerCaller;
 use Cube43\Component\Ebics\UserCertificate;
 use Cube43\Component\Ebics\Version;
 use Cube43\Component\Ebics\X509\DefaultX509OptionGenerator;
@@ -32,7 +32,7 @@ class HIACommandTest extends E2eTestBase
         ];
 
         $sUT = new HIACommand(
-            new EbicsServerCaller(new MockHttpClient($this->getCallback($versionToXmlResponse[$version->value()], $version, false))),
+            new SymfonyEbicsServerCaller(new MockHttpClient($this->getCallback($versionToXmlResponse[$version->value()], $version, false))),
         );
 
         $bank    = new BankInfo('myHostId', 'http://myurl.com', $version, 'myPartId', 'myUserId');
