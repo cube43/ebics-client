@@ -60,5 +60,10 @@
       "infection/extension-installer": true,
       "dealerdirect/phpcodesniffer-composer-installer": true
     }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-fixfdl": "0.7-dev"
+    }
   }
 }

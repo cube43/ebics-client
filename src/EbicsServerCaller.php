@@ -8,6 +8,8 @@ use Cube43\Component\Ebics\Exceptions\EbicsExceptionFactory;
 use Symfony\Component\HttpClient\HttpClient as SymfonyClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+use function in_array;
+
 class EbicsServerCaller
 {
     private readonly HttpClientInterface $httpClient;
@@ -17,7 +19,8 @@ class EbicsServerCaller
         $this->httpClient = $httpClient ?? SymfonyClient::create();
     }
 
-    public function __invoke(string $request, BankInfo $bank): string
+    /** @param string[] $expectedReturnCode */
+    public function __invoke(string $request, BankInfo $bank, array $expectedReturnCode = ['000000']): string
     {
         $result = $this->httpClient->request('POST', $bank->getUrl(), [
             'headers' => ['Content-Type' => 'text/xml; charset=ISO-8859-1'],
@@ -28,7 +31,7 @@ class EbicsServerCaller
 
         $resultXml = new DOMDocument($result);
 
-        if ($resultXml->getNodeValue('ReturnCode') !== '000000') {
+        if (! in_array($resultXml->getNodeValue('ReturnCode'), $expectedReturnCode)) {
             EbicsExceptionFactory::buildExceptionFromCode($resultXml->getNodeValue('ReturnCode'), $resultXml->getNodeValue('ReportText'), $request, $result);
         }
 

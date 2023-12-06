@@ -9,7 +9,7 @@ use Cube43\Component\Ebics\BankInfo;
 use Cube43\Component\Ebics\CertificateX509;
 use Cube43\Component\Ebics\CertificatType;
 use Cube43\Component\Ebics\Crypt\DecryptOrderDataContent;
-use Cube43\Component\Ebics\Crypt\EncrytSignatureValueWithUserPrivateKey;
+use Cube43\Component\Ebics\Crypt\SignQuery;
 use Cube43\Component\Ebics\DOMDocument;
 use Cube43\Component\Ebics\EbicsServerCaller;
 use Cube43\Component\Ebics\KeyRing;
@@ -21,27 +21,25 @@ use phpseclib\Crypt\RSA;
 use phpseclib\Math\BigInteger;
 
 use function base64_decode;
-use function base64_encode;
 use function bin2hex;
-use function hash;
 use function strtoupper;
 
 class HPBCommand
 {
     private readonly RenderXml $renderXml;
     private readonly EbicsServerCaller $ebicsServerCaller;
-    private readonly EncrytSignatureValueWithUserPrivateKey $cryptStringWithPasswordAndCertificat;
     private readonly DecryptOrderDataContent $decryptOrderDataContent;
+    private readonly SignQuery $signQuery;
 
     public function __construct(
         EbicsServerCaller|null $ebicsServerCaller = null,
-        EncrytSignatureValueWithUserPrivateKey|null $cryptStringWithPasswordAndCertificat = null,
         RenderXml|null $renderXml = null,
+        SignQuery|null $signQuery = null,
     ) {
-        $this->ebicsServerCaller                    = $ebicsServerCaller ?? new EbicsServerCaller();
-        $this->cryptStringWithPasswordAndCertificat = $cryptStringWithPasswordAndCertificat ?? new EncrytSignatureValueWithUserPrivateKey();
-        $this->renderXml                            = $renderXml ?? new RenderXml();
-        $this->decryptOrderDataContent              = new DecryptOrderDataContent();
+        $this->ebicsServerCaller       = $ebicsServerCaller ?? new EbicsServerCaller();
+        $this->renderXml               = $renderXml ?? new RenderXml();
+        $this->decryptOrderDataContent = new DecryptOrderDataContent();
+        $this->signQuery               = $signQuery ?? new SignQuery();
     }
 
     public function __invoke(BankInfo $bank, KeyRing $keyRing): KeyRing
@@ -54,19 +52,14 @@ class HPBCommand
             '{{UserID}}' => $bank->getUserId(),
         ];
 
-        $search['{{rawDigest}}']         = $this->renderXml->renderXmlRaw($search, $bank->getVersion(), 'HPB_digest.xml');
-        $search['{{DigestValue}}']       = base64_encode(hash('sha256', $search['{{rawDigest}}'], true));
-        $search['{{RawSignatureValue}}'] = $this->renderXml->renderXmlRaw($search, $bank->getVersion(), 'HPB_SignatureValue.xml');
-        $search['{{SignatureValue}}']    = base64_encode(
-            $this->cryptStringWithPasswordAndCertificat->__invoke(
-                $keyRing,
-                $keyRing->getUserCertificateX()->getPrivateKey(),
-                hash('sha256', $search['{{RawSignatureValue}}'], true),
-            ),
-        );
+        $xml = $this->signQuery->__invoke(
+            $this->renderXml->__invoke($search, $bank->getVersion(), 'HPB.xml'),
+            $keyRing,
+            $bank->getVersion(),
+        )->getFormattedContent();
 
         $ebicsServerResponse = new DOMDocument(
-            $this->ebicsServerCaller->__invoke($this->renderXml->renderXmlRaw($search, $bank->getVersion(), 'HPB.xml'), $bank),
+            $this->ebicsServerCaller->__invoke($xml, $bank),
         );
 
         $decryptedResponse = $this->decryptOrderDataContent->__invoke(

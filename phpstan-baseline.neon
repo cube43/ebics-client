@@ -1,7 +1,17 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#2 \\$digestValue of closure expects string, string\\|null given\\.$#"
+			message: "#^Cannot call method appendChild\\(\\) on DOMNode\\|null\\.$#"
 			count: 1
+			path: src/Crypt/SignQuery.php
+
+		-
+			message: "#^Cannot call method insertBefore\\(\\) on DOMNode\\|null\\.$#"
+			count: 1
+			path: src/Crypt/SignQuery.php
+
+		-
+			message: "#^Parameter \\#2 \\$digestValue of closure expects string, string\\|null given\\.$#"
+			count: 2
 			path: tests/E2e/Command/E2eTestBase.php
 
