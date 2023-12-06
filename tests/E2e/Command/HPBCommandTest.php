@@ -9,9 +9,9 @@ use Cube43\Component\Ebics\BankInfo;
 use Cube43\Component\Ebics\CertificateX509;
 use Cube43\Component\Ebics\CertificatType;
 use Cube43\Component\Ebics\Command\HPBCommand;
-use Cube43\Component\Ebics\EbicsServerCaller;
 use Cube43\Component\Ebics\KeyRing;
 use Cube43\Component\Ebics\PrivateKey;
+use Cube43\Component\Ebics\SymfonyEbicsServerCaller;
 use Cube43\Component\Ebics\Tests\E2e\FakeCrypt;
 use Cube43\Component\Ebics\UserCertificate;
 use Cube43\Component\Ebics\Version;
@@ -41,7 +41,7 @@ class HPBCommandTest extends E2eTestBase
         ];
 
         $sUT = new HPBCommand(
-            new EbicsServerCaller(new MockHttpClient($this->getCallback($versionToXmlResponse[$version->value()], $version, true))),
+            new SymfonyEbicsServerCaller(new MockHttpClient($this->getCallback($versionToXmlResponse[$version->value()], $version, true))),
         );
 
         $bank    = new BankInfo('myHostId', 'http://myurl.com', $version, 'myPartId', 'myUserId');

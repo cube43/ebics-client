@@ -12,6 +12,7 @@ class BankInfo
         private readonly Version $version,
         private readonly string $partnerId,
         private readonly string $userId,
+        private readonly string|null $externalId = null,
     ) {
     }
 
@@ -43,5 +44,10 @@ class BankInfo
     public function getUserId(): string
     {
         return $this->userId;
+    }
+
+    public function getExternalId(): string|null
+    {
+        return $this->externalId;
     }
 }
