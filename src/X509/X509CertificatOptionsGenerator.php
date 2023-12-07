@@ -14,4 +14,6 @@ interface X509CertificatOptionsGenerator
     public function getStart(): DateTimeImmutable;
 
     public function getEnd(): DateTimeImmutable;
+
+    public function getFormat(): EbicsX509FormatEnum;
 }
