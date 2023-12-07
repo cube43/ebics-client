@@ -53,4 +53,9 @@ class DefaultX509OptionGenerator implements X509CertificatOptionsGenerator
     {
         return (new DateTimeImmutable())->modify('+1 year');
     }
+
+    public function getFormat(): EbicsX509FormatEnum
+    {
+        return EbicsX509FormatEnum::PEM;
+    }
 }
