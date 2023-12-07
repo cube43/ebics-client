@@ -7,6 +7,7 @@ namespace Cube43\Component\Ebics\Command;
 use Cube43\Component\Ebics\BankInfo;
 use Cube43\Component\Ebics\CertificatType;
 use Cube43\Component\Ebics\Crypt\GenerateCertificat;
+use Cube43\Component\Ebics\EbicsServerCaller;
 use Cube43\Component\Ebics\KeyRing;
 use Cube43\Component\Ebics\RenderXml;
 use Cube43\Component\Ebics\SymfonyEbicsServerCaller;
@@ -20,12 +21,12 @@ use function Safe\gzcompress;
 
 class HIACommand
 {
-    private readonly SymfonyEbicsServerCaller $httpClient;
+    private readonly EbicsServerCaller $httpClient;
     private readonly GenerateCertificat $generateCertificat;
     private readonly RenderXml $renderXml;
 
     public function __construct(
-        SymfonyEbicsServerCaller|null $httpClient = null,
+        EbicsServerCaller|null $httpClient = null,
         GenerateCertificat|null $generateCertificat = null,
         RenderXml|null $renderXml = null,
     ) {
