@@ -46,8 +46,11 @@ class FDLCommand
         $this->signQuery               = $signQuery ?? new SignQuery();
     }
 
-    public function __invoke(BankInfo $bank, KeyRing $keyRing, FDLParams $FDLParams): FDLResponse
-    {
+    public function __invoke(
+        BankInfo $bank,
+        KeyRing $keyRing,
+        FDLParams $FDLParams,
+    ): FDLResponse {
         $ebicsServerResponse = $this->callFDL($bank, $keyRing, $FDLParams);
 
         if (in_array(self::NO_DATA, $this->findAllReturnCode($ebicsServerResponse))) {

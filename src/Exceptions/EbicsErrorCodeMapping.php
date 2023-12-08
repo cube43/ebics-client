@@ -9,7 +9,7 @@ namespace Cube43\Component\Ebics\Exceptions;
  */
 abstract class EbicsErrorCodeMapping
 {
-    /** @var string[] */
+    /** @var array<string, class-string> */
     public static array $mapping = [
         '011000' => DownloadPostprocessDoneException::class,
         '011001' => DownloadPostprocessSkippedException::class,

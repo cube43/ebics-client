@@ -13,7 +13,6 @@ use DOMXPath;
 use Exception;
 use RuntimeException;
 
-use function assert;
 use function base64_encode;
 use function hash;
 use function sprintf;
@@ -129,11 +128,19 @@ class SignQuery
     protected function insertAfter(DOMNode $newNode, DOMNode $afterNode): void
     {
         $nextSibling = $afterNode->nextSibling;
-        if ($newNode !== $nextSibling) {
-            $afterNode->parentNode->insertBefore($newNode, $nextSibling);
-        } else {
-            $afterNode->parentNode->appendChild($newNode);
+        $parentNode  = $afterNode->parentNode;
+
+        if ($parentNode === null) {
+            throw new RuntimeException('Unable to find parent node');
         }
+
+        if ($newNode !== $nextSibling) {
+            $parentNode->insertBefore($newNode, $nextSibling);
+
+            return;
+        }
+
+        $parentNode->appendChild($newNode);
     }
 
     public static function safeItem(DOMDocument $document, string $query): DOMNode
@@ -145,7 +152,7 @@ class SignQuery
         }
 
         $domNode = $domNodeList->item(0);
-        if ($domNode === null) {
+        if (! ($domNode instanceof DOMNode)) {
             throw new RuntimeException(sprintf('Unable to find "%s" in "%s"', $query, $document->toString()));
         }
 
@@ -157,14 +164,14 @@ class SignQuery
         string $path = '/',
         string $algorithm = 'REC-xml-c14n-20010315',
     ): string {
-        switch ($algorithm) {
-            case 'REC-xml-c14n-20010315':
-                $exclusive    = false;
-                $withComments = false;
-                break;
-            default:
-                throw new Exception(sprintf('Define algo for %s', $algorithm));
-        }
+        $exclusive = match ($algorithm) {
+            'REC-xml-c14n-20010315' => false,
+            default => throw new Exception(sprintf('Define exclusive for %s', $algorithm)),
+        };
+        $withComments = match ($algorithm) {
+            'REC-xml-c14n-20010315' => false,
+            default => throw new Exception(sprintf('Define withComments for %s', $algorithm)),
+        };
 
         $nodes  = $xpath->query($path);
         $result = '';
@@ -174,7 +181,6 @@ class SignQuery
         }
 
         foreach ($nodes as $node) {
-            assert($node instanceof DOMNode);
             $result .= $node->C14N($exclusive, $withComments);
         }
 

@@ -133,7 +133,7 @@ class DOMDocument
 
     public function prepareXPath(): DOMXPath
     {
-        return new \DOMXpath($this->document);
+        return new DOMXPath($this->document);
     }
 
     public function createElement(string $name): DOMElement
