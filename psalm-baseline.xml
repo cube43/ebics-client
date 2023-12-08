@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="5.17.0@c620f6e80d0abfca532b00bda366062aaedf6e5d">
-
+    <file src="src/Crypt/BankPublicKeyDigest.php">
+        <InternalMethod>
+            <code>toHex</code>
+            <code>toHex</code>
+        </InternalMethod>
+    </file>
+    <file src="src/Crypt/DecryptOrderDataContent.php">
+        <InternalMethod>
+            <code>decrypt</code>
+        </InternalMethod>
+    </file>
+    <file src="src/Crypt/ExponentAndModulus.php">
+        <InternalMethod>
+            <code>toBytes</code>
+            <code>toBytes</code>
+        </InternalMethod>
+    </file>
 </files>
