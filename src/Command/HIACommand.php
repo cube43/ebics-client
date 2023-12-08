@@ -35,8 +35,12 @@ class HIACommand
         $this->renderXml          = $renderXml ?? new RenderXml();
     }
 
-    public function __invoke(BankInfo $bank, KeyRing $keyRing, X509CertificatOptionsGenerator $x509CertificatOptionsGenerator, string|null $orderId = null): KeyRing
-    {
+    public function __invoke(
+        BankInfo $bank,
+        KeyRing $keyRing,
+        X509CertificatOptionsGenerator $x509CertificatOptionsGenerator,
+        string|null $orderId = null,
+    ): KeyRing {
         if ($orderId !== null && ! $bank->getVersion()->is(Version::v24())) {
             throw new RuntimeException('OrderID only avaiable on ebics 2.4');
         }

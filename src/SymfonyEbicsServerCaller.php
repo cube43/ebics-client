@@ -19,7 +19,6 @@ final class SymfonyEbicsServerCaller implements EbicsServerCaller
         $this->httpClient = $httpClient ?? SymfonyClient::create();
     }
 
-    /** @param string[] $expectedReturnCode */
     public function __invoke(string $request, BankInfo $bank, array $expectedReturnCode = ['000000']): string
     {
         $result = $this->httpClient->request('POST', $bank->getUrl(), [

@@ -91,8 +91,7 @@ class DefaultCommand extends Command
         return Command::SUCCESS;
     }
 
-    /** @param string|string[]|null $value */
-    private function mustBeString(string $name, string|array|null $value): string
+    private function mustBeString(string $name, mixed $value): string
     {
         if (is_string($value)) {
             return $value;

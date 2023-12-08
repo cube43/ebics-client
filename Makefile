@@ -65,9 +65,6 @@ coverage: dup
 coverage-open:
 	firefox coverage/index.html
 
-infection: dup
-	$(BASE) phpdbg -qrr -d memory_limit=-1 ./vendor/bin/infection -j=5 $(COMMAND_ARGS)
-
 # Analyse
 
 phpstan:
@@ -89,3 +86,9 @@ cs-clear-cache:
 
 cbf: dup
 	$(BASE) php -d memory_limit=-1 ./vendor/bin/phpcbf $(COMMAND_ARGS)
+
+ci:
+	$(BASE) php -d memory_limit=-1 ./vendor/bin/phpcs $(COMMAND_ARGS)
+	$(BASE) php -d memory_limit=1700M vendor/bin/psalm $(COMMAND_ARGS) --show-info=true
+	$(BASE) php -d memory_limit=1700M vendor/bin/phpstan analyse --memory-limit 1700M $(COMMAND_ARGS)
+	$(BASE) .vendor/bin/phpunit $(COMMAND_ARGS) --coverage-clover build/logs/clover.xml
