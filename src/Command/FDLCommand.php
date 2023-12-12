@@ -103,7 +103,7 @@ class FDLCommand
         )->getFormattedContent();
 
         return new DOMDocument(
-            $this->ebicsServerCaller->__invoke($xml, $bank),
+            $this->ebicsServerCaller->__invoke($xml, $bank, ['0000000', self::NO_DATA]),
         );
     }
 
