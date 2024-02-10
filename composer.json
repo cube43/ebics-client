@@ -32,7 +32,7 @@
     "psalm/plugin-phpunit": "^0.18.4",
     "vimeo/psalm": "^5.21.1",
     "ocramius/package-versions": "2.8.0",
-    "phpstan/phpstan": "1.10.56",
+    "phpstan/phpstan": "1.10.57",
     "vrbata/xml-validator": "2.0.1",
     "symfony/console": "6.3.4"
   },
