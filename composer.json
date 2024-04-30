@@ -34,7 +34,7 @@
     "ocramius/package-versions": "2.8.0",
     "phpstan/phpstan": "1.10.67",
     "vrbata/xml-validator": "2.0.1",
-    "symfony/console": "6.3.4"
+    "symfony/console": "6.4.7"
   },
   "autoload": {
     "psr-4": {
