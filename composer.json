@@ -24,7 +24,7 @@
     "ext-json": "*",
     "phpseclib/phpseclib": "^2.0.47",
     "symfony/http-client": "^6.3.7",
-    "thecodingmachine/safe": "^2.5"
+    "thecodingmachine/safe": "^3.0"
   },
   "require-dev": {
     "doctrine/coding-standard": "^12.0",
