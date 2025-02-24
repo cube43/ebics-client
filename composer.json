@@ -32,7 +32,7 @@
     "vimeo/psalm": "^6.8.6",
     "phpstan/phpstan": "^2.1.6",
     "vrbata/xml-validator": "2.0.1",
-    "symfony/console": "7.2.1"
+    "symfony/console": "^6.3.12 || ^7.2.1"
   },
   "autoload": {
     "psr-4": {
