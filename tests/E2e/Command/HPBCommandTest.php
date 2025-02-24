@@ -15,6 +15,7 @@ use Cube43\Component\Ebics\SymfonyEbicsServerCaller;
 use Cube43\Component\Ebics\Tests\E2e\FakeCrypt;
 use Cube43\Component\Ebics\UserCertificate;
 use Cube43\Component\Ebics\Version;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpClient\MockHttpClient;
 
 class HPBCommandTest extends E2eTestBase
@@ -27,7 +28,7 @@ class HPBCommandTest extends E2eTestBase
         //yield 'v30' => [Version::v30()];
     }
 
-    /** @dataProvider provideVersion */
+    #[DataProvider('provideVersion')]
     public function testOk(Version $version): void
     {
         // encryt TransactionKey with FakeCrypt::RSA_PUBLIC_KEY

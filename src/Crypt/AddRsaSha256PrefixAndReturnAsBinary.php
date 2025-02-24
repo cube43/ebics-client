@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics\Crypt;
 
-use function Safe\pack;
-use function Safe\unpack;
+use ErrorException;
+
+use function pack;
+use function unpack;
 
 /** @internal */
 class AddRsaSha256PrefixAndReturnAsBinary
@@ -14,6 +16,26 @@ class AddRsaSha256PrefixAndReturnAsBinary
 
     public function __invoke(string $hash): string
     {
-        return pack('c*', ...self::RSA_SHA256_PREFIX, ...unpack('C*', $hash));
+        return self::pack('c*', ...self::RSA_SHA256_PREFIX, ...self::unpack('C*', $hash));
+    }
+
+    private static function unpack(string $format, string $string): array
+    {
+        $safeResult = unpack($format, $string);
+        if ($safeResult === false) {
+            throw new ErrorException('An error occured');
+        }
+
+        return $safeResult;
+    }
+
+    private static function pack(string $string, mixed ...$values): string
+    {
+        $safeResult = pack($string, ...$values);
+        if ($safeResult === false) {
+            throw new ErrorException('An error occured');
+        }
+
+        return $safeResult;
     }
 }
