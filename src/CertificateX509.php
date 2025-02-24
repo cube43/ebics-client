@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics;
 
+use ErrorException;
 use phpseclib\File\X509;
 use RuntimeException;
 use Throwable;
@@ -15,7 +16,7 @@ use function chunk_split;
 use function hash;
 use function implode;
 use function is_array;
-use function Safe\openssl_x509_fingerprint;
+use function openssl_x509_fingerprint;
 use function str_split;
 use function strtoupper;
 use function wordwrap;
@@ -42,10 +43,10 @@ class CertificateX509
     public function fingerprint(): string
     {
         try {
-            $digest = strtoupper(openssl_x509_fingerprint($this->value, 'sha256'));
+            $digest = strtoupper(self::opensslX509Fingerprint($this->value, 'sha256'));
         } catch (Throwable) {
             $under  = "-----BEGIN CERTIFICATE-----\r\n" . chunk_split(base64_encode($this->value), 64) . '-----END CERTIFICATE-----';
-            $digest = strtoupper(openssl_x509_fingerprint($under, 'sha256'));
+            $digest = strtoupper(self::opensslX509Fingerprint($under, 'sha256'));
         }
 
         $digests = str_split($digest, 16);
@@ -85,5 +86,15 @@ class CertificateX509
         }
 
         return array_shift($certificateInsurerName);
+    }
+
+    private static function opensslX509Fingerprint(string $certificate, string $digestAlgo = 'sha1', bool $binary = false): string
+    {
+        $safeResult = openssl_x509_fingerprint($certificate, $digestAlgo, $binary);
+        if ($safeResult === false) {
+            throw new ErrorException('An error occured');
+        }
+
+        return $safeResult;
     }
 }

@@ -157,13 +157,8 @@ class SignQuery
         string $path = '/',
         string $algorithm = 'REC-xml-c14n-20010315',
     ): string {
-        switch ($algorithm) {
-            case 'REC-xml-c14n-20010315':
-                $exclusive    = false;
-                $withComments = false;
-                break;
-            default:
-                throw new Exception(sprintf('Define algo for %s', $algorithm));
+        if ($algorithm !== 'REC-xml-c14n-20010315') {
+            throw new Exception(sprintf('Define algo for %s', $algorithm));
         }
 
         $nodes  = $xpath->query($path);
@@ -175,7 +170,7 @@ class SignQuery
 
         foreach ($nodes as $node) {
             assert($node instanceof DOMNode);
-            $result .= $node->C14N($exclusive, $withComments);
+            $result .= $node->C14N(false, false);
         }
 
         return trim($result);

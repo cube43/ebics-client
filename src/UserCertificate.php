@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Cube43\Component\Ebics;
 
 use Cube43\Component\Ebics\Crypt\ExponentAndModulus;
+use ErrorException;
 use JsonSerializable;
 use phpseclib\Crypt\RSA;
 
+use function base64_decode;
 use function base64_encode;
-use function Safe\base64_decode;
 
 class UserCertificate implements JsonSerializable
 {
@@ -27,9 +28,19 @@ class UserCertificate implements JsonSerializable
         return new self(
             CertificatType::fromString($bankCertificateX['type']),
             base64_decode($bankCertificateX['public']),
-            new PrivateKey(base64_decode($bankCertificateX['private'])),
-            new CertificateX509(base64_decode($bankCertificateX['content'])),
+            new PrivateKey(self::base64Decode($bankCertificateX['private'])),
+            new CertificateX509(self::base64Decode($bankCertificateX['content'])),
         );
+    }
+
+    private static function base64Decode(string $string): string
+    {
+        $safeResult = base64_decode($string);
+        if ($safeResult === false) {
+            throw new ErrorException('An error occured');
+        }
+
+        return $safeResult;
     }
 
     public function getCertificatType(): CertificatType

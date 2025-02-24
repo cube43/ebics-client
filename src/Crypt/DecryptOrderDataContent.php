@@ -6,11 +6,12 @@ namespace Cube43\Component\Ebics\Crypt;
 
 use Cube43\Component\Ebics\KeyRing;
 use Cube43\Component\Ebics\OrderDataEncrypted;
+use ErrorException;
 use phpseclib\Crypt\AES;
 use phpseclib\Crypt\RSA;
 use RuntimeException;
 
-use function Safe\gzuncompress;
+use function gzuncompress;
 
 use const OPENSSL_ZERO_PADDING;
 
@@ -41,6 +42,16 @@ class DecryptOrderDataContent
             throw new RuntimeException('decrypt error');
         }
 
-        return gzuncompress($decrypted);
+        return self::gzuncompress($decrypted);
+    }
+
+    private static function gzuncompress(string $string): string
+    {
+        $safeResult = gzuncompress($string);
+        if ($safeResult === false) {
+            throw new ErrorException('An error occured');
+        }
+
+        return $safeResult;
     }
 }

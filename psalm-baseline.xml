@@ -1,22 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.17.0@c620f6e80d0abfca532b00bda366062aaedf6e5d">
+<files psalm-version="6.8.6@34ba9e1e5ea2e7396d3e2e644ee3e3a1d4336603">
+  <file src="bin/cube43-ebics-command.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[protected function configure(): void]]></code>
+      <code><![CDATA[protected function execute(InputInterface $input, OutputInterface $output): int]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/BankCertificate.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function jsonSerialize(): array]]></code>
+    </MissingOverrideAttribute>
+  </file>
   <file src="src/Crypt/SignQuery.php">
     <InvalidReturnStatement>
-      <code>$domNode</code>
+      <code><![CDATA[$domNode]]></code>
     </InvalidReturnStatement>
     <InvalidReturnType>
-      <code>DOMNode</code>
+      <code><![CDATA[DOMNode]]></code>
     </InvalidReturnType>
   </file>
   <file src="src/DOMDocument.php">
     <InvalidClass>
-      <code>\DOMXpath</code>
+      <code><![CDATA[\DOMXpath]]></code>
     </InvalidClass>
+  </file>
+  <file src="src/KeyRing.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function jsonSerialize(): array]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/SymfonyEbicsServerCaller.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function __invoke(string $request, BankInfo $bank, array $expectedReturnCode = ['000000']): string]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/UserCertificate.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function jsonSerialize(): array]]></code>
+    </MissingOverrideAttribute>
   </file>
   <file src="src/X509/DefaultX509OptionGenerator.php">
     <ImpureMethodCall>
-      <code>new DateTimeImmutable()</code>
-      <code>new DateTimeImmutable()</code>
+      <code><![CDATA[new DateTimeImmutable()]]></code>
+      <code><![CDATA[new DateTimeImmutable()]]></code>
     </ImpureMethodCall>
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function getEnd(): DateTimeImmutable]]></code>
+      <code><![CDATA[public function getFormat(): EbicsX509FormatEnum]]></code>
+      <code><![CDATA[public function getOption(): array]]></code>
+      <code><![CDATA[public function getStart(): DateTimeImmutable]]></code>
+    </MissingOverrideAttribute>
   </file>
 </files>

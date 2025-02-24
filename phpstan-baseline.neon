@@ -1,17 +1,86 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Cannot call method appendChild\\(\\) on DOMNode\\|null\\.$#"
+			message: '#^Strict comparison using \=\=\= between string and false will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/BankCertificate.php
+
+		-
+			message: '#^Method Cube43\\Component\\Ebics\\Crypt\\AddRsaSha256PrefixAndReturnAsBinary\:\:unpack\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Crypt/AddRsaSha256PrefixAndReturnAsBinary.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and false will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/Crypt/AddRsaSha256PrefixAndReturnAsBinary.php
+
+		-
+			message: '#^Call to function assert\(\) with true will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
 			count: 1
 			path: src/Crypt/SignQuery.php
 
 		-
-			message: "#^Cannot call method insertBefore\\(\\) on DOMNode\\|null\\.$#"
+			message: '#^Cannot call method appendChild\(\) on DOMNode\|null\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: src/Crypt/SignQuery.php
 
 		-
-			message: "#^Parameter \\#2 \\$digestValue of closure expects string, string\\|null given\\.$#"
+			message: '#^Cannot call method insertBefore\(\) on DOMNode\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Crypt/SignQuery.php
+
+		-
+			message: '#^Instanceof between DOMNode and DOMNode will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: src/Crypt/SignQuery.php
+
+		-
+			message: '#^Method Cube43\\Component\\Ebics\\KeyRing\:\:jsonDecode\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/KeyRing.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and false will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/UserCertificate.php
+
+		-
+			message: '#^Possibly impure instantiation of class DateTimeImmutable in pure method Cube43\\Component\\Ebics\\X509\\DefaultX509OptionGenerator\:\:getEnd\(\)\.$#'
+			identifier: possiblyImpure.new
+			count: 1
+			path: src/X509/DefaultX509OptionGenerator.php
+
+		-
+			message: '#^Possibly impure instantiation of class DateTimeImmutable in pure method Cube43\\Component\\Ebics\\X509\\DefaultX509OptionGenerator\:\:getStart\(\)\.$#'
+			identifier: possiblyImpure.new
+			count: 1
+			path: src/X509/DefaultX509OptionGenerator.php
+
+		-
+			message: '#^Call to function assert\(\) with true will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: tests/E2e/Command/E2eTestBase.php
+
+		-
+			message: '#^Instanceof between DOMNode and DOMNode will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: tests/E2e/Command/E2eTestBase.php
+
+		-
+			message: '#^Parameter \#2 \$digestValue of closure expects string, string\|null given\.$#'
+			identifier: argument.type
 			count: 2
 			path: tests/E2e/Command/E2eTestBase.php
 

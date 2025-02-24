@@ -14,10 +14,11 @@ use Cube43\Component\Ebics\KeyRing;
 use Cube43\Component\Ebics\OrderDataEncrypted;
 use Cube43\Component\Ebics\PrivateKey;
 use Cube43\Component\Ebics\X509\DefaultX509OptionGenerator;
+use ErrorException;
 use phpseclib\Crypt\AES;
 use PHPUnit\Framework\TestCase;
 
-use function Safe\gzcompress;
+use function gzcompress;
 
 use const OPENSSL_ZERO_PADDING;
 
@@ -35,7 +36,7 @@ class CryptAndDecryptDataTest extends TestCase
         $certE          = $generateCert->__invoke(new DefaultX509OptionGenerator(), $password, CertificatType::e());
         $transactionKey = $encrypted->__invoke($password, new PrivateKey($certE->getPublicKey()), $xmlData);
 
-        $orderData = $this->aesCrypt((new AddRsaSha256PrefixAndReturnAsBinary())->__invoke($xmlData), gzcompress($xmlData));
+        $orderData = $this->aesCrypt((new AddRsaSha256PrefixAndReturnAsBinary())->__invoke($xmlData), self::gzcompress($xmlData));
 
         $keyRing = new KeyRing('myPass');
         $keyRing = $keyRing->setUserCertificateEAndX($certE, $certE);
@@ -53,5 +54,15 @@ class CryptAndDecryptDataTest extends TestCase
         $aes->openssl_options = OPENSSL_ZERO_PADDING;
 
         return $aes->encrypt($cypher);
+    }
+
+    private static function gzcompress(string $string): string
+    {
+        $safeResult = gzcompress($string);
+        if ($safeResult === false) {
+            throw new ErrorException('An error occured');
+        }
+
+        return $safeResult;
     }
 }

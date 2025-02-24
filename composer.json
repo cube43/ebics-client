@@ -17,24 +17,22 @@
   ],
   "license": "MIT",
   "require": {
-    "php": "^8.1 || ^8.2 || ^8.3",
+    "php": "^8.1 || ^8.2 || ^8.3 || ^8.4",
     "ext-dom": "*",
     "ext-openssl": "*",
     "ext-zlib": "*",
     "ext-json": "*",
     "phpseclib/phpseclib": "^2.0.47",
-    "symfony/http-client": "^6.3.7",
-    "thecodingmachine/safe": "^2.5"
+    "symfony/http-client": "^6.3.12 || ^7.1.11"
   },
   "require-dev": {
     "doctrine/coding-standard": "^12.0",
-    "phpunit/phpunit": "^10.5.27",
-    "psalm/plugin-phpunit": "^0.19.0",
-    "vimeo/psalm": "^5.25.0",
-    "ocramius/package-versions": "2.9.0",
-    "phpstan/phpstan": "1.11.8",
+    "phpunit/phpunit": "^10.5.45",
+    "psalm/plugin-phpunit": "^0.19.2",
+    "vimeo/psalm": "^6.8.6",
+    "phpstan/phpstan": "^2.1.6",
     "vrbata/xml-validator": "2.0.1",
-    "symfony/console": "6.3.4"
+    "symfony/console": "7.2.1"
   },
   "autoload": {
     "psr-4": {

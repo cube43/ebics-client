@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics;
 
+use ErrorException;
 use JsonSerializable;
 use RuntimeException;
 
 use function array_key_exists;
+use function file_get_contents;
 use function is_file;
-use function Safe\file_get_contents;
-use function Safe\json_decode;
+use function json_decode;
 
 class KeyRing implements JsonSerializable
 {
@@ -151,7 +152,9 @@ class KeyRing implements JsonSerializable
             return new self($password);
         }
 
-        return self::fromArray(json_decode(file_get_contents($file), true), $password);
+        $content = self::fileGetContents($file);
+
+        return self::fromArray(self::jsonDecode($content, true), $password);
     }
 
     /** @param array<string, (array<string, string>|null)> $data */
@@ -203,5 +206,25 @@ class KeyRing implements JsonSerializable
             'userCertificateE' => $this->userCertificateE ? $this->userCertificateE->jsonSerialize() : null,
             'userCertificateX' => $this->userCertificateX ? $this->userCertificateX->jsonSerialize() : null,
         ];
+    }
+
+    private static function jsonDecode(string $json, bool $assoc = false): array
+    {
+        $safeResult = json_decode($json, $assoc);
+        if ($safeResult === false) {
+            throw new ErrorException('An error occured');
+        }
+
+        return $safeResult;
+    }
+
+    private static function fileGetContents(string $string): string
+    {
+        $safeResult = file_get_contents($string);
+        if ($safeResult === false) {
+            throw new ErrorException('An error occured');
+        }
+
+        return $safeResult;
     }
 }
