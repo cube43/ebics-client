@@ -22,8 +22,11 @@
     "ext-openssl": "*",
     "ext-zlib": "*",
     "ext-json": "*",
+
     "phpseclib/phpseclib": "^2.0.47",
     "symfony/http-client": "^6.3.12 || ^7.1.11"
+
+
   },
   "require-dev": {
     "doctrine/coding-standard": "^12.0",
