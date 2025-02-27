@@ -25,7 +25,7 @@ use function define;
 use function defined;
 use function hash;
 use function print_r;
-use function Safe\sprintf;
+use function sprintf;
 use function trim;
 
 class E2eTestBase extends TestCase

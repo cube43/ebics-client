@@ -14,10 +14,11 @@ use Cube43\Component\Ebics\SymfonyEbicsServerCaller;
 use Cube43\Component\Ebics\Version;
 use Cube43\Component\Ebics\X509\X509CertificatOptionsGenerator;
 use DateTime;
+use ErrorException;
 use RuntimeException;
 
 use function base64_encode;
-use function Safe\gzcompress;
+use function gzcompress;
 
 class HIACommand
 {
@@ -68,10 +69,20 @@ class HIACommand
             '{{OrderID}}' => $orderId,
         ];
 
-        $search['{{OrderData}}'] = base64_encode(gzcompress($this->renderXml->__invoke($search, $bank->getVersion(), 'HIA_OrderData.xml')->toString()));
+        $search['{{OrderData}}'] = base64_encode(self::gzcompress($this->renderXml->__invoke($search, $bank->getVersion(), 'HIA_OrderData.xml')->toString()));
 
         $this->httpClient->__invoke($this->renderXml->__invoke($search, $bank->getVersion(), 'HIA.xml')->toString(), $bank);
 
         return $keyRing;
+    }
+
+    private static function gzcompress(string $string): string
+    {
+        $safeResult = gzcompress($string);
+        if ($safeResult === false) {
+            throw new ErrorException('An error occured');
+        }
+
+        return $safeResult;
     }
 }

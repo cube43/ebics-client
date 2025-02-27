@@ -9,9 +9,9 @@ ifneq "$(SUPPORTS_MAKE_ARGS)" ""
   $(eval $(COMMAND_ARGS):;@:)
 endif
 
-DOCKER_PHP := docker-compose exec php
+DOCKER_PHP := docker compose exec php
 
-ifeq (, $(shell which docker-compose))
+ifeq (, $(shell which docker compose))
 	BASE :=
 else
 	BASE := $(DOCKER_PHP)
@@ -28,14 +28,14 @@ all: help
 
 dup:
     ifeq ($(BASE), $(DOCKER_PHP))
-		docker-compose up -d --remove-orphans
+		docker compose up -d --remove-orphans
     endif
 
 kill:
-	docker-compose rm -f -s
+	docker compose rm -f -s
 
 login:
-	docker-compose exec php sh
+	docker compose exec php sh
 
 php:
 	$(BASE) $(COMMAND_ARGS)

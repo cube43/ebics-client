@@ -11,6 +11,7 @@ use Cube43\Component\Ebics\SymfonyEbicsServerCaller;
 use Cube43\Component\Ebics\UserCertificate;
 use Cube43\Component\Ebics\Version;
 use Cube43\Component\Ebics\X509\DefaultX509OptionGenerator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpClient\MockHttpClient;
 
 class INICommandTest extends E2eTestBase
@@ -23,7 +24,7 @@ class INICommandTest extends E2eTestBase
         yield 'v30' => [Version::v30()];
     }
 
-    /** @dataProvider provideVersion */
+    #[DataProvider('provideVersion')]
     public function testOk(Version $version): void
     {
         $versionToXmlResponse = [
