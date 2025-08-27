@@ -6,6 +6,6 @@ namespace Cube43\Component\Ebics\X509;
 
 enum EbicsX509FormatEnum: string
 {
-    case PEM = 'PEM';
-    case DER = 'DER';
-}
+case PEM = 'PEM';
+case DER = 'DER';
+    }
