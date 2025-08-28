@@ -36,7 +36,12 @@ class CertificateX509
         $this->x509 = new X509();
 
         if ($this->isHexadecimal($value)) {
-            $this->x509->loadX509(hex2bin($value));
+            $value2Bin = hex2bin($value);
+            if ($value2Bin === false) {
+                throw new RuntimeException('x509 value is not DER format');
+            }
+
+            $this->x509->loadX509($value2Bin);
         } else {
             $this->x509->loadX509($value);
         }
@@ -95,6 +100,7 @@ class CertificateX509
         return $certificateSerialNumber->toString();
     }
 
+    /** @return mixed[] */
     public function getCurrentCert(): array
     {
         return $this->x509->currentCert;
