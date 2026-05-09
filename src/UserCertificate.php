@@ -8,7 +8,9 @@ use Cube43\Component\Ebics\Crypt\ExponentAndModulus;
 use ErrorException;
 use JsonSerializable;
 use phpseclib3\Crypt\RSA;
+use phpseclib3\Crypt\RSA\PublicKey;
 
+use function assert;
 use function base64_decode;
 use function base64_encode;
 
@@ -65,8 +67,8 @@ class UserCertificate implements JsonSerializable
 
     public function getPublicKeyDetails(): ExponentAndModulus
     {
-        /** @var \phpseclib3\Crypt\RSA\PublicKey $key */
         $key = RSA::load($this->publicKey);
+        assert($key instanceof PublicKey);
 
         return new ExponentAndModulus($key);
     }

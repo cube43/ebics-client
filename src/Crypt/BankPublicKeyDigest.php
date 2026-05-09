@@ -9,6 +9,7 @@ use phpseclib3\Crypt\Common\PublicKey;
 use phpseclib3\Crypt\RSA;
 use phpseclib3\Math\BigInteger;
 
+use function assert;
 use function base64_encode;
 use function hash;
 use function ltrim;
@@ -19,8 +20,8 @@ class BankPublicKeyDigest
 {
     public function __invoke(BankCertificate $certificate): string
     {
-        /** @var \phpseclib3\Crypt\RSA\PublicKey $publicKey */
         $publicKey = RSA::load($certificate->getPublicKey());
+        assert($publicKey instanceof \phpseclib3\Crypt\RSA\PublicKey);
 
         return base64_encode(hash('sha256', $this->generateDigest($publicKey), true));
     }
