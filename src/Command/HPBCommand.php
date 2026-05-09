@@ -22,6 +22,7 @@ use phpseclib3\Math\BigInteger;
 
 use function base64_decode;
 use function bin2hex;
+use function random_bytes;
 use function strtoupper;
 
 class HPBCommand

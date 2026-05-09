@@ -23,11 +23,11 @@ use function bin2hex;
 use function hash;
 use function openssl_pkey_get_private;
 use function openssl_private_encrypt;
-
-use const OPENSSL_PKCS1_PADDING;
 use function print_r;
 use function sprintf;
 use function trim;
+
+use const OPENSSL_PKCS1_PADDING;
 
 class E2eTestBase extends TestCase
 {

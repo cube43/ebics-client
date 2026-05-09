@@ -17,7 +17,13 @@ use phpseclib3\Crypt\RSA;
 use phpseclib3\Crypt\RSA\PublicKey as RsaPublicKey;
 use PHPUnit\Framework\TestCase;
 
+use function assert;
+use function base64_encode;
 use function gzcompress;
+use function random_bytes;
+use function str_pad;
+use function str_repeat;
+use function strlen;
 
 class CryptAndDecryptDataTest extends TestCase
 {
@@ -32,8 +38,8 @@ class CryptAndDecryptDataTest extends TestCase
         $certE  = $generateCert->__invoke(new DefaultX509OptionGenerator(), $password, CertificatType::e());
         $aesKey = random_bytes(16);
 
-        /** @var RsaPublicKey $pubKey */
-        $pubKey         = RSA::loadPublicKey($certE->getPublicKey());
+        $pubKey = RSA::loadPublicKey($certE->getPublicKey());
+        assert($pubKey instanceof RsaPublicKey);
         $transactionKey = $pubKey->withPadding(RSA::ENCRYPTION_PKCS1)->encrypt($aesKey);
 
         $orderData = base64_encode($this->aesCrypt($aesKey, self::gzcompress($xmlData)));
@@ -55,7 +61,7 @@ class CryptAndDecryptDataTest extends TestCase
         $blockSize = 16;
         $remainder = strlen($cypher) % $blockSize;
         if ($remainder !== 0) {
-            $cypher = str_pad($cypher, strlen($cypher) + ($blockSize - $remainder), "\0");
+            $cypher = str_pad($cypher, strlen($cypher) + $blockSize - $remainder, "\0");
         }
 
         return $aes->encrypt($cypher);

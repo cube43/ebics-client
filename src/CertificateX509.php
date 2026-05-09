@@ -80,9 +80,7 @@ class CertificateX509
         return implode("\n", $digests);
     }
 
-    /**
-     * @deprecated Use always fingerprint method
-     */
+    /** @deprecated Use always fingerprint method */
     public function digest(): string
     {
         $digest  = strtoupper(hash('sha256', $this->value, false));

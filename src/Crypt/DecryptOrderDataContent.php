@@ -12,18 +12,21 @@ use phpseclib3\Crypt\RSA;
 use phpseclib3\Crypt\RSA\PrivateKey as RsaPrivateKey;
 use RuntimeException;
 
+use function assert;
+use function base64_decode;
 use function gzuncompress;
+use function str_repeat;
 
 /** @internal */
 class DecryptOrderDataContent
 {
     public function __invoke(KeyRing $keyRing, OrderDataEncrypted $orderData): string
     {
-        /** @var RsaPrivateKey $rsa */
         $rsa = RSA::loadPrivateKey(
             $keyRing->getUserCertificateE()->getPrivateKey()->value(),
             $keyRing->getPassword(),
         );
+        assert($rsa instanceof RsaPrivateKey);
         $rsa = $rsa->withPadding(RSA::ENCRYPTION_PKCS1);
 
         $transactionKeyDecrypted = $rsa->decrypt($orderData->getTransactionKey());

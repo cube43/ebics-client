@@ -9,10 +9,8 @@ use ErrorException;
 use JsonSerializable;
 use phpseclib3\Crypt\RSA;
 
-use function assert;
 use function base64_decode;
 use function base64_encode;
-use function is_string;
 
 class BankCertificate implements JsonSerializable
 {

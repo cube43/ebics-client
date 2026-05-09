@@ -30,9 +30,9 @@ class X509Generator
             'extensions' => [],
         ], $certificatOptionsGenerator->getOption());
 
-        $subject            = $this->generateSubject($publicKey, $options);
-        $issuer             = $this->generateIssuer($privateKey, $publicKey, $subject, $options);
-        $x509 = new X509();
+        $subject = $this->generateSubject($publicKey, $options);
+        $issuer  = $this->generateIssuer($privateKey, $publicKey, $subject, $options);
+        $x509    = new X509();
         $x509->setStartDate($certificatOptionsGenerator->getStart());
         $x509->setEndDate($certificatOptionsGenerator->getEnd());
         $x509->setSerialNumber($this->generateSerialNumber(), 10);

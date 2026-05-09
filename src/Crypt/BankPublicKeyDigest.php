@@ -7,7 +7,7 @@ namespace Cube43\Component\Ebics\Crypt;
 use Cube43\Component\Ebics\BankCertificate;
 use phpseclib3\Crypt\Common\PublicKey;
 use phpseclib3\Crypt\RSA;
-use RuntimeException;
+use phpseclib3\Math\BigInteger;
 
 use function base64_encode;
 use function hash;
@@ -26,7 +26,7 @@ class BankPublicKeyDigest
 
     private function generateDigest(PublicKey $publicKey): string
     {
-        /** @var array{e: \phpseclib3\Math\BigInteger, n: \phpseclib3\Math\BigInteger} */
+        /** @var array{e: BigInteger, n: BigInteger} $raw */
         $raw      = $publicKey->toString('Raw');
         $exponent = $raw['e']->toHex();
         $modulus  = $raw['n']->toHex();

@@ -21,6 +21,7 @@ use RuntimeException;
 use function base64_decode;
 use function bin2hex;
 use function in_array;
+use function random_bytes;
 use function strtoupper;
 
 class FDLCommand
