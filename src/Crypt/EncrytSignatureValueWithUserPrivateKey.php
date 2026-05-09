@@ -27,7 +27,7 @@ class EncrytSignatureValueWithUserPrivateKey
     public function __invoke(KeyRing $keyRing, PrivateKey $key, string $hash): string
     {
         $password      = $keyRing->getPassword();
-        $privateKeyRes = openssl_pkey_get_private($key->value(), $password !== '' ? $password : null);
+        $privateKeyRes = openssl_pkey_get_private($key->value(), $password);
 
         if ($privateKeyRes === false) {
             throw new RuntimeException('Unable to load private key.');
