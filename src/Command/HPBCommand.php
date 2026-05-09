@@ -81,7 +81,8 @@ class HPBCommand
 
     private function cert(DOMDocument $decrypted, CertificatType $certificatType, string $parentNode): BankCertificate
     {
-        // @phpstan-ignore-next-line — phpseclib3 accepts array components but its PHPDoc only declares string
+        /** @psalm-suppress InvalidArgument — phpseclib3 accepts array components but its PHPDoc only declares string */
+        // @phpstan-ignore-next-line
         $publicKey = RSA::load([
             'n' => new BigInteger(base64_decode($decrypted->getNodeValueChildOf('Modulus', $parentNode)), 256),
             'e' => new BigInteger(base64_decode($decrypted->getNodeValueChildOf('Exponent', $parentNode)), 256),

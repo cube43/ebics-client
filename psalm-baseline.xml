@@ -11,14 +11,6 @@
       <code><![CDATA[public function jsonSerialize(): array]]></code>
     </MissingOverrideAttribute>
   </file>
-  <file src="src/Crypt/SignQuery.php">
-    <InvalidReturnStatement>
-      <code><![CDATA[$domNode]]></code>
-    </InvalidReturnStatement>
-    <InvalidReturnType>
-      <code><![CDATA[DOMNode]]></code>
-    </InvalidReturnType>
-  </file>
   <file src="src/DOMDocument.php">
     <InvalidClass>
       <code><![CDATA[\DOMXpath]]></code>
@@ -40,10 +32,6 @@
     </MissingOverrideAttribute>
   </file>
   <file src="src/X509/DefaultX509OptionGenerator.php">
-    <ImpureMethodCall>
-      <code><![CDATA[new DateTimeImmutable()]]></code>
-      <code><![CDATA[new DateTimeImmutable()]]></code>
-    </ImpureMethodCall>
     <MissingOverrideAttribute>
       <code><![CDATA[public function getEnd(): DateTimeImmutable]]></code>
       <code><![CDATA[public function getFormat(): EbicsX509FormatEnum]]></code>
