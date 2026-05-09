@@ -65,7 +65,10 @@ class UserCertificate implements JsonSerializable
 
     public function getPublicKeyDetails(): ExponentAndModulus
     {
-        return new ExponentAndModulus(RSA::loadPublicKey($this->publicKey));
+        /** @var \phpseclib3\Crypt\RSA\PublicKey $key */
+        $key = RSA::load($this->publicKey);
+
+        return new ExponentAndModulus($key);
     }
 
     /** @return array<string, string> */

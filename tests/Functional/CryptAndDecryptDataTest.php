@@ -38,8 +38,8 @@ class CryptAndDecryptDataTest extends TestCase
         $certE  = $generateCert->__invoke(new DefaultX509OptionGenerator(), $password, CertificatType::e());
         $aesKey = random_bytes(16);
 
-        $pubKey = RSA::loadPublicKey($certE->getPublicKey());
-        assert($pubKey instanceof RsaPublicKey);
+        /** @var RsaPublicKey $pubKey */
+        $pubKey = RSA::load($certE->getPublicKey());
         $transactionKey = $pubKey->withPadding(RSA::ENCRYPTION_PKCS1)->encrypt($aesKey);
 
         $orderData = base64_encode($this->aesCrypt($aesKey, self::gzcompress($xmlData)));

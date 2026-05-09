@@ -33,8 +33,8 @@ class X509Generator
         $subject = $this->generateSubject($publicKey, $options);
         $issuer  = $this->generateIssuer($privateKey, $publicKey, $subject, $options);
         $x509    = new X509();
-        $x509->setStartDate($certificatOptionsGenerator->getStart());
-        $x509->setEndDate($certificatOptionsGenerator->getEnd());
+        $x509->setStartDate($certificatOptionsGenerator->getStart()->format('D, d M Y H:i:s O'));
+        $x509->setEndDate($certificatOptionsGenerator->getEnd()->format('D, d M Y H:i:s O'));
         $x509->setSerialNumber($this->generateSerialNumber(), 10);
 
         $result = $x509->sign($issuer, $subject);

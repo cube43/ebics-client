@@ -22,11 +22,11 @@ class DecryptOrderDataContent
 {
     public function __invoke(KeyRing $keyRing, OrderDataEncrypted $orderData): string
     {
-        $rsa = RSA::loadPrivateKey(
+        /** @var RsaPrivateKey $rsa */
+        $rsa = RSA::load(
             $keyRing->getUserCertificateE()->getPrivateKey()->value(),
             $keyRing->getPassword(),
         );
-        assert($rsa instanceof RsaPrivateKey);
         $rsa = $rsa->withPadding(RSA::ENCRYPTION_PKCS1);
 
         $transactionKeyDecrypted = $rsa->decrypt($orderData->getTransactionKey());

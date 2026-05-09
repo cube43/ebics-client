@@ -19,7 +19,8 @@ class BankPublicKeyDigest
 {
     public function __invoke(BankCertificate $certificate): string
     {
-        $publicKey = RSA::loadPublicKey($certificate->getPublicKey());
+        /** @var \phpseclib3\Crypt\RSA\PublicKey $publicKey */
+        $publicKey = RSA::load($certificate->getPublicKey());
 
         return base64_encode(hash('sha256', $this->generateDigest($publicKey), true));
     }
