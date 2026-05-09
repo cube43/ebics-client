@@ -17,9 +17,8 @@ use Cube43\Component\Ebics\OrderDataEncrypted;
 use Cube43\Component\Ebics\RenderXml;
 use Cube43\Component\Ebics\SymfonyEbicsServerCaller;
 use DateTime;
-use phpseclib\Crypt\Random;
-use phpseclib\Crypt\RSA;
-use phpseclib\Math\BigInteger;
+use phpseclib3\Crypt\RSA;
+use phpseclib3\Math\BigInteger;
 
 use function base64_decode;
 use function bin2hex;
@@ -47,7 +46,7 @@ class HPBCommand
     {
         $search = [
             '{{HostID}}' => $bank->getHostId(),
-            '{{Nonce}}' => strtoupper(bin2hex(Random::string(16))),
+            '{{Nonce}}' => strtoupper(bin2hex(random_bytes(16))),
             '{{Timestamp}}' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
             '{{PartnerID}}' => $bank->getPartnerId(),
             '{{UserID}}' => $bank->getUserId(),
@@ -81,15 +80,15 @@ class HPBCommand
 
     private function cert(DOMDocument $decrypted, CertificatType $certificatType, string $parentNode): BankCertificate
     {
-        $rsa = new RSA();
-        $rsa->loadKey([
+        // @phpstan-ignore-next-line — phpseclib3 accepts array components but its PHPDoc only declares string
+        $publicKey = RSA::load([
             'n' => new BigInteger(base64_decode($decrypted->getNodeValueChildOf('Modulus', $parentNode)), 256),
             'e' => new BigInteger(base64_decode($decrypted->getNodeValueChildOf('Exponent', $parentNode)), 256),
         ]);
 
         return new BankCertificate(
             $certificatType,
-            $rsa->getPublicKey(RSA::PUBLIC_FORMAT_PKCS1),
+            $publicKey->toString('PKCS1'),
             new CertificateX509(bin2hex(base64_decode($decrypted->getNodeValueChildOf('X509Certificate', $parentNode)))),
         );
     }

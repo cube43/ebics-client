@@ -11,7 +11,6 @@ use DOMDocument;
 use DOMNode;
 use DOMNodeList;
 use DOMXpath;
-use phpseclib\Crypt\RSA;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Symfony\Component\HttpClient\Response\MockResponse;
@@ -21,9 +20,11 @@ use function assert;
 use function base64_decode;
 use function base64_encode;
 use function bin2hex;
-use function define;
-use function defined;
 use function hash;
+use function openssl_pkey_get_private;
+use function openssl_private_encrypt;
+
+use const OPENSSL_PKCS1_PADDING;
 use function print_r;
 use function sprintf;
 use function trim;
@@ -75,17 +76,16 @@ class E2eTestBase extends TestCase
             };
 
             $crpyt = static function ($ciphertext) {
-                $rsa = new RSA();
-                $rsa->setPassword('');
-                $rsa->loadKey(FakeCrypt::RSA_PRIVATE_KEY, RSA::PRIVATE_FORMAT_PKCS1);
+                $privateKeyRes = openssl_pkey_get_private(FakeCrypt::RSA_PRIVATE_KEY);
+                assert($privateKeyRes !== false);
+                openssl_private_encrypt(
+                    (new AddRsaSha256PrefixAndReturnAsBinary())->__invoke($ciphertext),
+                    $encrypted,
+                    $privateKeyRes,
+                    OPENSSL_PKCS1_PADDING,
+                );
 
-                if (! defined('CRYPT_RSA_PKCS15_COMPAT')) {
-                    define('CRYPT_RSA_PKCS15_COMPAT', true);
-                }
-
-                $rsa->setEncryptionMode(RSA::ENCRYPTION_PKCS1);
-
-                return $rsa->encrypt((new AddRsaSha256PrefixAndReturnAsBinary())->__invoke($ciphertext));
+                return $encrypted;
             };
 
             $signatureOk = static function ($signatureRaw, $signatureValue) use ($crpyt) {
@@ -120,11 +120,13 @@ class E2eTestBase extends TestCase
                 return trim($result);
             };
 
+            $digestValue    = $findElement($xml, 'DigestValue')->nodeValue ?? '';
+            $signatureValue = $findElement($xml, 'SignatureValue')->nodeValue ?? '';
             self::assertTrue(
-                $digestOk($xpathElement($xml, "//*[@authenticate='true']"), $findElement($xml, 'DigestValue')->nodeValue),
-                $digestDump($xpathElement($xml, "//*[@authenticate='true']"), $findElement($xml, 'DigestValue')->nodeValue),
+                $digestOk($xpathElement($xml, "//*[@authenticate='true']"), $digestValue),
+                $digestDump($xpathElement($xml, "//*[@authenticate='true']"), $digestValue),
             );
-            self::assertTrue($signatureOk($findElement($xml, 'SignedInfo')->C14N(), $findElement($xml, 'SignatureValue')->nodeValue));
+            self::assertTrue($signatureOk($findElement($xml, 'SignedInfo')->C14N(), $signatureValue));
         };
     }
 }

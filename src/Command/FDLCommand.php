@@ -16,7 +16,6 @@ use Cube43\Component\Ebics\OrderDataEncrypted;
 use Cube43\Component\Ebics\RenderXml;
 use Cube43\Component\Ebics\SymfonyEbicsServerCaller;
 use DateTime;
-use phpseclib\Crypt\Random;
 use RuntimeException;
 
 use function base64_decode;
@@ -86,7 +85,7 @@ class FDLCommand
         $search = [
             '{{DateRange}}' => $dateRange === '' ? '' : '<DateRange>' . $dateRange . '</DateRange>',
             '{{HostID}}' => $bank->getHostId(),
-            '{{Nonce}}' => strtoupper(bin2hex(Random::string(16))),
+            '{{Nonce}}' => strtoupper(bin2hex(random_bytes(16))),
             '{{Timestamp}}' => (new DateTime())->format('Y-m-d\TH:i:s\Z'),
             '{{PartnerID}}' => $bank->getPartnerId(),
             '{{UserID}}' => $bank->getUserId(),

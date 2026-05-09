@@ -7,7 +7,7 @@ namespace Cube43\Component\Ebics;
 use Cube43\Component\Ebics\Crypt\ExponentAndModulus;
 use ErrorException;
 use JsonSerializable;
-use phpseclib\Crypt\RSA;
+use phpseclib3\Crypt\RSA;
 
 use function assert;
 use function base64_decode;
@@ -35,8 +35,7 @@ class BankCertificate implements JsonSerializable
 
     private static function base64Decode(string $string): string
     {
-        $safeResult = base64_decode($string);
-        assert(is_string($safeResult) || $safeResult === false);
+        $safeResult = base64_decode($string, true);
         if ($safeResult === false) {
             throw new ErrorException('An error occured');
         }
@@ -61,10 +60,7 @@ class BankCertificate implements JsonSerializable
 
     public function getPublicKeyDetails(): ExponentAndModulus
     {
-        $rsa = new RSA();
-        $rsa->setPublicKey($this->publicKey);
-
-        return new ExponentAndModulus($rsa);
+        return new ExponentAndModulus(RSA::loadPublicKey($this->publicKey));
     }
 
     /** @return array<string, string> */

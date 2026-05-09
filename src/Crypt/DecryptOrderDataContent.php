@@ -7,36 +7,34 @@ namespace Cube43\Component\Ebics\Crypt;
 use Cube43\Component\Ebics\KeyRing;
 use Cube43\Component\Ebics\OrderDataEncrypted;
 use ErrorException;
-use phpseclib\Crypt\AES;
-use phpseclib\Crypt\RSA;
+use phpseclib3\Crypt\AES;
+use phpseclib3\Crypt\RSA;
+use phpseclib3\Crypt\RSA\PrivateKey as RsaPrivateKey;
 use RuntimeException;
 
 use function gzuncompress;
-
-use const OPENSSL_ZERO_PADDING;
 
 /** @internal */
 class DecryptOrderDataContent
 {
     public function __invoke(KeyRing $keyRing, OrderDataEncrypted $orderData): string
     {
-        $rsa = new RSA();
-        $rsa->setPassword($keyRing->getPassword());
-        $rsa->loadKey($keyRing->getUserCertificateE()->getPrivateKey()->value());
-        $rsa->setEncryptionMode(RSA::ENCRYPTION_PKCS1);
+        /** @var RsaPrivateKey $rsa */
+        $rsa = RSA::loadPrivateKey(
+            $keyRing->getUserCertificateE()->getPrivateKey()->value(),
+            $keyRing->getPassword(),
+        );
+        $rsa = $rsa->withPadding(RSA::ENCRYPTION_PKCS1);
 
         $transactionKeyDecrypted = $rsa->decrypt($orderData->getTransactionKey());
 
-        // aes-128-cbc encrypting format.
-        $aes = new AES(AES::MODE_CBC);
+        $aes = new AES('cbc');
         $aes->setKeyLength(128);
         $aes->setKey($transactionKeyDecrypted);
+        $aes->setIV(str_repeat("\0", 16));
+        $aes->disablePadding();
 
-        // Force openssl_options.
-        // phpcs:ignore
-        $aes->openssl_options = OPENSSL_ZERO_PADDING;
-
-        $decrypted = $aes->decrypt($orderData->getOrderData());
+        $decrypted = $aes->decrypt(base64_decode($orderData->getOrderData()));
 
         if (empty($decrypted)) {
             throw new RuntimeException('decrypt error');

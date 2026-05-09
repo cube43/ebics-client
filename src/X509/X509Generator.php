@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Cube43\Component\Ebics\X509;
 
 use Cube43\Component\Ebics\CertificatType;
-use phpseclib\Crypt\RSA;
-use phpseclib\File\X509;
+use phpseclib3\Crypt\RSA\PrivateKey;
+use phpseclib3\Crypt\RSA\PublicKey;
+use phpseclib3\File\X509;
 use RuntimeException;
 
 use function array_merge;
@@ -17,7 +18,7 @@ use function var_export;
 
 class X509Generator
 {
-    public function __invoke(RSA $privateKey, RSA $publicKey, CertificatType $type, X509CertificatOptionsGenerator $certificatOptionsGenerator): string
+    public function __invoke(PrivateKey $privateKey, PublicKey $publicKey, CertificatType $type, X509CertificatOptionsGenerator $certificatOptionsGenerator): string
     {
         $options = array_merge([
             'type' => $type->value(),
@@ -31,12 +32,12 @@ class X509Generator
 
         $subject            = $this->generateSubject($publicKey, $options);
         $issuer             = $this->generateIssuer($privateKey, $publicKey, $subject, $options);
-        $x509               = new X509();
-        $x509->startDate    = $certificatOptionsGenerator->getStart()->format('YmdHis');
-        $x509->endDate      = $certificatOptionsGenerator->getEnd()->format('YmdHis');
-        $x509->serialNumber = $this->generateSerialNumber();
+        $x509 = new X509();
+        $x509->setStartDate($certificatOptionsGenerator->getStart());
+        $x509->setEndDate($certificatOptionsGenerator->getEnd());
+        $x509->setSerialNumber($this->generateSerialNumber(), 10);
 
-        $result = $x509->sign($issuer, $subject, 'sha256WithRSAEncryption');
+        $result = $x509->sign($issuer, $subject);
         $x509->loadX509($result);
 
         foreach ($options['extensions'] as $id => $extension) {
@@ -47,7 +48,7 @@ class X509Generator
             }
         }
 
-        $result = $x509->sign($issuer, $x509, 'sha256WithRSAEncryption');
+        $result = $x509->sign($issuer, $x509);
 
         return $x509->saveX509($result, match ($certificatOptionsGenerator->getFormat()) {
             EbicsX509FormatEnum::PEM => X509::FORMAT_PEM,
@@ -56,10 +57,10 @@ class X509Generator
     }
 
     /** @param array<string, mixed> $options */
-    private function generateSubject(RSA $publicKey, array $options): X509
+    private function generateSubject(PublicKey $publicKey, array $options): X509
     {
         $subject = new X509();
-        $subject->setPublicKey($publicKey); // $pubKey is Crypt_RSA object
+        $subject->setPublicKey($publicKey);
 
         if (! empty($options['subject']['DN'])) {
             $subject->setDN($options['subject']['DN']);
@@ -69,16 +70,16 @@ class X509Generator
             $subject->setDomain($options['subject']['domain']);
         }
 
-        $subject->setKeyIdentifier($subject->computeKeyIdentifier($publicKey)); // id-ce-subjectKeyIdentifier
+        $subject->setKeyIdentifier($subject->computeKeyIdentifier($publicKey->toString('PKCS1')));
 
         return $subject;
     }
 
     /** @param array<string, mixed> $options */
-    private function generateIssuer(RSA $privateKey, RSA $publicKey, X509 $subject, array $options): X509
+    private function generateIssuer(PrivateKey $privateKey, PublicKey $publicKey, X509 $subject, array $options): X509
     {
         $issuer = new X509();
-        $issuer->setPrivateKey($privateKey); // $privKey is Crypt_RSA object
+        $issuer->setPrivateKey($privateKey);
 
         if (! empty($options['issuer']['DN'])) {
             $issuer->setDN($options['issuer']['DN']);
@@ -86,7 +87,7 @@ class X509Generator
             $issuer->setDN($subject->getDN());
         }
 
-        $issuer->setKeyIdentifier($subject->computeKeyIdentifier($publicKey));
+        $issuer->setKeyIdentifier($subject->computeKeyIdentifier($publicKey->toString('PKCS1')));
 
         return $issuer;
     }

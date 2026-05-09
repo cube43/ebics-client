@@ -9,8 +9,11 @@ use Cube43\Component\Ebics\CertificatType;
 use Cube43\Component\Ebics\Crypt\ExponentAndModulus;
 use Cube43\Component\Ebics\Models\Certificate;
 use Cube43\Component\Ebics\PrivateKey;
+use Cube43\Component\Ebics\Tests\E2e\FakeCrypt;
 use Cube43\Component\Ebics\UserCertificate;
 use PHPUnit\Framework\TestCase;
+
+use function base64_encode;
 
 /** @coversDefaultClass Certificate */
 class UserCertificateTest extends TestCase
@@ -25,16 +28,16 @@ class UserCertificateTest extends TestCase
         $certificateX509->expects(self::once())->method('value')->willReturn('certX509');
         $certificatType->expects(self::once())->method('value')->willReturn('typea');
 
-        $sUT = new UserCertificate($certificatType, 'test2', $privateKey, $certificateX509);
+        $sUT = new UserCertificate($certificatType, FakeCrypt::RSA_PUBLIC_KEY, $privateKey, $certificateX509);
 
         self::assertSame($certificatType, $sUT->getCertificatType());
-        self::assertSame('test2', $sUT->getPublicKey());
+        self::assertSame(FakeCrypt::RSA_PUBLIC_KEY, $sUT->getPublicKey());
         self::assertSame($privateKey, $sUT->getPrivateKey());
         self::assertSame($certificateX509, $sUT->getCertificatX509());
         self::assertInstanceOf(ExponentAndModulus::class, $sUT->getPublicKeyDetails());
         self::assertEquals([
             'type' => 'typea',
-            'public' => 'dGVzdDI=',
+            'public' => base64_encode(FakeCrypt::RSA_PUBLIC_KEY),
             'private' => 'cHJpdmF0ZUtleQ==',
             'content' => 'Y2VydFg1MDk=',
         ], $sUT->jsonSerialize());

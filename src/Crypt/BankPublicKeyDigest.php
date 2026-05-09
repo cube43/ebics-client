@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Cube43\Component\Ebics\Crypt;
 
 use Cube43\Component\Ebics\BankCertificate;
-use phpseclib\Crypt\RSA;
+use phpseclib3\Crypt\Common\PublicKey;
+use phpseclib3\Crypt\RSA;
 use RuntimeException;
 
 use function base64_encode;
@@ -18,19 +19,17 @@ class BankPublicKeyDigest
 {
     public function __invoke(BankCertificate $certificate): string
     {
-        $publicKey = new RSA();
-
-        if ($publicKey->loadKey($certificate->getPublicKey()) === false) {
-            throw new RuntimeException('unable to load key');
-        }
+        $publicKey = RSA::loadPublicKey($certificate->getPublicKey());
 
         return base64_encode(hash('sha256', $this->generateDigest($publicKey), true));
     }
 
-    private function generateDigest(RSA $publicKey): string
+    private function generateDigest(PublicKey $publicKey): string
     {
-        $exponent = $publicKey->exponent->toHex(true);
-        $modulus  = $publicKey->modulus->toHex(true);
+        /** @var array{e: \phpseclib3\Math\BigInteger, n: \phpseclib3\Math\BigInteger} */
+        $raw      = $publicKey->toString('Raw');
+        $exponent = $raw['e']->toHex();
+        $modulus  = $raw['n']->toHex();
 
         // If key was formed incorrect with Modulus and Exponent mismatch, then change the place of key parts.
         if (strlen($exponent) > strlen($modulus)) {

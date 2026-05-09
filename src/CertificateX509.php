@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Cube43\Component\Ebics;
 
 use ErrorException;
-use phpseclib\File\X509;
+use phpseclib3\File\X509;
 use RuntimeException;
 
 use function array_map;
@@ -26,6 +26,8 @@ use function wordwrap;
 class CertificateX509
 {
     private readonly X509 $x509;
+    /** @var array<mixed>|false */
+    private readonly array|false $parsedCert;
 
     public function __construct(private readonly string $value)
     {
@@ -41,9 +43,9 @@ class CertificateX509
                 throw new RuntimeException('x509 value is not DER format');
             }
 
-            $this->x509->loadX509($value2Bin);
+            $this->parsedCert = $this->x509->loadX509($value2Bin);
         } else {
-            $this->x509->loadX509($value);
+            $this->parsedCert = $this->x509->loadX509($value);
         }
     }
 
@@ -95,15 +97,17 @@ class CertificateX509
     /** @internal */
     public function getSerialNumber(): string
     {
-        $certificateSerialNumber = $this->x509->currentCert['tbsCertificate']['serialNumber'];
+        if ($this->parsedCert === false || ! isset($this->parsedCert['tbsCertificate']['serialNumber'])) {
+            throw new RuntimeException('Unable to get serial number from certificate');
+        }
 
-        return $certificateSerialNumber->toString();
+        return $this->parsedCert['tbsCertificate']['serialNumber']->toString();
     }
 
     /** @return mixed[] */
     public function getCurrentCert(): array
     {
-        return $this->x509->currentCert;
+        return $this->parsedCert ?: [];
     }
 
     /** @internal */
