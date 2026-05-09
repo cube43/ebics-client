@@ -208,6 +208,7 @@ class KeyRing implements JsonSerializable
         ];
     }
 
+    /** @return array<mixed> */
     private static function jsonDecode(string $json, bool $assoc = false): array
     {
         $safeResult = json_decode($json, $assoc);

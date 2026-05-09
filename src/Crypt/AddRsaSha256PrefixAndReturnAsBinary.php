@@ -19,6 +19,7 @@ class AddRsaSha256PrefixAndReturnAsBinary
         return self::pack('c*', ...self::RSA_SHA256_PREFIX, ...self::unpack('C*', $hash));
     }
 
+    /** @return array<int, int> */
     private static function unpack(string $format, string $string): array
     {
         $safeResult = unpack($format, $string);
@@ -32,6 +33,7 @@ class AddRsaSha256PrefixAndReturnAsBinary
     private static function pack(string $string, mixed ...$values): string
     {
         $safeResult = pack($string, ...$values);
+        // @phpstan-ignore identical.alwaysFalse
         if ($safeResult === false) {
             throw new ErrorException('An error occured');
         }

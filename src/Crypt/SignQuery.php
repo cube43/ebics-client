@@ -128,11 +128,16 @@ class SignQuery
 
     protected function insertAfter(DOMNode $newNode, DOMNode $afterNode): void
     {
+        $parent = $afterNode->parentNode;
+        if ($parent === null) {
+            return;
+        }
+
         $nextSibling = $afterNode->nextSibling;
         if ($newNode !== $nextSibling) {
-            $afterNode->parentNode->insertBefore($newNode, $nextSibling);
+            $parent->insertBefore($newNode, $nextSibling);
         } else {
-            $afterNode->parentNode->appendChild($newNode);
+            $parent->appendChild($newNode);
         }
     }
 
@@ -147,6 +152,10 @@ class SignQuery
         $domNode = $domNodeList->item(0);
         if ($domNode === null) {
             throw new RuntimeException(sprintf('Unable to find "%s" in "%s"', $query, $document->toString()));
+        }
+
+        if (! $domNode instanceof DOMNode) {
+            throw new RuntimeException(sprintf('Unexpected node type for "%s"', $query));
         }
 
         return $domNode;
