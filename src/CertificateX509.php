@@ -5,18 +5,20 @@ declare(strict_types=1);
 namespace Cube43\Component\Ebics;
 
 use ErrorException;
-use phpseclib\File\X509;
+use phpseclib3\File\X509;
 use RuntimeException;
-use Throwable;
 
 use function array_map;
 use function array_shift;
 use function base64_encode;
 use function chunk_split;
 use function hash;
+use function hex2bin;
 use function implode;
 use function is_array;
 use function openssl_x509_fingerprint;
+use function preg_match;
+use function str_contains;
 use function str_split;
 use function strtoupper;
 use function wordwrap;
@@ -24,15 +26,33 @@ use function wordwrap;
 class CertificateX509
 {
     private readonly X509 $x509;
+    /** @var array<mixed>|false */
+    private readonly array|false $parsedCert;
 
-    public function __construct(private string $value)
+    public function __construct(private readonly string $value)
     {
         if (empty($value)) {
             throw new RuntimeException('x509 key is empty');
         }
 
         $this->x509 = new X509();
-        $this->x509->loadX509($value);
+
+        if ($this->isHexadecimal($value)) {
+            $value2Bin = hex2bin($value);
+            if ($value2Bin === false) {
+                throw new RuntimeException('x509 value is not DER format');
+            }
+
+            $this->parsedCert = $this->x509->loadX509($value2Bin);
+        } else {
+            $this->parsedCert = $this->x509->loadX509($value);
+        }
+    }
+
+    private function isHexadecimal(string $str): bool
+    {
+        // Autoriser uniquement 0-9, a-f, A-F, espaces et ":"
+        return (bool) preg_match('/^[0-9a-fA-F:\s]+$/', $str);
     }
 
     public function value(): string
@@ -42,12 +62,15 @@ class CertificateX509
 
     public function fingerprint(): string
     {
-        try {
-            $digest = strtoupper(self::opensslX509Fingerprint($this->value, 'sha256'));
-        } catch (Throwable) {
-            $under  = "-----BEGIN CERTIFICATE-----\r\n" . chunk_split(base64_encode($this->value), 64) . '-----END CERTIFICATE-----';
-            $digest = strtoupper(self::opensslX509Fingerprint($under, 'sha256'));
+        $contentCert = $this->value;
+        // Si pas BEGIN CERTIFICATE alors c'est un encodage DER, il faut le transformer en PEM
+        if (! str_contains($contentCert, '-----BEGIN CERTIFICATE-----')) {
+            $contentCert = "-----BEGIN CERTIFICATE-----\n"
+                . chunk_split(base64_encode($contentCert), 64, "\n")
+                . "-----END CERTIFICATE-----\n";
         }
+
+        $digest = strtoupper(self::opensslX509Fingerprint($contentCert, 'sha256'));
 
         $digests = str_split($digest, 16);
         $digests = array_map(static function ($digest) {
@@ -57,6 +80,7 @@ class CertificateX509
         return implode("\n", $digests);
     }
 
+    /** @deprecated Use always fingerprint method */
     public function digest(): string
     {
         $digest  = strtoupper(hash('sha256', $this->value, false));
@@ -71,9 +95,17 @@ class CertificateX509
     /** @internal */
     public function getSerialNumber(): string
     {
-        $certificateSerialNumber = $this->x509->currentCert['tbsCertificate']['serialNumber'];
+        if ($this->parsedCert === false || ! isset($this->parsedCert['tbsCertificate']['serialNumber'])) {
+            throw new RuntimeException('Unable to get serial number from certificate');
+        }
 
-        return $certificateSerialNumber->toString();
+        return $this->parsedCert['tbsCertificate']['serialNumber']->toString();
+    }
+
+    /** @return mixed[] */
+    public function getCurrentCert(): array
+    {
+        return $this->parsedCert ?: [];
     }
 
     /** @internal */

@@ -6,11 +6,12 @@ namespace Cube43\Component\Ebics\Crypt;
 
 use Cube43\Component\Ebics\KeyRing;
 use Cube43\Component\Ebics\PrivateKey;
-use phpseclib\Crypt\RSA;
 use RuntimeException;
 
-use function define;
-use function defined;
+use function openssl_pkey_get_private;
+use function openssl_private_encrypt;
+
+use const OPENSSL_PKCS1_PADDING;
 
 /** @internal */
 class EncrytSignatureValueWithUserPrivateKey
@@ -25,18 +26,16 @@ class EncrytSignatureValueWithUserPrivateKey
     /** @throws RuntimeException */
     public function __invoke(KeyRing $keyRing, PrivateKey $key, string $hash): string
     {
-        $rsa = new RSA();
-        $rsa->setPassword($keyRing->getPassword());
-        $rsa->loadKey($key->value(), RSA::PRIVATE_FORMAT_PKCS1);
+        $password      = $keyRing->getPassword();
+        $privateKeyRes = openssl_pkey_get_private($key->value(), $password);
 
-        if (! defined('CRYPT_RSA_PKCS15_COMPAT')) {
-            define('CRYPT_RSA_PKCS15_COMPAT', true);
+        if ($privateKeyRes === false) {
+            throw new RuntimeException('Unable to load private key.');
         }
 
-        $rsa->setEncryptionMode(RSA::ENCRYPTION_PKCS1);
-        $encrypted = $rsa->encrypt($this->addRsaSha256PrefixAndReturnAsBinary->__invoke($hash));
+        $formattedData = $this->addRsaSha256PrefixAndReturnAsBinary->__invoke($hash);
 
-        if (empty($encrypted)) {
+        if (openssl_private_encrypt($formattedData, $encrypted, $privateKeyRes, OPENSSL_PKCS1_PADDING) === false) {
             throw new RuntimeException('Incorrect authorization.');
         }
 

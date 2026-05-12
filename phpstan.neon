@@ -5,5 +5,3 @@ parameters:
         - src
         - bin
         - tests
-includes:
-    - phpstan-baseline.neon

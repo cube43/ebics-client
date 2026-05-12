@@ -1,6 +1,6 @@
-services :
+services:
   php:
-    image: cube43/docker-apache2-php:8.4
+    image: php:8.3.29-fpm
     working_dir: /var/www/
     volumes:
       - .:/var/www

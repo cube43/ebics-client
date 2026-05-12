@@ -11,11 +11,7 @@ use Cube43\Component\Ebics\PrivateKey;
 use Cube43\Component\Ebics\UserCertificate;
 use Cube43\Component\Ebics\X509\X509CertificatOptionsGenerator;
 use Cube43\Component\Ebics\X509\X509Generator;
-use phpseclib\Crypt\RSA;
-use RuntimeException;
-
-use function array_key_exists;
-use function sprintf;
+use phpseclib3\Crypt\RSA;
 
 /** @internal */
 class GenerateCertificat
@@ -29,38 +25,16 @@ class GenerateCertificat
 
     public function __invoke(X509CertificatOptionsGenerator $x509CertificatOptionsGenerator, KeyRing $keyring, CertificatType $type): UserCertificate
     {
-        $rsa = new RSA();
-        $rsa->setPublicKeyFormat(RSA::PRIVATE_FORMAT_PKCS1);
-        $rsa->setPrivateKeyFormat(RSA::PUBLIC_FORMAT_PKCS1);
-        $rsa->setHash('sha256');
-        $rsa->setMGFHash('sha256');
-        $rsa->setPassword($keyring->getPassword());
+        $privateKey = RSA::createKey(2048);
+        $publicKey  = $privateKey->getPublicKey();
 
-        $keys = $rsa->createKey(2048);
-
-        if (empty($keys)) {
-            throw new RuntimeException(sprintf('key "publickey" does not exist for certificat type "%s"', $type->value()));
-        }
-
-        if (! array_key_exists('publickey', $keys) || empty($keys['publickey'])) {
-            throw new RuntimeException(sprintf('key "publickey" does not exist for certificat type "%s"', $type->value()));
-        }
-
-        if (! array_key_exists('privatekey', $keys) || empty($keys['privatekey'])) {
-            throw new RuntimeException(sprintf('key "privatekey" does not exist for certificat type "%s"', $type->value()));
-        }
-
-        $privateKey = new RSA();
-        $privateKey->loadKey($keys['privatekey']);
-
-        $publicKey = new RSA();
-        $publicKey->loadKey($keys['publickey']);
-        $publicKey->setPublicKey();
+        $privateKeyString = $privateKey->withPassword($keyring->getPassword())->toString('PKCS1');
+        $publicKeyString  = $publicKey->toString('PKCS1');
 
         return new UserCertificate(
             $type,
-            $keys['publickey'],
-            new PrivateKey($keys['privatekey']),
+            $publicKeyString,
+            new PrivateKey($privateKeyString),
             new CertificateX509($this->x509Generator->__invoke($privateKey, $publicKey, $type, $x509CertificatOptionsGenerator)),
         );
     }

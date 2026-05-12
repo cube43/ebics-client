@@ -35,7 +35,7 @@ kill:
 	docker compose rm -f -s
 
 login:
-	docker compose exec php sh
+	docker compose exec php bash
 
 php:
 	$(BASE) $(COMMAND_ARGS)
@@ -71,7 +71,7 @@ infection: dup
 # Analyse
 
 phpstan:
-	$(BASE) php -d memory_limit=1700M vendor/bin/phpstan analyse --memory-limit 1700M $(COMMAND_ARGS)
+	$(BASE) php -d memory_limit=1700M ./vendor/bin/phpstan analyse --memory-limit 1700M $(COMMAND_ARGS)
 
 phpstan-baseline: dup
 	$(BASE) vendor/bin/phpstan analyse --memory-limit 1000M --generate-baseline $(COMMAND_ARGS)

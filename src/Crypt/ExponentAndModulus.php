@@ -4,22 +4,29 @@ declare(strict_types=1);
 
 namespace Cube43\Component\Ebics\Crypt;
 
-use phpseclib\Crypt\RSA;
+use phpseclib3\Crypt\Common\PublicKey;
+use phpseclib3\Math\BigInteger;
 
 /** @internal */
 class ExponentAndModulus
 {
-    public function __construct(private readonly RSA $rsa)
+    /** @var array{e: BigInteger, n: BigInteger} */
+    private readonly array $components;
+
+    public function __construct(PublicKey $key)
     {
+        /** @var array{e: BigInteger, n: BigInteger} $components */
+        $components       = $key->toString('Raw');
+        $this->components = $components;
     }
 
     public function getExponent(): string
     {
-        return $this->rsa->exponent->toBytes();
+        return $this->components['e']->toBytes();
     }
 
     public function getModulus(): string
     {
-        return $this->rsa->modulus->toBytes();
+        return $this->components['n']->toBytes();
     }
 }
