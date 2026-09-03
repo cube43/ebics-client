@@ -33,7 +33,7 @@
     "phpunit/phpunit": "^10.5.45",
     "psalm/plugin-phpunit": "^0.19.2",
     "vimeo/psalm": "^6.8.9",
-    "phpstan/phpstan": "^2.2.6",
+    "phpstan/phpstan": "^2.2.10",
     "vrbata/xml-validator": "2.0.1",
     "symfony/console": "^6.3.12 || ^7.2.1"
   },
