@@ -23,7 +23,7 @@
     "ext-zlib": "*",
     "ext-json": "*",
 
-    "phpseclib/phpseclib": "^3",
+    "phpseclib/phpseclib": "^4",
     "symfony/http-client": "^6.3.12 || ^7.1.11"
 
 
