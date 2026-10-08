@@ -25,7 +25,8 @@ class GenerateCertificat
 
     public function __invoke(X509CertificatOptionsGenerator $x509CertificatOptionsGenerator, KeyRing $keyring, CertificatType $type): UserCertificate
     {
-        $privateKey = RSA::createKey(2048);
+        // phpseclib 3 signe en RSASSA-PSS par defaut : les banques attendent un certificat rsaEncryption / sha256WithRSAEncryption
+        $privateKey = RSA::createKey(2048)->withPadding(RSA::SIGNATURE_PKCS1 | RSA::ENCRYPTION_PKCS1);
         $publicKey  = $privateKey->getPublicKey();
 
         $privateKeyString = $privateKey->withPassword($keyring->getPassword())->toString('PKCS1');
