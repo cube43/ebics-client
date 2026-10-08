@@ -87,6 +87,11 @@ class DOMDocument
         return null;
     }
 
+    public function getRootNodeName(): string
+    {
+        return $this->document->documentElement->localName ?? '';
+    }
+
     public function getNodeValue(string $nodeName, int $index = 0): string
     {
         $node = $this->document->getElementsByTagName($nodeName)->item($index);

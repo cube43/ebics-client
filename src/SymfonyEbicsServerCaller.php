@@ -12,6 +12,8 @@ use function in_array;
 
 final class SymfonyEbicsServerCaller implements EbicsServerCaller
 {
+    private const KEY_MANAGEMENT_RESPONSE = 'ebicsKeyManagementResponse';
+
     private readonly HttpClientInterface $httpClient;
 
     public function __construct(HttpClientInterface|null $httpClient = null)
@@ -33,6 +35,16 @@ final class SymfonyEbicsServerCaller implements EbicsServerCaller
 
         if (! in_array($resultXml->getNodeValue('ReturnCode'), $expectedReturnCode)) {
             EbicsExceptionFactory::buildExceptionFromCode($resultXml->getNodeValue('ReturnCode'), $resultXml->getNodeValue('ReportText'), $request, $result);
+        }
+
+        // INI / HIA / HPB : la banque peut repondre 000000 dans l'en-tete (requete recue) et refuser l'ordre dans le corps
+        // (ex. 090004 EBICS_INVALID_ORDER_DATA_FORMAT). Le ReportText de l'en-tete ("EBICS_OK") ne decrit pas cette erreur.
+        if ($resultXml->getRootNodeName() === self::KEY_MANAGEMENT_RESPONSE) {
+            $bodyReturnCode = $resultXml->getNodeValueChildOf('ReturnCode', 'body');
+
+            if (! in_array($bodyReturnCode, $expectedReturnCode)) {
+                EbicsExceptionFactory::buildExceptionFromCode($bodyReturnCode, null, $request, $result);
+            }
         }
 
         return $result;
